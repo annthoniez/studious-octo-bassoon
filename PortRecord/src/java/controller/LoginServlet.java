@@ -109,6 +109,9 @@ public class LoginServlet extends HttpServlet {
                 out.println("              <div class='col-xs-12'>");
                 if (isvalid) {
                     out.println("<h1>Hello, " + user + "!</h1>");
+                    if (user.equals("user")) {
+                        response.sendRedirect("create.html");
+                    }
                 } else {
                     out.println("<h1>Incorrect username or password.</h1>");
                 }
