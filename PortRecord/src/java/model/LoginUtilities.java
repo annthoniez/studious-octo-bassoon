@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller;
+package model;
 
 import java.sql.*;
 import java.util.logging.Level;
@@ -30,13 +30,12 @@ public class LoginUtilities {
         }
     }
     
-    public boolean selectUser(String user, String password) throws SQLException {
+    public int selectUser(String user, String password) throws SQLException {
         String cmd = "SELECT * FROM users WHERE user=?";
         PreparedStatement ps = c.prepareStatement(cmd);
         
         ps.setString(1, user);
         
-        boolean isvalid = false;
         
         ResultSet rs = ps.executeQuery();
         while (rs.next()) {
@@ -44,10 +43,10 @@ public class LoginUtilities {
             String p = rs.getString("password");
             
             if (p.equals(password)) {
-                isvalid = true;
+                return rs.getInt("role");
             }
         }
         
-        return isvalid;
+        return -1;
     }
 }
