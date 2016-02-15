@@ -6,32 +6,20 @@
 package controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.io.PrintWriter; 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import model.LoginUtilities;
 
 /**
  *
- * @author natha
+ * @author administrator1
  */
-@WebServlet(name = "LoginServlet", urlPatterns = {"/LoginServlet"})
-public class LoginServlet extends HttpServlet {
-    
-    private LoginUtilities lu;
-    
-    @Override
-    public void init() {
-        lu = new LoginUtilities();
-        lu.init();
-    }
+@WebServlet(name = "FormServlet", urlPatterns = {"/FormServlet"})
+public class FormServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -46,29 +34,11 @@ public class LoginServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            
-            String user = request.getParameter("username");
-            String pass = request.getParameter("password");
-            
-            try {
-                int role = lu.selectUser(user, pass);
-                HttpSession session = request.getSession();
-                session.setAttribute("role", role);
-                switch (role) {
-                    case 0:
-                        response.sendRedirect("FormServlet");
-                        break;
-                    case 1:
-                        response.sendRedirect("boss.html");
-                        break;
-                    case 2:
-                        response.sendRedirect("admin.html");
-                        break;
-                    default:
-                        response.sendRedirect("error.html");
-                }
-            } catch (SQLException ex) {
-                Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, ex);
+            HttpSession session = request.getSession(false);
+            if (session != null) {
+                request.getRequestDispatcher("create.html").forward(request, response);
+            } else {
+                response.sendRedirect("");
             }
             
         }
