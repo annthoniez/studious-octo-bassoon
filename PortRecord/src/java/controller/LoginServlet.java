@@ -12,6 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -53,7 +54,7 @@ public class LoginServlet extends HttpServlet {
             try {
                 int role = lu.selectUser(user, pass);
                 HttpSession session = request.getSession();
-                session.setAttribute("role", role);
+                session.setAttribute("user", user);
                 switch (role) {
                     case 0:
                         response.sendRedirect("FormServlet");
