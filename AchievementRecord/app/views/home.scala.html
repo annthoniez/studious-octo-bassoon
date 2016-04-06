@@ -1,0 +1,20 @@
+@(title: String, achs: Seq[Achievement], accs: Seq[Seq[Account]])(implicit template: String => Html => Html)
+@template(title) {
+  @achs<br>
+  @accs<br>
+
+  @for((ach, index) <- achs.zipWithIndex) {
+    <div class="column">
+      <div class="callout">
+        <h2>@ach.id: @ach.achievement_name</h2>
+        <p>@ach.date</p>
+
+        <ul>
+          @for(acc <- accs(index)) {
+            <li>@acc</li>
+          }
+        </ul>
+      </div>
+    </div>
+  }
+}

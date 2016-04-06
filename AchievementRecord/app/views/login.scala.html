@@ -1,0 +1,41 @@
+@(form: Form[Option[Account]])(implicit flash: Flash)
+@fragment.header("Login") {
+  <div class="row header">
+    <div class="small-10 medium-6 large-4 small-centered columns">
+      <h2 class="text-center">Sign in</h2>
+      <div class="callout">
+        @helper.form(controllers.routes.Application.authenticate) {
+          @form.globalError.map { e =>
+            <div class="alert callout">
+              <p><i class="fi_alert"></i> There are some errors in your form.</p>
+            </div>
+          }
+          @flash.get("success").map { m =>
+            <div class="success callout">
+              <p><i class="fi_check"></i> Success</p>
+            </div>
+          }
+          <div class="row">
+            <div class="small-12 columns">
+              <label>Username
+                <input type="text" placeholder="Username" name="username" id="username" value="@form("username").value"/>
+              </label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="small-12 columns">
+              <label>Password
+                <input type="password" placeholder="Password" name="password" id="password">
+              </label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="small-12 columns small-centered">
+              <button type="submit" class="small expanded button">Sign in</button>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+}
