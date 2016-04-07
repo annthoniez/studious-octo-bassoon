@@ -11,7 +11,15 @@
     <script src="@routes.Assets.at("javascripts/foundation.min.js")" type="text/javascript"></script>
   </head>
   <body>
-    @fragment.nav()
+    <div class="top-bar">
+      <div class="top-bar-left">
+        <ul class="dropdown menu" data-dropdown-menu>
+          <li class="menu-text">Achievement Record</li>
+          <li><a href="@controllers.routes.Show.profile">Profile</a></li>
+          <li><a href="@controllers.routes.Application.logout">logout</a></li>
+        </ul>
+      </div>
+    </div>
     @content
   </body>
 </html>
