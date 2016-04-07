@@ -2,14 +2,15 @@ package models
 
 import java.time.LocalDate
 
-import scalikejdbc._, jsr310._
-import skinny.orm.{SkinnyMapper, feature}
+import scalikejdbc._
+import scalikejdbc.jsr310._
+import skinny.orm.SkinnyMapper
 
 /**
   * Created by Pichai Sivawat on 3/29/2016.
   */
 
-case class Achievement(id: Long, achievement_name: String, date: LocalDate, photo: String, accs: Seq[Account] = Nil)
+case class Achievement(id: Long, achievement_name: String, date: LocalDate, photo: String, accs: Seq[Student] = Nil)
 
 object Achievement extends SkinnyMapper[Achievement] {
   override lazy val defaultAlias = createAlias("ach")
@@ -22,8 +23,8 @@ object Achievement extends SkinnyMapper[Achievement] {
     photo = rs.get(n.photo)
   )
 
-  lazy val accRef = hasManyThrough[Account](
-    Student_Achievement, Account, (ach, accs) => ach.copy(accs = accs)
+  lazy val accRef = hasManyThroughWithFk[Student](
+    Student_Achievement, Student, "achievement_id", "student_username", (ach, accs) => ach.copy(accs = accs)
   )
 //  private val a = syntax("a")
 //  private val auto = autoSession

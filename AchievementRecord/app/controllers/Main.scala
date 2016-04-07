@@ -2,7 +2,6 @@ package controllers
 
 import jp.t2v.lab.play2.auth.AuthElement
 import models._
-import models.Auth._
 import play.api.mvc._
 import views.html
 
@@ -12,8 +11,8 @@ import views.html
 trait Main extends Controller with Pjax with AuthElement with AuthConfigImpl {
   def home = StackAction(AuthorityKey -> Seq(Auth.Student, Auth.Teacher, Auth.Staff)) { implicit request =>
 //    val achs = Achievement.joins(Achievement.accRef).findAll()
-    val achs = Account.joins(Account.achRef).findAll().filter(_.username == loggedIn.username).head.achs
-    val accs = Achievement.joins(Achievement.accRef).findAll().filter(_.accs.map(_.username).contains(loggedIn.username)).map(_.accs)
+    val achs = models.Student.joins(models.Student.achRef).findAll().filter(_.username == loggedIn.username.value).head.achs
+    val accs = Achievement.joins(Achievement.accRef).findAll().filter(_.accs.map(_.username).contains(loggedIn.username.value)).map(_.accs)
     Ok(html.home("Home", achs, accs))
   }
 

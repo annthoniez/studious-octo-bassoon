@@ -9,6 +9,6 @@ import skinny.orm.SkinnyJoinTable
 case class Student_Achievement(student_username: Username, achievement_id: Long)
 
 object Student_Achievement extends SkinnyJoinTable[Student_Achievement] {
-  override lazy val defaultAlias = createAlias("acc_ach")
+  override lazy val defaultAlias = createAlias("stu_ach")
   override val tableName = "student_achievement"
 }
