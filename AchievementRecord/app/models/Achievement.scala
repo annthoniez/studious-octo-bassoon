@@ -24,7 +24,7 @@ object Achievement extends SkinnyMapper[Achievement] {
   )
 
   lazy val accRef = hasManyThroughWithFk[Student](
-    Student_Achievement, Student, "achievement_id", "student_username", (ach, accs) => ach.copy(accs = accs)
+    Student_Achievement, Student, "achievement_id", "student_id", (ach, accs) => ach.copy(accs = accs)
   )
 //  private val a = syntax("a")
 //  private val auto = autoSession

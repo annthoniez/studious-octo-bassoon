@@ -25,7 +25,7 @@ object Student extends SkinnyCRUDMapperWithId[Username, Student]{
     email = rs.get(n.email)
   )
 
-  lazy val achRef = hasManyThroughWithFk[Achievement](Student_Achievement, Achievement, "student_username", "achievement_id", (acc, achs) => acc.copy(achs = achs))
+  lazy val achRef = hasManyThroughWithFk[Achievement](Student_Achievement, Achievement, "student_id", "achievement_id", (acc, achs) => acc.copy(achs = achs))
   lazy val accRef = hasOneWithFk[Account](Account, "username", (stu, acc) => stu.copy(acc = acc))
   lazy val curriRef = belongsToWithFk[Curriculum](Curriculum, "curriculum_id", (stu, curri) => stu.copy(curri = curri)).byDefault
   lazy val trackRef = belongsToWithFk[Track](Track, "track_id", (stu, track) => stu.copy(track = track)).byDefault
