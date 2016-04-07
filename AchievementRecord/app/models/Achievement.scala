@@ -10,7 +10,7 @@ import skinny.orm.SkinnyMapper
   * Created by Pichai Sivawat on 3/29/2016.
   */
 
-case class Achievement(id: Long, achievement_name: String, date: LocalDate, photo: String, accs: Seq[Student] = Nil)
+case class Achievement(id: Long, achievement_name: String, date: LocalDate, photo: String, t_accs: Seq[Teacher] = Nil, accs: Seq[Student] = Nil)
 
 object Achievement extends SkinnyMapper[Achievement] {
   override lazy val defaultAlias = createAlias("ach")
@@ -23,6 +23,7 @@ object Achievement extends SkinnyMapper[Achievement] {
     photo = rs.get(n.photo)
   )
 
+  lazy val teacher_accRef = hasManyThroughWithFk[Teacher](Teacher_Achievement, Teacher, "achievement_id", "teacher_id", (t_ach, t_accs) => t_ach.copy(t_accs = t_accs))
   lazy val accRef = hasManyThroughWithFk[Student](
     Student_Achievement, Student, "achievement_id", "student_id", (ach, accs) => ach.copy(accs = accs)
   )

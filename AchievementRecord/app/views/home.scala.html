@@ -1,7 +1,8 @@
-@(title: String, achs: Seq[Achievement], accs: Seq[Seq[Student]])(implicit template: String => Html => Html)
+@(title: String, achs: Seq[Achievement], accs: Seq[Seq[Student]], t_accs: Seq[Seq[Teacher]])(implicit template: String => Html => Html)
 @template(title) {
   @achs<br>
   @accs<br>
+  @t_accs<br>
 
   @for((ach, index) <- achs.zipWithIndex) {
     <div class="column">
@@ -12,6 +13,11 @@
         <ul>
           @for(acc <- accs(index)) {
             <li>@acc</li>
+          }
+        </ul>
+        <ul>
+          @for(t <- t_accs(index)) {
+            <li>@t</li>
           }
         </ul>
       </div>
