@@ -10,11 +10,11 @@ import views.html
   */
 trait Show extends Controller with Pjax with AuthElement with AuthConfigImpl {
 
-  def profile = StackAction(AuthorityKey -> Seq(Auth.Student, Auth.Teacher, Auth.Staff)) { implicit request =>
-    val profile = Auth.valueOf(loggedIn.role_id) match {
-      case Auth.Student => models.Student.joins(models.Student.curriRef).joins(models.Student.trackRef).findAll().filter(_.student_id == loggedIn.username).head
-      case Auth.Staff => models.Staff.joins(models.Staff.sectionRef).findAll().filter(_.username == loggedIn.username.value).head
-      case Auth.Teacher => models.Teacher.joins(models.Teacher.statRef).findAll().filter(_.username == loggedIn.username.value).head
+  def profile(username: String) = StackAction(AuthorityKey -> Seq(Auth.Student, Auth.Teacher, Auth.Staff)) { implicit request =>
+    val profile = Auth.valueOf(models.Account.findByUsername(username).head.role_id) match {
+      case Auth.Student => models.Student.joins(models.Student.curriRef).joins(models.Student.trackRef).findAll().filter(_.student_id.value == username).head
+      case Auth.Staff => models.Staff.joins(models.Staff.sectionRef).findAll().filter(_.username == username).head
+      case Auth.Teacher => models.Teacher.joins(models.Teacher.statRef).findAll().filter(_.username == username).head
     }
     Ok(html.profile("Profile", profile))
   }

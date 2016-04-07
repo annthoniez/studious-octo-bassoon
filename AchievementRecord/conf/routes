@@ -15,4 +15,4 @@ POST    /login          controllers.Application.authenticate
 GET     /logout         controllers.Application.logout
 
 GET     /home           controllers.Main.home
-GET     /profile        controllers.Show.profile
+GET     /profile/:username        controllers.Show.profile(username: String)

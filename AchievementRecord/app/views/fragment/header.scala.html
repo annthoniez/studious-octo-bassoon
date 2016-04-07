@@ -16,7 +16,7 @@
         <ul class="dropdown menu" data-dropdown-menu>
           <li class="menu-text">Achievement Record</li>
           @if(account != null) {
-            <li><a href="@controllers.routes.Show.profile">Profile</a></li>
+            <li><a href="@controllers.routes.Show.profile(account.username.value)">Profile</a></li>
             <li><a href="@controllers.routes.Application.logout">logout</a></li>
           } else {
             <li><a href="@controllers.routes.Application.login">login</a></li>
