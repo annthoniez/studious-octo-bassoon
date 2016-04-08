@@ -20,7 +20,7 @@ trait Show extends Controller with Pjax with AuthElement with AuthConfigImpl {
     val achs = Auth.valueOf(role_id) match {
       case Auth.Student => models.Student.joins(models.Student.achRef).findAll().filter(_.username == username).head.achs
       case Auth.Teacher => models.Teacher.joins(models.Teacher.achRef).findAll().filter(_.username == username).head.achs
-      case Auth.Staff => Achievement.findAll() //TODO Don't show on Staff
+      case Auth.Staff => Achievement.findAll().filter(a => false)
     }
 
     val s_accs = Achievement.joins(Achievement.accRef).findAll().filter(a => achs.map(_.id).contains(a.id)).map(_.accs)
