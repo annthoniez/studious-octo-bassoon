@@ -6,21 +6,23 @@
 
   @for((ach, index) <- achs.zipWithIndex) {
     <div class="column">
-      <div class="callout">
-        <h2>@ach.id: @ach.achievement_name</h2>
-        <p>@ach.date</p>
+      <a href="@controllers.routes.Show.achievement(ach.id)">
+        <div class="callout">
+          <h2>@ach.id: @ach.achievement_name</h2>
+          <p>@ach.date</p>
 
-        <ul>
-          @for(acc <- accs(index)) {
-            <li>@acc</li>
-          }
-        </ul>
-        <ul>
-          @for(t <- t_accs(index)) {
-            <li>@t</li>
-          }
-        </ul>
-      </div>
+          <ul>
+            @for(acc <- accs(index)) {
+              <li>@acc</li>
+            }
+          </ul>
+          <ul>
+            @for(t <- t_accs(index)) {
+              <li>@t</li>
+            }
+          </ul>
+        </div>
+      </a>
     </div>
   }
 }
