@@ -1,0 +1,6 @@
+@(title: String, ach: Option[Achievement], s_accs: Option[Seq[Student]], t_accs: Option[Seq[Teacher]])(implicit template: String => Html => Html)
+@template(title) {
+  @ach<br>
+  @s_accs<br>
+  @t_accs
+}

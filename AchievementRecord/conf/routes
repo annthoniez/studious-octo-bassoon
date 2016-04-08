@@ -16,3 +16,4 @@ GET     /logout         controllers.Application.logout
 
 GET     /home           controllers.Main.home
 GET     /profile/:username        controllers.Show.profile(username: String)
+GET     /achievement/:id        controllers.Show.achievement(id: Long)

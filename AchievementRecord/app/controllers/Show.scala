@@ -10,6 +10,13 @@ import views.html
   */
 trait Show extends Controller with Pjax with AuthElement with AuthConfigImpl {
 
+  def achievement(id: Long) = StackAction(AuthorityKey -> Seq(Auth.Student, Auth.Teacher, Auth.Staff)) { implicit request =>
+    val ach = Achievement.findById(id)
+    val s_accs = Achievement.joins(Achievement.accRef).findById(id).map(_.accs)
+    val t_accs = Achievement.joins(Achievement.teacher_accRef).findById(id).map(_.t_accs)
+    Ok(html.achievement("achievement", ach, s_accs, t_accs))
+  }
+
   def profile(username: String) = StackAction(AuthorityKey -> Seq(Auth.Student, Auth.Teacher, Auth.Staff)) { implicit request =>
     val role_id = models.Account.findByUsername(username).head.role_id
     val profile = Auth.valueOf(role_id) match {
