@@ -14,7 +14,7 @@
     <div class="top-bar">
       <div class="top-bar-left">
         <ul class="dropdown menu" data-dropdown-menu>
-          <li class="menu-text">Achievement Record</li>
+          <li class="menu-text"><a href="@controllers.routes.Main.home">Achievement Record</a></li>
           @if(account != null) {
             <li><a href="@controllers.routes.Show.profile(account.username.value)">Profile</a></li>
             <li><a href="@controllers.routes.Application.logout">logout</a></li>
