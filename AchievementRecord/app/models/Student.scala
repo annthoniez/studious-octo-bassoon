@@ -29,4 +29,10 @@ object Student extends SkinnyCRUDMapperWithId[Username, Student]{
   lazy val accRef = hasOneWithFk[Account](Account, "username", (stu, acc) => stu.copy(acc = acc))
   lazy val curriRef = belongsToWithFk[Curriculum](Curriculum, "curriculum_id", (stu, curri) => stu.copy(curri = curri)).byDefault
   lazy val trackRef = belongsToWithFk[Track](Track, "track_id", (stu, track) => stu.copy(track = track)).byDefault
+
+  def getProfile(username: String): Student = models.Student.joins(models.Student.curriRef).joins(models.Student.trackRef).findAll().filter(_.student_id.value == username).head
+
+  def getAchs(username: String): Seq[Achievement] = models.Student.joins(models.Student.achRef).findAll().filter(_.username == username).head.achs
+
+
 }

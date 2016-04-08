@@ -20,18 +20,18 @@ trait Show extends Controller with Pjax with AuthElement with AuthConfigImpl {
   def profile(username: String) = StackAction(AuthorityKey -> Seq(Auth.Student, Auth.Teacher, Auth.Staff)) { implicit request =>
     val role_id = models.Account.findByUsername(username).head.role_id
     val profile = Auth.valueOf(role_id) match {
-      case Auth.Student => models.Student.joins(models.Student.curriRef).joins(models.Student.trackRef).findAll().filter(_.student_id.value == username).head
-      case Auth.Staff => models.Staff.joins(models.Staff.sectionRef).findAll().filter(_.username == username).head
-      case Auth.Teacher => models.Teacher.joins(models.Teacher.statRef).findAll().filter(_.username == username).head
+      case Auth.Student => models.Student.getProfile(username)
+      case Auth.Staff => models.Staff.getProfile(username)
+      case Auth.Teacher => models.Teacher.getProfile(username)
     }
     val achs = Auth.valueOf(role_id) match {
-      case Auth.Student => models.Student.joins(models.Student.achRef).findAll().filter(_.username == username).head.achs
-      case Auth.Teacher => models.Teacher.joins(models.Teacher.achRef).findAll().filter(_.username == username).head.achs
+      case Auth.Student => models.Student.getAchs(username)
+      case Auth.Teacher => models.Teacher.getAchs(username)
       case Auth.Staff => Achievement.findAll().filter(a => false)
     }
 
-    val s_accs = Achievement.joins(Achievement.accRef).findAll().filter(a => achs.map(_.id).contains(a.id)).map(_.accs)
-    val t_accs = Achievement.joins(Achievement.teacher_accRef).findAll().filter(a => achs.map(_.id).contains(a.id)).map(_.t_accs)
+    val s_accs = Achievement.getStudentInAch(achs)
+    val t_accs = Achievement.getTeacherInAch(achs)
     Ok(html.profile("Profile", profile, achs, s_accs, t_accs))
   }
 

@@ -28,4 +28,8 @@ object Teacher extends SkinnyCRUDMapperWithId[Username, Teacher]{
   lazy val achRef = hasManyThroughWithFk[Achievement](Teacher_Achievement, Achievement, "teacher_id", "achievement_id", (teacher, achs) => teacher.copy(achs = achs))
   lazy val accRef = hasOneWithFk[Account](Account, "username", (teacher, acc) => teacher.copy(acc = acc))
   lazy val statRef = belongsToWithFk[Status](Status, "status_id", (teacher, stat) => teacher.copy(stat = stat))
+
+  def getProfile(username: String): Teacher = models.Teacher.joins(models.Teacher.statRef).findAll().filter(_.username == username).head
+
+  def getAchs(username: String): Seq[Achievement] = models.Teacher.joins(models.Teacher.achRef).findAll().filter(_.username == username).head.achs
 }

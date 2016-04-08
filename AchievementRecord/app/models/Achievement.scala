@@ -27,6 +27,10 @@ object Achievement extends SkinnyMapper[Achievement] {
   lazy val accRef = hasManyThroughWithFk[Student](
     Student_Achievement, Student, "achievement_id", "student_id", (ach, accs) => ach.copy(accs = accs)
   )
+
+  def getStudentInAch(achs: Seq[Achievement]): Seq[Seq[Student]] = Achievement.joins(Achievement.accRef).findAll().filter(a => achs.map(_.id).contains(a.id)).map(_.accs)
+
+  def getTeacherInAch(achs: Seq[Achievement]): Seq[Seq[Teacher]] = Achievement.joins(Achievement.teacher_accRef).findAll().filter(a => achs.map(_.id).contains(a.id)).map(_.t_accs)
 //  private val a = syntax("a")
 //  private val auto = autoSession
 //  override val tableName = "achievement"
