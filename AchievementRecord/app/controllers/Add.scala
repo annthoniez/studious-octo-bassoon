@@ -15,7 +15,7 @@ trait Add extends Controller with Pjax with AuthElement with AuthConfigImpl  {
   }
 
   def competition = StackAction(AuthorityKey -> Seq(Auth.Student)) { implicit request =>
-    Ok(html.add_ach("competition"))
+    Ok(html.add_competition("competition"))
   }
 
   protected val main: User => Template = html.main.apply
