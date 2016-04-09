@@ -1,0 +1,14 @@
+@(title: String)(implicit template: String => Html => Html)
+@template(title) {
+  <div class="row header">
+    <div class="small-4 columns"><a href="@controllers.routes.Add.competition">
+      <div class="callout">Competition</div>
+    </a></div>
+    <div class="small-4 columns"><a href="">
+      <div class="callout">Ambassador</div>
+    </a></div>
+    <div class="small-4 columns"><a href="">
+      <div class="callout">Certificate</div>
+    </a></div>
+  </div>
+}

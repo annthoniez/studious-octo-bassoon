@@ -1,0 +1,227 @@
+@(title: String)(implicit template: String => Html => Html)
+@template(title) {
+  <div class="row header">
+    <div class="small-11 small-centered columns">
+      <h2>Add Achievement</h2>
+      <div class="callout">
+        <div class="alert callout">
+          <p><i class="fi_alert"></i> There are some errors in your form.</p>
+        </div>
+        <div class="success callout">
+          <p><i class="fi_check"></i> Success</p>
+        </div>
+        <div class="row">
+          <div class="small-3 columns">
+            <label>รหัสนักศึกษา
+              <input type="text" placeholder="CurrentStudentId" class="student_ids" name="student_ids[]" disabled="disabled" />
+            </label>
+          </div>
+          <div class="small-9 columns">
+            <label>ชื่อ-สกุลนักศึกษา
+              <input type="text" placeholder="CurrentStudentName" class="student_names" name="student_names[]" id="" disabled="disabled">
+            </label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="small-3 columns">
+            <input type="text" placeholder="AnotherStudent" class="student_ids" name="student_ids[]">
+          </div>
+          <div class="small-8 columns">
+            <input type="text" palceholder="AnotherStudentName" class="student_names" name="student_names[]" disabled="disabled">
+          </div>
+          <div class="small-1 columns">
+            <button type="button" class="small button addStudent"><i class="fi-plus"></i></button>
+          </div>
+        </div>
+        <hr>
+        <div class="row">
+          <div class="small-11 columns">
+            <label for="">ชื่ออาจารย์ที่ปรึกษา
+              <input id="firstTeacher" type="text" name="teacher_names[]">
+            </label>
+          </div>
+          <div class="small-1 columns">
+            <label for="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <button type="button" class="small button addTeacher"><i class="fi-plus"></i></button>
+            </label>
+          </div>
+        </div>
+        <hr>
+        <div class="row">
+          <div class="small-8 columns">
+            <label for="">ชื่อการแข่งขัน
+              <input type="text" placeholder="Event Name">
+            </label>
+          </div>
+          <div class="small-4 columns">
+            <label for="">หมวดการแข่งขัน
+              <input type="text" placeholder="Event Topic">
+            </label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="small-6 columns">
+            <label for="">ระดับ
+              <select name="level" id="">
+                <option value="1">ระดับชาติ</option>
+                <option value="2">ระดับโลก</option>
+                <option value="3">ระดับจักรวาล</option>
+              </select>
+            </label>
+          </div>
+          <div class="small-6 columns">
+            <label for="">ประเภท
+              <select name="type" id="">
+                <option value="1">วิชาการ</option>
+                <option value="2">คุณธรรม</option>
+              </select>
+            </label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="small-12 columns">
+            <label for="">หน่วยงานที่จัด
+              <select name="orgs[]" id="">
+                <option value="1">บริษัท ฮา ไม่จำกัด</option>
+                <option value="2">มูลนิธิบลาบลาบลา</option>
+              </select>
+            </label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="small-11 columns">
+            <select name="orgs[]" id="">
+              <option value="1">เพิ่มได้ด้วย</option>
+            </select>
+          </div>
+          <div class="small-1 columns">
+            <button type="button" class="small button addOrg"><i class="fi-plus"></i></button>
+          </div>
+        </div>
+        <hr>
+        <div class="row">
+          <div class="small-12 columns">
+            <label for="">ชื่อผลงาน
+              <input type="text">
+            </label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="small-4 columns">
+            <label for=""></label>อันดับ
+            <select name="rank" id="">
+              <option value="1">รางวัลชนะเลิศ</option>
+              <option value="2">รางวัลรองชนะเลิศอันดับที่ 1</option>
+              <option value="0">อื่นๆ</option>
+            </select>
+          </div>
+          <div class="small-8 columns">
+            <label for="">&nbsp;
+              <input type="text" placeholder="Rank Description" disabled="disabled">
+            </label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="small-12 columns">
+            <label for="">รางวัล
+              <textarea name="reward" id="" cols="30" rows="3" placeholder="เช่น ทุนการศึกษา"></textarea>
+            </label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="small-6 columns">
+            <label for="">วันที่ได้รับ
+              <input type="date">
+            </label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="small-12 columns">
+            <label for="exampleFileUpload" class="button">Upload File</label>
+            <input type="file" id="exampleFileUpload" class="show-for-sr">
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="small-12 columns small-centered">
+            <button id="submit" type="submit" class="small expanded button">Submit</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <script type="text/javascript">
+    $(".header").on("click", ".addStudent", function(e) {
+      e.stopPropagation();
+      $(this).removeClass("addStudent");
+      $('<div class="row"><div class="small-3 columns"><input type="text" placeholder="AnotherStudent" class="student_ids" name="student_ids[]"></div><div class="small-8 columns"><input type="text" palceholder="AnotherStudentName" class="student_names" name="student_names[]" disabled="disabled"></div><div class="small-1 columns"><button type="button" class="small button addStudent"><i class="fi-plus"></i></button></div></div>').insertAfter($(this).parent().parent());
+      $(this).addClass("alert").addClass("removeStudent");
+      $(this).children().removeClass("fi-plus");
+      $(this).children().addClass("fi-minus");
+    });
+
+    $(".header").on('click', ".removeStudent", function(e) {
+      e.stopPropagation();
+      $(this).parent().parent().remove();
+    });
+
+    $(".header").on('click', '.addOrg', function (e) {
+      e.stopPropagation();
+      $(this).removeClass("addOrg");
+      $('<div class="row"><div class="small-11 columns"><select name="orgs[]" id=""><option value="1">เพิ่มได้ด้วย</option></select></div><div class="small-1 columns"><button type="button" class="small button addOrg"><i class="fi-plus"></i></button></div></div>').insertAfter($(this).parent().parent());
+      $(this).addClass("alert").addClass("removeOrg");
+      $(this).children().removeClass("fi-plus");
+      $(this).children().addClass("fi-minus");
+    });
+
+    $(".header").on("click", ".removeOrg", function (e) {
+      e.stopPropagation();
+      $(this).parent().parent().remove();
+    });
+
+    $(".header").on('click', ".addTeacher", function (e) {
+      e.stopPropagation();
+      $(this).removeClass("addTeacher");
+      $('<div class="row"><div class="small-11 columns"><input type="text" palceholder="AnotherTeacherName" name="teacher_names[]"></div><div class="small-1 columns"><button type="button" class="small button addTeacher"><i class="fi-plus"></i></button></div></div>').insertAfter($(this).closest(".row"));
+      $(this).addClass("alert").addClass("removeTeacher");
+      $(this).children().removeClass("fi-plus");
+      $(this).children().addClass("fi-minus");
+    });
+
+    $(".header").on('click', ".removeTeacher", function (e) {
+      e.stopPropagation();
+      if($(this).parent("label").length) {
+        $("#firstTeacher").val($(this).closest(".row").next().children().first().children().val());
+        if($(".removeTeacher").length == 1) {
+          $(this).removeClass("removeTeacher").removeClass("alert");
+          $(this).addClass("addTeacher");
+          $(this).children().removeClass("fi-minus");
+          $(this).children().addClass("fi-plus");
+        }
+        $(this).closest(".row").next().remove();
+      } else {
+        $(this).closest(".row").remove();
+      }
+    });
+
+    $("#submit").click(function () {
+      var $stu_ids = $('input[name^=student_ids]').map(function(idx, elem) {
+        return $(elem).val();
+      }).get();
+
+      var $teacher_names = $('input[name^=teacher_names]').map(function(idx, elem) {
+        return $(elem).val();
+      }).get();
+
+      var $orgs = $('select[name^=orgs]').map(function (idx, elem) {
+        return $(elem).val();
+      }).get();
+
+      console.log($stu_ids);
+      console.log($teacher_names);
+      console.log($orgs);
+    });
+  </script>
+}
