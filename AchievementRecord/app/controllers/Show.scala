@@ -2,6 +2,7 @@ package controllers
 
 import jp.t2v.lab.play2.auth.AuthElement
 import models.{Achievement, Auth}
+import play.api.libs.json._
 import play.api.mvc.Controller
 import views.html
 
@@ -33,6 +34,14 @@ trait Show extends Controller with Pjax with AuthElement with AuthConfigImpl {
     val s_accs = Achievement.getStudentInAch(achs)
     val t_accs = Achievement.getTeacherInAch(achs)
     Ok(html.profile("Profile", profile, achs, s_accs, t_accs))
+  }
+
+  def jsonProfile = StackAction(AuthorityKey -> Seq(Auth.Student)) { implicit request =>
+    val json: JsValue = Json.obj(
+      "username" -> loggedIn.username.value,
+      "th_name" -> models.Student.getProfile(loggedIn.username.value).th_name
+    )
+    Ok(json)
   }
 
   protected val main: User => Template = html.main.apply

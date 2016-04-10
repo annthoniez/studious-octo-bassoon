@@ -11,12 +11,12 @@
           <div class="row">
             <div class="small-3 columns">
               <label>รหัสนักศึกษา
-                <input type="text" placeholder="CurrentStudentId" class="student_ids" name="student_ids" disabled="disabled" />
+                <input type="text" id="CurrentStudentId" placeholder="CurrentStudentId" class="student_ids" name="student_ids" disabled="disabled" />
               </label>
             </div>
             <div class="small-9 columns">
               <label>ชื่อ-สกุลนักศึกษา
-                <input type="text" placeholder="CurrentStudentName" class="student_names" name="student_names" id="" disabled="disabled">
+                <input type="text" id="CurrentStudentName" placeholder="CurrentStudentName" class="student_names" name="student_names" id="" disabled="disabled">
               </label>
             </div>
           </div>
@@ -232,6 +232,11 @@
       } else {
         $(this).closest(".row").remove();
       }
+    });
+
+    $.getJSON("/jsonProfile", function (data) {
+      $("#CurrentStudentId").attr("placeholder", data["username"]);
+      $("#CurrentStudentName").attr("placeholder", data["th_name"]);
     });
   </script>
 }

@@ -8,15 +8,16 @@
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
 
-#GET     /                      controllers.Application.users
-
 GET     /               controllers.Application.login
 POST    /login          controllers.Application.authenticate
 GET     /logout         controllers.Application.logout
 
 GET     /home           controllers.Main.home
+
 GET     /profile/:username        controllers.Show.profile(username: String)
 GET     /achievement/:id        controllers.Show.achievement(id: Long)
+GET     /jsonProfile                controllers.Show.jsonProfile
+
 GET     /add                    controllers.Add.achievement
 GET     /add/competition        controllers.Add.competition
 POST    /add/competition        controllers.Add.postCompetition
