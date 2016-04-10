@@ -1,4 +1,4 @@
-@(title: String, achs: Seq[Achievement], accs: Seq[Seq[Student]], t_accs: Seq[Seq[Teacher]], orgs: Seq[Seq[Organization]])(implicit template: String => Html => Html)
+@(title: String, achs: Seq[Option[Achievement]], accs: Seq[Seq[Student]], t_accs: Seq[Seq[Teacher]], orgs: Seq[Seq[Organization]])(implicit template: String => Html => Html)
 @template(title) {
   @achs<br>
   @accs<br>
@@ -7,10 +7,10 @@
 
   @for((ach, index) <- achs.zipWithIndex) {
     <div class="column">
-      <a href="@controllers.routes.Show.achievement(ach.id)">
+      <a href="@controllers.routes.Show.achievement(ach.get.id)">
         <div class="callout">
-          <h2>@ach.id: @ach.achievement_name</h2>
-          <p>@ach.date</p>
+          <h2>@ach.get.id: @ach.get.achievement_name</h2>
+          <p>@ach.get.date</p>
 
           <ul>
             @for(acc <- accs(index)) {

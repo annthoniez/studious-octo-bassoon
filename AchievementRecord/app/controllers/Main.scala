@@ -15,10 +15,11 @@ trait Main extends Controller with Pjax with AuthElement with AuthConfigImpl {
       case Auth.Teacher => models.Teacher.getAchs(loggedIn.username.value)
       case Auth.Staff => Achievement.findAll()
     }
+    val achs2 = achs.map(a => Achievement.getAchWithChild(a.id))
     val s_accs = Achievement.getStudentInAch(achs)
     val t_accs = Achievement.getTeacherInAch(achs)
     val orgs = Achievement.getOrgInAch(achs)
-    Ok(html.home("Home", achs, s_accs, t_accs, orgs))
+    Ok(html.home("Home", achs2, s_accs, t_accs, orgs))
   }
 
   protected val main: User => Template = html.main.apply

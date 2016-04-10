@@ -10,7 +10,7 @@ import skinny.orm.SkinnyMapper
   * Created by Pichai Sivawat on 3/29/2016.
   */
 
-case class Achievement(id: Long, achievement_name: String, date: LocalDate, photo: String, reward: String, category: String, achievement_type: Int, t_accs: Seq[Teacher] = Nil, accs: Seq[Student] = Nil, orgs: Seq[Organization] = Nil)
+case class Achievement(id: Long, achievement_name: String, date: LocalDate, photo: String, reward: String, category: String, achievement_type: Int, t_accs: Seq[Teacher] = Nil, accs: Seq[Student] = Nil, orgs: Seq[Organization] = Nil, comp: Option[Competition] = None, cert: Option[Cert] = None, amb: Option[Ambassador] = None)
 
 object Achievement extends SkinnyMapper[Achievement] {
   override lazy val defaultAlias = createAlias("ach")
@@ -31,6 +31,12 @@ object Achievement extends SkinnyMapper[Achievement] {
     Student_Achievement, Student, "achievement_id", "student_id", (ach, accs) => ach.copy(accs = accs)
   )
   lazy val orgRef = hasManyThroughWithFk[Organization](Organization_Achievement, Organization, "achievement_id", "organization_id", (ach, orgs) => ach.copy(orgs = orgs))
+
+  lazy val compRef = hasOneWithFk[Competition](Competition, "achievement_id", (ach, comp) => ach.copy(comp=comp))
+  lazy val certRef = hasOneWithFk[Cert](Cert, "achievement_id", (ach, cert) => ach.copy(cert=cert))
+  lazy val ambRef = hasOneWithFk[Ambassador](Ambassador, "achievement_id", (ach, amb) => ach.copy(amb=amb))
+
+  def getAchWithChild(id: Long): Option[Achievement] = Achievement.joins(Achievement.compRef).joins(Achievement.certRef).joins(Achievement.ambRef).findById(id)
 
   def getStudentInAch(achs: Seq[Achievement]): Seq[Seq[Student]] = Achievement.joins(Achievement.accRef).findAll().filter(a => achs.map(_.id).contains(a.id)).map(_.accs)
 
