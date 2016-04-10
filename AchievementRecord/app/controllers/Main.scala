@@ -17,7 +17,8 @@ trait Main extends Controller with Pjax with AuthElement with AuthConfigImpl {
     }
     val s_accs = Achievement.getStudentInAch(achs)
     val t_accs = Achievement.getTeacherInAch(achs)
-    Ok(html.home("Home", achs, s_accs, t_accs))
+    val orgs = Achievement.getOrgInAch(achs)
+    Ok(html.home("Home", achs, s_accs, t_accs, orgs))
   }
 
   protected val main: User => Template = html.main.apply
