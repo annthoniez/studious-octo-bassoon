@@ -19,4 +19,4 @@ GET     /profile/:username        controllers.Show.profile(username: String)
 GET     /achievement/:id        controllers.Show.achievement(id: Long)
 GET     /add                    controllers.Add.achievement
 GET     /add/competition        controllers.Add.competition
-POST    /add/competition        controllers.Add.postCompettition
+POST    /add/competition        controllers.Add.postCompetition
