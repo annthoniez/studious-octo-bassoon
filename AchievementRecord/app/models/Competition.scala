@@ -6,7 +6,7 @@ import skinny.orm.SkinnyMapper
 /**
   * Created by Pichai Sivawat on 4/10/2016.
   */
-case class Competition(id: Long, event_name: String, topic: String, level: String, rank: String, achievement_id: Long)
+case class Competition(id: Long, event_name: String, topic: String, level: String, rank: String, achievement_id: Long, ach: Option[Achievement] = None)
 object Competition extends SkinnyMapper[Competition] {
   override lazy val defaultAlias = createAlias("comp")
   override val tableName = "competitions"
@@ -19,4 +19,6 @@ object Competition extends SkinnyMapper[Competition] {
     rank = rs.get(n.rank),
     achievement_id = rs.get(n.achievement_id)
   )
+
+  lazy val achRef = belongsToWithFk[Achievement](Achievement, "achievement_id", (comp, ach) => comp.copy(ach=ach))
 }
