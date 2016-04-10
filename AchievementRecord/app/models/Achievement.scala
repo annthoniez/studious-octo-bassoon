@@ -4,7 +4,7 @@ import java.time.LocalDate
 
 import scalikejdbc._
 import scalikejdbc.jsr310._
-import skinny.orm.SkinnyMapper
+import skinny.orm.SkinnyCRUDMapper
 
 /**
   * Created by Pichai Sivawat on 3/29/2016.
@@ -12,7 +12,7 @@ import skinny.orm.SkinnyMapper
 
 case class Achievement(id: Long, achievement_name: String, date: LocalDate, photo: String, reward: String, category: String, achievement_type: Int, t_accs: Seq[Teacher] = Nil, accs: Seq[Student] = Nil, orgs: Seq[Organization] = Nil, comp: Option[Competition] = None, cert: Option[Cert] = None, amb: Option[Ambassador] = None)
 
-object Achievement extends SkinnyMapper[Achievement] {
+object Achievement extends SkinnyCRUDMapper[Achievement] {
   override lazy val defaultAlias = createAlias("ach")
   override val tableName = "achievements"
 
@@ -35,6 +35,17 @@ object Achievement extends SkinnyMapper[Achievement] {
   lazy val compRef = hasOneWithFk[Competition](Competition, "achievement_id", (ach, comp) => ach.copy(comp=comp))
   lazy val certRef = hasOneWithFk[Cert](Cert, "achievement_id", (ach, cert) => ach.copy(cert=cert))
   lazy val ambRef = hasOneWithFk[Ambassador](Ambassador, "achievement_id", (ach, amb) => ach.copy(amb=amb))
+
+  def create(achievement_name: String, date: String, photo: String, reward: String, category: String, achievement_type: Int): Long = {
+    createWithNamedValues(
+      column.achievement_name -> achievement_name,
+      column.date -> date,
+      column.photo -> photo,
+      column.reward -> reward,
+      column.category -> category,
+      column.achievement_type -> achievement_type
+    )
+  }
 
   def getAchWithChild(id: Long): Option[Achievement] = Achievement.joins(Achievement.compRef).joins(Achievement.certRef).joins(Achievement.ambRef).findById(id)
 
