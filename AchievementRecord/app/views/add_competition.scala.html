@@ -4,12 +4,9 @@
     <div class="small-11 small-centered columns">
       <h2>Add Achievement</h2>
       <div class="callout">
-        <form action="/add/competition" method="post">
-          <div class="alert callout">
+        <form action="/add/competition" method="post" data-abide novalidate>
+          <div class="alert callout" data-abide-error style="display: none;">
             <p><i class="fi_alert"></i> There are some errors in your form.</p>
-          </div>
-          <div class="success callout">
-            <p><i class="fi_check"></i> Success</p>
           </div>
           <div class="row">
             <div class="small-3 columns">
@@ -25,7 +22,10 @@
           </div>
           <div class="row">
             <div class="small-3 columns">
-              <input type="text" placeholder="AnotherStudent" class="student_ids" name="student_ids">
+              <input type="text" placeholder="AnotherStudent" class="student_ids" name="student_ids" required pattern="number">
+              <span class="form-error">
+                กรอกด้วย
+              </span>
             </div>
             <div class="small-8 columns">
               <input type="text" palceholder="AnotherStudentName" class="student_names" name="student_names" disabled="disabled">
@@ -37,12 +37,12 @@
           <hr>
           <div class="row">
             <div class="small-11 columns">
-              <label for="">ชื่ออาจารย์ที่ปรึกษา
-                <input id="firstTeacher" type="text" name="teacher_names">
+              <label>ชื่ออาจารย์ที่ปรึกษา
+                <input id="firstTeacher" type="text" name="teacher_names" data-abide-ignore>
               </label>
             </div>
             <div class="small-1 columns">
-              <label for="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <button type="button" class="small button addTeacher"><i class="fi-plus"></i></button>
               </label>
             </div>
@@ -50,49 +50,64 @@
           <hr>
           <div class="row">
             <div class="small-8 columns">
-              <label for="">ชื่อการแข่งขัน
-                <input name="event_name" type="text" placeholder="Event Name">
+              <label>ชื่อการแข่งขัน
+                <input name="event_name" type="text" placeholder="Event Name" required>
+                <span class="form-error">
+                  กรอกด้วย
+                </span>
               </label>
             </div>
             <div class="small-4 columns">
-              <label for="">หมวดการแข่งขัน
-                <input name="topic" type="text" placeholder="Event Topic">
+              <label>หมวดการแข่งขัน
+                <input name="topic" type="text" placeholder="Event Topic" data-abide-ignore>
               </label>
             </div>
           </div>
           <div class="row">
             <div class="small-6 columns">
-              <label for="">ระดับ
-                <select name="level" id="">
+              <label>ระดับ
+                <select name="level" required>
+                  <option value=""></option>
                   <option value="1">ระดับชาติ</option>
                   <option value="2">ระดับโลก</option>
                   <option value="3">ระดับจักรวาล</option>
                 </select>
+                <span class="form-error">
+                  กรอกด้วย
+                </span>
               </label>
             </div>
             <div class="small-6 columns">
-              <label for="">ประเภท
-                <select name="category" id="">
+              <label>ประเภท
+                <select name="category" required>
+                  <option value=""></option>
                   <option value="1">วิชาการ</option>
                   <option value="2">คุณธรรม</option>
                 </select>
+                <span class="form-error">
+                  กรอกด้วย
+                </span>
               </label>
             </div>
           </div>
           <div class="row">
             <div class="small-12 columns">
-              <label for="">หน่วยงานที่จัด
-                <select name="orgs" id="">
+              <label>หน่วยงานที่จัด
+                <select name="orgs" required>
+                  <option value=""></option>
                   <option value="1">บริษัท ฮา ไม่จำกัด</option>
                   <option value="2">มูลนิธิบลาบลาบลา</option>
                 </select>
+                <span class="form-error">
+                  กรอกด้วย
+                </span>
               </label>
             </div>
           </div>
           <div class="row">
             <div class="small-11 columns">
-              <select name="orgs" id="">
-                <option value="1">เพิ่มได้ด้วย</option>
+              <select name="orgs">
+                <option value="">เพิ่มได้ด้วย</option>
               </select>
             </div>
             <div class="small-1 columns">
@@ -102,37 +117,48 @@
           <hr>
           <div class="row">
             <div class="small-12 columns">
-              <label for="">ชื่อผลงาน
-                <input type="text" name="achievement_name">
+              <label>ชื่อผลงาน
+                <input type="text" name="achievement_name" required>
+                <span class="form-error">
+                  กรอกด้วย
+                </span>
               </label>
             </div>
           </div>
           <div class="row">
             <div class="small-4 columns">
-              <label for=""></label>อันดับ
-              <select name="rank" id="">
-                <option value="1">รางวัลชนะเลิศ</option>
-                <option value="2">รางวัลรองชนะเลิศอันดับที่ 1</option>
-                <option value="0">อื่นๆ</option>
-              </select>
+              <label>อันดับ
+                <select name="rank" required>
+                  <option value=""></option>
+                  <option value="1">รางวัลชนะเลิศ</option>
+                  <option value="2">รางวัลรองชนะเลิศอันดับที่ 1</option>
+                  <option value="0">อื่นๆ</option>
+                </select>
+                <span class="form-error">
+                  กรอกด้วย
+                </span>
+              </label>
             </div>
             <div class="small-8 columns">
-              <label for="">&nbsp;
+              <label>&nbsp;
                 <input type="text" placeholder="Rank Description" disabled="disabled">
               </label>
             </div>
           </div>
           <div class="row">
             <div class="small-12 columns">
-              <label for="">รางวัล
-                <textarea name="reward" id="" cols="30" rows="3" placeholder="เช่น ทุนการศึกษา"></textarea>
+              <label>รางวัล
+                <textarea name="reward" id="" cols="30" rows="3" placeholder="เช่น ทุนการศึกษา" data-abide-ignore></textarea>
               </label>
             </div>
           </div>
           <div class="row">
             <div class="small-6 columns">
-              <label for="">วันที่ได้รับ
-                <input type="date" name="date">
+              <label>วันที่ได้รับ
+                <input type="date" name="date" required>
+                <span class="form-error">
+                  กรอกด้วย
+                </span>
               </label>
             </div>
           </div>
@@ -155,10 +181,12 @@
 
 
   <script type="text/javascript">
+    $(document).foundation();
+
     $(".header").on("click", ".addStudent", function(e) {
       e.stopPropagation();
       $(this).removeClass("addStudent");
-      $('<div class="row"><div class="small-3 columns"><input type="text" placeholder="AnotherStudent" class="student_ids" name="student_ids"></div><div class="small-8 columns"><input type="text" palceholder="AnotherStudentName" class="student_names" name="student_names" disabled="disabled"></div><div class="small-1 columns"><button type="button" class="small button addStudent"><i class="fi-plus"></i></button></div></div>').insertAfter($(this).parent().parent());
+      $('<div class="row"><div class="small-3 columns"><input type="text" placeholder="AnotherStudent" class="student_ids" name="student_ids"></div><div class="small-8 columns"><input type="text" placeholder="AnotherStudent" class="student_ids" name="student_ids" required pattern="number"><span class="form-error">กรอกด้วย</span></div><div class="small-1 columns"><button type="button" class="small button addStudent"><i class="fi-plus"></i></button></div></div>').insertAfter($(this).parent().parent());
       $(this).addClass("alert").addClass("removeStudent");
       $(this).children().removeClass("fi-plus");
       $(this).children().addClass("fi-minus");
@@ -172,7 +200,7 @@
     $(".header").on('click', '.addOrg', function (e) {
       e.stopPropagation();
       $(this).removeClass("addOrg");
-      $('<div class="row"><div class="small-11 columns"><select name="orgs" id=""><option value="1">เพิ่มได้ด้วย</option></select></div><div class="small-1 columns"><button type="button" class="small button addOrg"><i class="fi-plus"></i></button></div></div>').insertAfter($(this).parent().parent());
+      $('<div class="row"><div class="small-11 columns"><select name="orgs"><option value="">เพิ่มได้ด้วย</option></select></div><div class="small-1 columns"><button type="button" class="small button addOrg"><i class="fi-plus"></i></button></div></div>').insertAfter($(this).parent().parent());
       $(this).addClass("alert").addClass("removeOrg");
       $(this).children().removeClass("fi-plus");
       $(this).children().addClass("fi-minus");
@@ -186,7 +214,7 @@
     $(".header").on('click', ".addTeacher", function (e) {
       e.stopPropagation();
       $(this).removeClass("addTeacher");
-      $('<div class="row"><div class="small-11 columns"><input type="text" palceholder="AnotherTeacherName" name="teacher_names"></div><div class="small-1 columns"><button type="button" class="small button addTeacher"><i class="fi-plus"></i></button></div></div>').insertAfter($(this).closest(".row"));
+      $('<div class="row"><div class="small-11 columns"><input type="text" palceholder="AnotherTeacherName" name="teacher_names" data-abide-ignore></div><div class="small-1 columns"><button type="button" class="small button addTeacher"><i class="fi-plus"></i></button></div></div>').insertAfter($(this).closest(".row"));
       $(this).addClass("alert").addClass("removeTeacher");
       $(this).children().removeClass("fi-plus");
       $(this).children().addClass("fi-minus");
@@ -207,23 +235,5 @@
         $(this).closest(".row").remove();
       }
     });
-//
-//    $("#submit").click(function () {
-//      var $stu_ids = $('input[name^=student_ids]').map(function(idx, elem) {
-//        return $(elem).val();
-//      }).get();
-//
-//      var $teacher_names = $('input[name^=teacher_names]').map(function(idx, elem) {
-//        return $(elem).val();
-//      }).get();
-//
-//      var $orgs = $('select[name^=orgs]').map(function (idx, elem) {
-//        return $(elem).val();
-//      }).get();
-//
-//      console.log($stu_ids);
-//      console.log($teacher_names);
-//      console.log($orgs);
-//    });
   </script>
 }
