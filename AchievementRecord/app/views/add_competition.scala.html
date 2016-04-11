@@ -184,7 +184,7 @@
     $(".header").on("click", ".addStudent", function(e) {
       e.stopPropagation();
       $(this).removeClass("addStudent");
-      $('<div class="row"><div class="small-3 columns"><input type="text" placeholder="AnotherStudent" class="student_ids" name="student_ids"></div><div class="small-8 columns"><input type="text" placeholder="AnotherStudent" class="student_ids" name="student_ids" required pattern="number"><span class="form-error">กรอกด้วย</span></div><div class="small-1 columns"><button type="button" class="small button addStudent"><i class="fi-plus"></i></button></div></div>').insertAfter($(this).parent().parent());
+      $('<div class="row"><div class="small-3 columns"><input type="text" placeholder="AnotherStudent" class="student_ids" name="student_ids"></div><div class="small-8 columns"><input type="text" placeholder="AnotherStudent" class="student_ids" name="student_ids" required pattern="number" disabled="disabled"><span class="form-error">กรอกด้วย</span></div><div class="small-1 columns"><button type="button" class="small button addStudent"><i class="fi-plus"></i></button></div></div>').insertAfter($(this).parent().parent());
       $(this).addClass("alert").addClass("removeStudent");
       $(this).children().removeClass("fi-plus");
       $(this).children().addClass("fi-minus");
@@ -247,5 +247,30 @@
       $("#CurrentStudentId").attr("placeholder", data["username"]);
       $("#CurrentStudentName").attr("placeholder", data["th_name"]);
     });
+
+    var students = [];
+    $.ajax({
+      url: "/jsonAllStudent",
+      async: false,
+      dataType: 'json',
+      success: function(data) {
+        students = data;
+      }
+    });
+
+    student_ids = $.map(students, function (value, index) {
+      return index;
+    });
+
+    var option = {
+      source: student_ids,
+      change: function (event, ui) {
+        $(this).parent().next().children().val(students[ui.item.value])
+      }
+    };
+    $("input[name^='student_ids']").autocomplete(option);
+    $(document).on('keydown.autocomplete', "input[name^='student_ids']", function () {
+      $(this).autocomplete(option);
+    })
   </script>
 }

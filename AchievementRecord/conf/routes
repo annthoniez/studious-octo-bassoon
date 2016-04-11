@@ -17,6 +17,7 @@ GET     /home           controllers.Main.home
 GET     /profile/:username        controllers.Show.profile(username: String)
 GET     /achievement/:id        controllers.Show.achievement(id: Long)
 GET     /jsonProfile                controllers.Show.jsonProfile
+GET     /jsonAllStudent         controllers.Show.jsonAllStudent
 
 GET     /add                    controllers.Add.achievement
 GET     /add/competition        controllers.Add.competition
