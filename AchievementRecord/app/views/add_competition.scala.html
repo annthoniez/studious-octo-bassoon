@@ -128,7 +128,7 @@
           <div class="row">
             <div class="small-4 columns">
               <label>อันดับ
-                <select name="rank" required>
+                <select name="rank" id="rank" required>
                   <option value=""></option>
                   <option value="1">รางวัลชนะเลิศ</option>
                   <option value="2">รางวัลรองชนะเลิศอันดับที่ 1</option>
@@ -141,7 +141,7 @@
             </div>
             <div class="small-8 columns">
               <label>&nbsp;
-                <input type="text" placeholder="Rank Description" disabled="disabled">
+                <input type="text" placeholder="Rank Description" id="rank_des" name="rank_des" disabled="disabled">
               </label>
             </div>
           </div>
@@ -231,6 +231,15 @@
         $(this).closest(".row").next().remove();
       } else {
         $(this).closest(".row").remove();
+      }
+    });
+
+    $("#rank").change(function () {
+      if($("#rank").val() == 0) {
+        $("#rank_des").prop("disabled", false);
+      } else {
+        $("#rank_des").prop("disabled", true);
+        $("#rank_des").val("");
       }
     });
 
