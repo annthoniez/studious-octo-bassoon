@@ -28,7 +28,7 @@ trait Add extends Controller with Pjax with AuthElement with AuthConfigImpl  {
     textBody.get("teacher_names").foreach(t => if (t != "") Teacher_Achievement.create(models.Teacher.getProfile(t).teacher_id.value, ach_id))
     textBody.get("orgs").foreach(o => if (o != "") Organization_Achievement.create(o.toLong, ach_id))
 
-    Competition.create(textBody.get("event_name").head, textBody.get("topic").head, textBody.get("level").head, textBody.get("rank").head, ach_id)
+    Competition.create(textBody.get("event_name").head, textBody.get("topic").head, textBody.get("level").head, if (textBody.get("rank").head == "0") textBody.get("rank_des").head else textBody.get("rank").head, ach_id)
     Ok("Got" + textBody.toString)
 
   }
