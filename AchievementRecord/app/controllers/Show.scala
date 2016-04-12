@@ -1,7 +1,7 @@
 package controllers
 
 import jp.t2v.lab.play2.auth.AuthElement
-import models.{Achievement, Auth}
+import models.{Achievement, Auth, Organization}
 import play.api.libs.json._
 import play.api.mvc.Controller
 import views.html
@@ -53,6 +53,12 @@ trait Show extends Controller with Pjax with AuthElement with AuthConfigImpl {
   def jsonAllTeacher() = StackAction(AuthorityKey -> Seq(Auth.Student)) { implicit request =>
     val teachers = models.Teacher.findAll().map(t => Json.obj("value" -> t.username, "label" -> t.th_name))
     val json: JsValue = JsArray(teachers)
+    Ok(json)
+  }
+
+  def jsonAllOrg() = StackAction(AuthorityKey -> Seq(Auth.Student)) { implicit request =>
+    val orgs = Organization.findAll().map(o => Json.obj("value" -> o.id, "text" -> o.organization_name))
+    val json: JsValue = JsArray(orgs)
     Ok(json)
   }
 

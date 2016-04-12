@@ -19,6 +19,7 @@ GET     /achievement/:id        controllers.Show.achievement(id: Long)
 GET     /jsonProfile                controllers.Show.jsonProfile
 GET     /jsonAllStudent         controllers.Show.jsonAllStudent
 GET     /jsonAllTeacher         controllers.Show.jsonAllTeacher
+GET     /jsonAllOrg             controllers.Show.jsonAllOrg
 
 GET     /add                    controllers.Add.achievement
 GET     /add/competition        controllers.Add.competition

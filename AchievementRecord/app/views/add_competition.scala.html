@@ -93,10 +93,8 @@
           <div class="row">
             <div class="small-12 columns">
               <label>หน่วยงานที่จัด <i class="alert fi-asterisk"></i>
-                <select name="orgs" required>
+                <select name="orgs" class="orgs" required>
                   <option value=""></option>
-                  <option value="1">บริษัท ฮา ไม่จำกัด</option>
-                  <option value="2">มูลนิธิบลาบลาบลา</option>
                 </select>
                 <span class="form-error">
                   กรอกด้วย
@@ -106,10 +104,8 @@
           </div>
           <div class="row">
             <div class="small-11 columns">
-              <select name="orgs">
+              <select name="orgs" class="orgs">
                 <option value="">เพิ่มได้ด้วย</option>
-                <option value="1">บริษัท ฮา ไม่จำกัด</option>
-                <option value="2">มูลนิธิบลาบลาบลา</option>
               </select>
             </div>
             <div class="small-1 columns">
@@ -200,7 +196,20 @@
     $(".header").on('click', '.addOrg', function (e) {
       e.stopPropagation();
       $(this).removeClass("addOrg");
-      $('<div class="row"><div class="small-11 columns"><select name="orgs"><option value="">เพิ่มได้ด้วย</option></select></div><div class="small-1 columns"><button type="button" class="small button addOrg"><i class="fi-plus"></i></button></div></div>').insertAfter($(this).parent().parent());
+      $('<div class="row"><div class="small-11 columns"><select name="orgs" class="orgs"><option value="">เลือกหน่วยงาน</option></select></div><div class="small-1 columns"><button type="button" class="small button addOrg"><i class="fi-plus"></i></button></div></div>').insertAfter($(this).parent().parent());
+      aaa = $(this).closest(".row").next().children().first().children();
+      console.log(aaa)
+      $.ajax({
+        url: '/jsonAllOrg',
+        dataType: 'json',
+        success: function (data) {
+          aaa.empty();
+          aaa.append($("<option>").text("เลือกหน่วยงาน").attr("value", ""));
+          $.each(data, function(i, val) {
+            aaa.append($("<option>").text(val.text).attr("value", val.value));
+          });
+        }
+      });
       $(this).addClass("alert").addClass("removeOrg");
       $(this).children().removeClass("fi-plus");
       $(this).children().addClass("fi-minus");
@@ -290,6 +299,18 @@
     $("input[name^='teacher_names']").autocomplete(teacher_autocomplete_option);
     $(document).on('keydown.autocomplete', "input[name^='teacher_names']", function () {
       $(this).autocomplete(teacher_autocomplete_option);
+    });
+
+    $.ajax({
+      url: '/jsonAllOrg',
+      dataType: 'json',
+      success: function (data) {
+        $(".orgs").empty();
+        $(".orgs").append($("<option>").text("เลือกหน่วยงาน").attr("value", ""));
+        $.each(data, function(i, val) {
+          $(".orgs").append($("<option>").text(val.text).attr("value", val.value));
+        });
+      }
     });
   </script>
 }
