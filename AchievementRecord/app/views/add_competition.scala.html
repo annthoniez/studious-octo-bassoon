@@ -4,7 +4,7 @@
     <div class="small-11 small-centered columns">
       <h2>Add Achievement</h2>
       <div class="callout">
-        <form action="/add/competition" method="post" data-abide novalidate>
+        <form action="/add/competition" method="post" enctype="multipart/form-data" data-abide novalidate>
           <div class="alert callout" data-abide-error style="display: none;">
             <p><i class="fi_alert"></i> There are some errors in your form.</p>
           </div>
@@ -163,7 +163,7 @@
           <div class="row">
             <div class="small-12 columns">
               <label for="exampleFileUpload" class="button">Upload File</label>
-              <input type="file" id="exampleFileUpload" class="show-for-sr">
+              <input type="file" id="exampleFileUpload" class="show-for-sr" name="file">
             </div>
           </div>
 
