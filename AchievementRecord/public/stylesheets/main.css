@@ -1,3 +1,6 @@
 .header {
     margin-top:40px;
 }
+i.alert {
+    color: #ec5840;
+}
