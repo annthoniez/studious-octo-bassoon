@@ -262,15 +262,32 @@
       return index;
     });
 
-    var option = {
+    var student_autocomplete_option = {
       source: student_ids,
       change: function (event, ui) {
         $(this).parent().next().children().val(students[ui.item.value])
       }
     };
-    $("input[name^='student_ids']").autocomplete(option);
+    $("input[name^='student_ids']").autocomplete(student_autocomplete_option);
     $(document).on('keydown.autocomplete', "input[name^='student_ids']", function () {
-      $(this).autocomplete(option);
-    })
+      $(this).autocomplete(student_autocomplete_option);
+    });
+
+    var teachers = [];
+    $.ajax({
+      url: '/jsonAllTeacher',
+      async: false,
+      dataType: 'json',
+      success: function (data) {
+        teachers = data;
+      }
+    });
+    var teacher_autocomplete_option = {
+      source: teachers
+    };
+    $("input[name^='teacher_names']").autocomplete(teacher_autocomplete_option);
+    $(document).on('keydown.autocomplete', "input[name^='teacher_names']", function () {
+      $(this).autocomplete(teacher_autocomplete_option);
+    });
   </script>
 }
