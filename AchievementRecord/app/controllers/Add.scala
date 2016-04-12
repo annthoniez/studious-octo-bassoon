@@ -24,6 +24,7 @@ trait Add extends Controller with Pjax with AuthElement with AuthConfigImpl  {
     val ach_id = Achievement.create(textBody.get("achievement_name").head, textBody.get("date").head, "test", textBody.get("reward").head, textBody.get("category").head, 1)
     println(ach_id)
     Student_Achievement.create(loggedIn.username.value, ach_id)
+    textBody.get("student_ids").foreach(s => Student_Achievement.create(s, ach_id))
     Ok("Got" + textBody.toString)
 
   }
