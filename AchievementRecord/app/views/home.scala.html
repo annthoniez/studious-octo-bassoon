@@ -1,34 +1,40 @@
 @(title: String, achs: Seq[Option[Achievement]], accs: Seq[Seq[Student]], t_accs: Seq[Seq[Teacher]], orgs: Seq[Seq[Organization]])(implicit template: String => Html => Html)
 @template(title) {
-  @achs<br>
-  @accs<br>
-  @t_accs<br>
-  @orgs<br>
-
-  @for((ach, index) <- achs.zipWithIndex) {
-    <div class="column">
-      <a href="@controllers.routes.Show.achievement(ach.get.id)">
-        <div class="callout">
-          <h2>@ach.get.id: @ach.get.achievement_name</h2>
-          <p>@ach.get.date</p>
-
-          <ul>
-            @for(acc <- accs(index)) {
-              <li>@acc</li>
-            }
-          </ul>
-          <ul>
-            @for(t <- t_accs(index)) {
-              <li>@t</li>
-            }
-          </ul>
-          <ul>
-            @for(o <- orgs(index)) {
-              <li>@o</li>
-            }
-          </ul>
-        </div>
+  <div class="row small-up-1 medium-up-1 large-up-2 header" data-equalizer data-equalize-by-row="true">
+    <div class="columns align-self-middle callout" data-equalizer-watch>
+      <br>
+      <br>
+      <a href="@controllers.routes.Add.achievement">
+        <h2 class="text-center"><i class="fi-plus"></i></h2>
       </a>
+      <br>
+      <br>
     </div>
+    @for((ach, index) <- achs.zipWithIndex) {
+      <div class="columns">
+        <a href="@controllers.routes.Show.achievement(ach.get.id)">
+          <div class="callout" data-equalizer-watch>
+            <h2>@ach.get.id: @ach.get.achievement_name</h2>
+            <p>@ach.get.date</p>
+
+            <ul>
+              @for(acc <- accs(index)) {
+                <li>@acc</li>
+              }
+            </ul>
+            <ul>
+              @for(t <- t_accs(index)) {
+                <li>@t</li>
+              }
+            </ul>
+            <ul>
+              @for(o <- orgs(index)) {
+                <li>@o</li>
+              }
+            </ul>
+          </div>
+        </a>
+      </div>
   }
+  </div>
 }

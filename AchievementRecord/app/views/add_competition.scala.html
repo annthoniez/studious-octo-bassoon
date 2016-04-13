@@ -1,7 +1,7 @@
 @(title: String)(implicit template: String => Html => Html)
 @template(title) {
-  <div class="row">
-    <div class="small-11 small-centered columns">
+  <div class="row header">
+    <div class="small-12 columns">
       <h2>Add Achievement</h2>
       <div class="callout">
         <form action="/add/competition" method="post" enctype="multipart/form-data" data-abide novalidate>
@@ -176,7 +176,6 @@
       </div>
     </div>
   </div>
-
 
   <script type="text/javascript">
     $(".header").on("click", ".addStudent", function(e) {

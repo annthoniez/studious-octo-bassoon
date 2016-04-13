@@ -1,7 +1,7 @@
 @(form: Form[Option[Account]])(implicit flash: Flash)
 @fragment.header(null)("Login") {
-  <div class="row header">
-    <div class="small-10 medium-6 large-4 small-centered columns">
+  <div class="row align-center header">
+    <div class="small-10 medium-8 large-6 columns">
       <h2 class="text-center">Sign in</h2>
       <div class="callout">
         @helper.form(controllers.routes.Application.authenticate) {
