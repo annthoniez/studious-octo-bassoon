@@ -53,6 +53,26 @@ trait Add extends Controller with Pjax with AuthElement with AuthConfigImpl  {
     Ok("Got" + textBody)
   }
 
+  def postCert = StackAction(AuthorityKey -> Seq(Auth.Student)) { implicit request =>
+    val body: AnyContent = request.body
+    val multiPartBody = body.asMultipartFormData
+    val textBody = multiPartBody.get.asFormUrlEncoded
+    //println(multiPartBody.get.file("file"))
+    val saveFileName = Crypto.sign(UUID.randomUUID().toString + LocalDateTime.now().toString + loggedIn.username.value)
+    println(saveFileName)
+
+    multiPartBody.get.file("file").map { p =>
+      p.ref.moveTo(new File(play.Play.application().path().toString + s"/public/uploads/$saveFileName"))
+    }
+
+    val ach_id = Achievement.create(textBody.get("achievement_name").head.head, textBody.get("date").head.head, saveFileName, "", "วิชาการ", 2)
+    Student_Achievement.create(loggedIn.username.value, ach_id)
+    Organization_Achievement.create(textBody.get("orgs").head.head.toLong, ach_id)
+
+    Cert.create(textBody.get("exp_date").head.head, ach_id)
+    Ok("Got" + textBody)
+  }
+
   protected val main: User => Template = html.main.apply
 }
 

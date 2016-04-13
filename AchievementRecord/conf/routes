@@ -25,3 +25,4 @@ GET     /add                    controllers.Add.achievement
 GET     /add/competition        controllers.Add.competition
 POST    /add/competition        controllers.Add.postCompetition
 GET     /add/cert               controllers.Add.cert
+POST    /add/cert               controllers.Add.postCert
