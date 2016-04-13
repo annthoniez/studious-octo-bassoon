@@ -23,6 +23,10 @@ trait Add extends Controller with Pjax with AuthElement with AuthConfigImpl  {
     Ok(html.add_competition("competition"))
   }
 
+  def cert = StackAction(AuthorityKey -> Seq(Auth.Student)) { implicit request =>
+    Ok(html.add_cert("cert"))
+  }
+
   def postCompetition = StackAction(AuthorityKey -> Seq(Auth.Student)) { implicit request =>
     val body: AnyContent = request.body
     val multiPartBody = body.asMultipartFormData

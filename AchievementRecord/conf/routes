@@ -24,3 +24,4 @@ GET     /jsonAllOrg             controllers.Show.jsonAllOrg
 GET     /add                    controllers.Add.achievement
 GET     /add/competition        controllers.Add.competition
 POST    /add/competition        controllers.Add.postCompetition
+GET     /add/cert               controllers.Add.cert
