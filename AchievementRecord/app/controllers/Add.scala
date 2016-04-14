@@ -36,10 +36,10 @@ trait Add extends Controller with Pjax with AuthElement with AuthConfigImpl  {
     val multiPartBody = body.asMultipartFormData
     val textBody = multiPartBody.get.asFormUrlEncoded
     //println(multiPartBody.get.file("file"))
-    val saveFileName = Crypto.sign(UUID.randomUUID().toString + LocalDateTime.now().toString + loggedIn.username.value)
-    println(saveFileName)
+    var saveFileName = ""
 
     multiPartBody.get.file("file").map { p =>
+      saveFileName = Crypto.sign(UUID.randomUUID().toString + LocalDateTime.now().toString + loggedIn.username.value)
       p.ref.moveTo(new File(play.Play.application().path().toString + s"/public/uploads/$saveFileName"))
     }
     val student_ids: Set[String] = textBody.get("student_ids").head.toSet + loggedIn.username.value
@@ -62,10 +62,10 @@ trait Add extends Controller with Pjax with AuthElement with AuthConfigImpl  {
     val multiPartBody = body.asMultipartFormData
     val textBody = multiPartBody.get.asFormUrlEncoded
     //println(multiPartBody.get.file("file"))
-    val saveFileName = Crypto.sign(UUID.randomUUID().toString + LocalDateTime.now().toString + loggedIn.username.value)
-    println(saveFileName)
+    var saveFileName = ""
 
     multiPartBody.get.file("file").map { p =>
+      saveFileName = Crypto.sign(UUID.randomUUID().toString + LocalDateTime.now().toString + loggedIn.username.value)
       p.ref.moveTo(new File(play.Play.application().path().toString + s"/public/uploads/$saveFileName"))
     }
 
@@ -82,10 +82,10 @@ trait Add extends Controller with Pjax with AuthElement with AuthConfigImpl  {
     val multiPartBody = body.asMultipartFormData
     val textBody = multiPartBody.get.asFormUrlEncoded
     //println(multiPartBody.get.file("file"))
-    val saveFileName = Crypto.sign(UUID.randomUUID().toString + LocalDateTime.now().toString + loggedIn.username.value)
-    println(saveFileName)
+    var saveFileName = ""
 
     multiPartBody.get.file("file").map { p =>
+      saveFileName = Crypto.sign(UUID.randomUUID().toString + LocalDateTime.now().toString + loggedIn.username.value)
       p.ref.moveTo(new File(play.Play.application().path().toString + s"/public/uploads/$saveFileName"))
     }
 
