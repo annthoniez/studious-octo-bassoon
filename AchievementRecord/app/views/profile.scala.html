@@ -1,12 +1,9 @@
 @(title: String, profile: Any, achs: Seq[Achievement], accs: Seq[Seq[Student]], t_accs: Seq[Seq[Teacher]])(implicit template: String => Html => Html)
 @template(title) {
-  @profile<br>
-  @achs<br>
-  @accs<br>
-  @t_accs<br>
+  <div class="row small-up-1 medium-up-1 large-up-2 header" data-equalizer data-equalize-by-row="true">
   @for((ach, index) <- achs.zipWithIndex) {
     <div class="column">
-      <div class="callout">
+      <div class="callout" data-equalizer-watch>
         <h2>@ach.id: @ach.achievement_name</h2>
         <p>@ach.date</p>
 
@@ -23,4 +20,5 @@
       </div>
     </div>
   }
+  </div>
 }
