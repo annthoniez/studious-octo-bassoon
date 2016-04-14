@@ -44,24 +44,15 @@ trait Show extends Controller with Pjax with AuthElement with AuthConfigImpl {
     Ok(json)
   }
 
-  def jsonAllStudent() = StackAction(AuthorityKey -> Seq(Auth.Student)) { implicit request =>
-    val students = models.Student.findAll().map(s => s.username -> JsString(s.th_name))
-    val json: JsValue = JsObject(students)
+  def jsonAll(id: Int) = StackAction(AuthorityKey -> Seq(Auth.Student, Auth.Teacher, Auth.Staff)) { implicit request =>
+    val json: JsValue = id match {
+      case 1 => JsObject(models.Student.findAll().map(s => s.username -> JsString(s.th_name)))
+      case 2 => JsArray(models.Teacher.findAll().map(t => Json.obj("value" -> t.username, "label" -> t.th_name)))
+      case 3 => JsArray(Organization.findAll().map(o => Json.obj("value" -> o.id, "text" -> o.organization_name)))
+    }
     Ok(json)
   }
-
-  def jsonAllTeacher() = StackAction(AuthorityKey -> Seq(Auth.Student)) { implicit request =>
-    val teachers = models.Teacher.findAll().map(t => Json.obj("value" -> t.username, "label" -> t.th_name))
-    val json: JsValue = JsArray(teachers)
-    Ok(json)
-  }
-
-  def jsonAllOrg() = StackAction(AuthorityKey -> Seq(Auth.Student)) { implicit request =>
-    val orgs = Organization.findAll().map(o => Json.obj("value" -> o.id, "text" -> o.organization_name))
-    val json: JsValue = JsArray(orgs)
-    Ok(json)
-  }
-
+  
   protected val main: User => Template = html.main.apply
 }
 

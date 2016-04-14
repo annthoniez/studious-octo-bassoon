@@ -199,7 +199,7 @@
       aaa = $(this).closest(".row").next().children().first().children();
       console.log(aaa)
       $.ajax({
-        url: '/jsonAllOrg',
+        url: '/jsonAll/3',
         dataType: 'json',
         success: function (data) {
           aaa.empty();
@@ -260,7 +260,7 @@
 
     var students = [];
     $.ajax({
-      url: "/jsonAllStudent",
+      url: "/jsonAll/1",
       async: false,
       dataType: 'json',
       success: function(data) {
@@ -285,7 +285,7 @@
 
     var teachers = [];
     $.ajax({
-      url: '/jsonAllTeacher',
+      url: '/jsonAll/2',
       async: false,
       dataType: 'json',
       success: function (data) {
@@ -301,7 +301,7 @@
     });
 
     $.ajax({
-      url: '/jsonAllOrg',
+      url: '/jsonAll/3',
       dataType: 'json',
       success: function (data) {
         $(".orgs").empty();
