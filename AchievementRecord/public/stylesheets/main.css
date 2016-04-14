@@ -5,3 +5,9 @@ i.alert {
     color: #ec5840;
 }
 .top-bar .top-bar-right { flex: none !important; }
+.top-bar > .row {
+    display: inherit !important;
+}
+a.title {
+    color: #0a0a0a;
+}

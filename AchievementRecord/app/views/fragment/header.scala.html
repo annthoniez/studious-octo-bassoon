@@ -16,29 +16,26 @@
   </head>
   <body>
     <div class="top-bar">
-      <div class="top-bar-title">
-        <span data-responsive-toggle="responsive-menu" data-hide-for="medium">
-          <button class="menu-icon dark" type="button" data-toggle></button>
-        </span>
-        <strong class="menu-text">Achievement Record</strong>
-      </div>
-      <div class="top-bar-left">
-        <ul class="menu">
+      <div class="row column">
+        <div class="top-bar-left">
+          <ul class="menu">
+            <a href="@controllers.routes.Main.home" class="title"><li class="menu-text">Achievement Record</li></a>
           @if(account != null) {
             <li><input type="search" placeholder="Search"></li>
             <li><button type="button" class="button">Search</button></li>
           }
-        </ul>
-      </div>
-      <div class="top-bar-right">
-        <ul class="menu">
+          </ul>
+        </div>
+        <div class="top-bar-right">
+          <ul class="menu">
           @if(account != null) {
             <li><a href="@controllers.routes.Show.profile(account.username.value)">Profile</a></li>
             <li><a href="@controllers.routes.Application.logout">logout</a></li>
           } else {
             <li><a href="@controllers.routes.Application.login">login</a></li>
           }
-        </ul>
+          </ul>
+        </div>
       </div>
     </div>
     @content
