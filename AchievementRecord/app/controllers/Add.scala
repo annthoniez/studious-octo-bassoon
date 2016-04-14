@@ -39,8 +39,12 @@ trait Add extends Controller with Pjax with AuthElement with AuthConfigImpl  {
     var saveFileName = ""
 
     multiPartBody.get.file("file").map { p =>
-      saveFileName = Crypto.sign(UUID.randomUUID().toString + LocalDateTime.now().toString + loggedIn.username.value)
-      p.ref.moveTo(new File(play.Play.application().path().toString + s"/public/uploads/$saveFileName"))
+      val contentType: Option[String] = p.contentType
+      if (Seq("image/jpeg", "image/png").contains(contentType.get)) {
+        println(contentType)
+        saveFileName = Crypto.sign(UUID.randomUUID().toString + LocalDateTime.now().toString + loggedIn.username.value)
+        p.ref.moveTo(new File(play.Play.application().path().toString + s"/public/uploads/$saveFileName"))
+      }
     }
     val student_ids: Set[String] = textBody.get("student_ids").head.toSet + loggedIn.username.value
     val teacher_names: Set[String] = textBody.get("teacher_names").head.toSet
@@ -65,8 +69,12 @@ trait Add extends Controller with Pjax with AuthElement with AuthConfigImpl  {
     var saveFileName = ""
 
     multiPartBody.get.file("file").map { p =>
-      saveFileName = Crypto.sign(UUID.randomUUID().toString + LocalDateTime.now().toString + loggedIn.username.value)
-      p.ref.moveTo(new File(play.Play.application().path().toString + s"/public/uploads/$saveFileName"))
+      val contentType: Option[String] = p.contentType
+      if (Seq("image/jpeg", "image/png").contains(contentType.get)) {
+        println(contentType)
+        saveFileName = Crypto.sign(UUID.randomUUID().toString + LocalDateTime.now().toString + loggedIn.username.value)
+        p.ref.moveTo(new File(play.Play.application().path().toString + s"/public/uploads/$saveFileName"))
+      }
     }
 
     val ach_id = Achievement.create(textBody.get("achievement_name").head.head, textBody.get("date").head.head, saveFileName, "", "วิชาการ", 2)
@@ -85,8 +93,12 @@ trait Add extends Controller with Pjax with AuthElement with AuthConfigImpl  {
     var saveFileName = ""
 
     multiPartBody.get.file("file").map { p =>
-      saveFileName = Crypto.sign(UUID.randomUUID().toString + LocalDateTime.now().toString + loggedIn.username.value)
-      p.ref.moveTo(new File(play.Play.application().path().toString + s"/public/uploads/$saveFileName"))
+      val contentType: Option[String] = p.contentType
+      if (Seq("image/jpeg", "image/png").contains(contentType.get)) {
+        println(contentType)
+        saveFileName = Crypto.sign(UUID.randomUUID().toString + LocalDateTime.now().toString + loggedIn.username.value)
+        p.ref.moveTo(new File(play.Play.application().path().toString + s"/public/uploads/$saveFileName"))
+      }
     }
 
     val ach_id = Achievement.create(textBody.get("achievement_name").head.head, textBody.get("date").head.head, saveFileName, "", "วิชาการ", 3)
