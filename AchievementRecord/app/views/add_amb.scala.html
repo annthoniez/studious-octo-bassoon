@@ -1,0 +1,102 @@
+@(title: String)(implicit template: String => Html => Html)
+@template(title) {
+  <div class="row header">
+    <div class="small-12 columns">
+      <h2>Add Achievement</h2>
+      <div class="callout">
+        <form action="/add/ambassador" method="post" enctype="multipart/form-data" data-abide novalidate>
+          <div class="alert callout" data-abide-error style="display: none;">
+            <p><i class="fi_alert"></i> There are some errors in your form.</p>
+          </div>
+          <div class="row">
+            <div class="small-3 columns">
+              <label>รหัสนักศึกษา
+                <input type="text" id="CurrentStudentId" placeholder="CurrentStudentId" class="student_ids" name="student_ids" disabled="disabled" />
+              </label>
+            </div>
+            <div class="small-9 columns">
+              <label>ชื่อ-สกุลนักศึกษา
+                <input type="text" id="CurrentStudentName" placeholder="CurrentStudentName" class="student_names" name="student_names" id="" disabled="disabled">
+              </label>
+            </div>
+          </div>
+          <hr>
+          <div class="row">
+            <div class="small-12 columns">
+              <label>ชื่อผลงาน <i class="alert fi-asterisk"></i>
+                <input type="text" name="achievement_name" required>
+                <span class="form-error">
+                  กรอกด้วย
+                </span>
+              </label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="small-12 columns">
+              <label>หน่วยงานที่จัด <i class="alert fi-asterisk"></i>
+                <select name="orgs" class="orgs" required>
+                  <option value=""></option>
+                </select>
+                <span class="form-error">
+                  กรอกด้วย
+                </span>
+              </label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="small-12 columns">
+              <label>ประจำปี <i class="alert fi-asterisk"></i>
+                <input type="text" name="year" required>
+                <span class="form-error">
+                  กรอกด้วย
+                </span>
+              </label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="small-6 columns">
+              <label>วันที่ได้รับ <i class="alert fi-asterisk"></i>
+                <input type="date" name="date" required>
+                <span class="form-error">
+                  กรอกด้วย
+                </span>
+              </label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="small-12 columns">
+              <label for="exampleFileUpload" class="button">Upload File</label>
+              <input type="file" id="exampleFileUpload" class="show-for-sr" name="file" accept="image/*">
+            </div>
+          </div>
+          <hr>
+
+          <div class="row">
+            <div class="small-12 columns small-centered">
+              <button id="submit" type="submit" class="small expanded button">Submit</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    $.getJSON("/jsonProfile", function (data) {
+      $("#CurrentStudentId").attr("placeholder", data["username"]);
+      $("#CurrentStudentName").attr("placeholder", data["th_name"]);
+    });
+
+    $.ajax({
+      url: '/jsonAllOrg',
+      dataType: 'json',
+      success: function (data) {
+        $(".orgs").empty();
+        $(".orgs").append($("<option>").text("เลือกหน่วยงาน").attr("value", ""));
+        $.each(data, function(i, val) {
+          $(".orgs").append($("<option>").text(val.text).attr("value", val.value));
+        });
+      }
+    });
+  </script>
+}
