@@ -3,21 +3,145 @@
   <div class="row header">
     <div class="small-12 columns">
       <h2>Search</h2>
-      <div class="callout">
-        <form action="">
-          <div class="row">
-            <div class="small-12 columns">
-              <div class="input-group">
-                <span class="input-group-label"><i class="fi-magnifying-glass"></i></span>
-                <input class="input-group-field" type="text">
-                <div class="input-group-button">
-                  <input type="submit" class="button" value="Search">
-                </div>
-              </div>
+      <ul class="tabs" data-tabs id="example-tabs">
+        <li class="tabs-title is-active"><a href="#panel1" aria-selected="true">Tab 1</a></li>
+        <li class="tabs-title"><a href="#panel2">Tab 2</a></li>
+      </ul>
+      <div class="tabs-content" data-tabs-content="example-tabs">
+        <div class="tabs-panel is-active" id="panel1">
+          <div class="input-group">
+            <span class="input-group-label"><i class="fi-magnifying-glass"></i></span>
+            <input class="input-group-field" type="text" id="search">
+            <div class="input-group-button">
+              <input type="submit" class="button" value="Search">
             </div>
           </div>
-        </form>
+        </div>
+        <div class="tabs-panel" id="panel2">
+          <form action="">
+            <div class="row">
+              <div class="small-12 columns">
+                <label for="">Students
+                  <select name="students" id="students" multiple="multiple">
+                  </select>
+                </label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="small-12 columns">
+                <label for="">Teachers
+                  <select name="teachers" id="teachers" multiple="multiple">
+                  </select>
+                </label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="small-6 columns">
+                <label for="">Date Range
+                  <input type="text" id="daterange">
+                </label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="small-6 columns">
+                <label for="">ประเภท
+                  <select name="category" id="category" multiple="multiple" required>
+                    <option value="วิชาการ">วิชาการ</option>
+                    <option value="คุณธรรม">คุณธรรม</option>
+                  </select>
+                </label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="small-6 columns">
+                <label for="">ประเภท
+                  <select name="ach_type" id="ach_type" multiple="multiple" required>
+                    <option value="1">Competition</option>
+                    <option value="2">Ambassador</option>
+                    <option value="3">Cert</option>
+                  </select>
+                </label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="small-12 columns">
+                <label>หน่วยงานที่จัด <i class="alert fi-asterisk"></i>
+                  <select name="orgs" id="orgs" multiple="multiple" required>
+                    <option value=""></option>
+                  </select>
+                  <span class="form-error">
+                    กรอกด้วย
+                  </span>
+                </label>
+              </div>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   </div>
+
+  <script type="text/javascript">
+    var usernames = [];
+    $.ajax({
+      url: '/jsonAll/0',
+      async: false,
+      dataType: 'json',
+      success: function (data) {
+        usernames = data;
+      }
+    });
+    var autocomplete_option = {
+      source: usernames,
+      minLength: 2
+    };
+    $("#search").autocomplete(autocomplete_option);
+
+    $('#daterange').dateRangePicker();
+    $.ajax({
+      url: '/jsonAll/3',
+      dataType: 'json',
+      async: false,
+      success: function (data) {
+        $("#orgs").empty();
+        $.each(data, function(i, val) {
+          $("#orgs").append($("<option>").text(val.text).attr("value", val.value));
+        });
+      }
+    });
+    $.ajax({
+      url: 'jsonAll/4',
+      dataType: 'json',
+      async: false,
+      success: function(data) {
+        $("#students").empty();
+        $.each(data, function(i, val) {
+          $("#students").append($("<option>").text(val.text).attr("value", val.value));
+        });
+      }
+    });
+    $.ajax({
+      url: 'jsonAll/5',
+      dataType: 'json',
+      async: false,
+      success: function(data) {
+        $("#teachers").empty();
+        $.each(data, function(i, val) {
+          $("#teachers").append($("<option>").text(val.text).attr("value", val.value));
+        });
+      }
+    });
+
+    var select2_option = {
+      allowClear: true,
+      theme: "foundation",
+      width: '100%'
+    };
+
+    $("#students").select2(select2_option);
+    $("#teachers").select2(select2_option);
+    $("#category").select2(select2_option);
+    $("#ach_type").select2(select2_option);
+    $("#orgs").select2(select2_option);
+  </script>
 }

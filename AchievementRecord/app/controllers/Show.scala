@@ -55,6 +55,8 @@ trait Show extends Controller with Pjax with AuthElement with AuthConfigImpl {
       case 1 => JsObject(models.Student.findAll().map(s => s.username -> JsString(s.th_name)))
       case 2 => JsArray(teachers)
       case 3 => JsArray(Organization.findAll().map(o => Json.obj("value" -> o.id, "text" -> o.organization_name)))
+      case 4 => JsArray(models.Student.findAll().map(s => Json.obj("value" -> JsString(s.username), "text" -> JsString(s.th_name))))
+      case 5 => JsArray(models.Teacher.findAll().map(t => Json.obj("value" -> JsString(t.username), "text" -> JsString(t.th_name))))
     }
     Ok(json)
   }
