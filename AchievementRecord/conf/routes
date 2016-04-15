@@ -26,3 +26,5 @@ GET     /add/cert               controllers.Add.cert
 POST    /add/cert               controllers.Add.postCert
 GET     /add/ambassador         controllers.Add.amb
 POST    /add/ambassador         controllers.Add.portAmb
+
+GET     /search                 controllers.Search.search
