@@ -11,3 +11,7 @@ i.alert {
 a.title {
     color: #0a0a0a;
 }
+
+#compet {
+    display: none;
+}

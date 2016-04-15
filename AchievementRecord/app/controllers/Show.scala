@@ -49,7 +49,6 @@ trait Show extends Controller with Pjax with AuthElement with AuthConfigImpl {
     val students = models.Student.findAll().map(s => Json.obj("value" -> JsString(s.username), "label" -> JsString(s.th_name)))
     val staffs = models.Staff.findAll().map(s => Json.obj("value" -> JsString(s.username), "label" -> JsString(s.th_name)))
     val all = teachers ++ students ++ staffs
-    println(all)
     val json: JsValue = id match {
       case 0 => JsArray(all)
       case 1 => JsObject(models.Student.findAll().map(s => s.username -> JsString(s.th_name)))

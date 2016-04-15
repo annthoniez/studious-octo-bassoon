@@ -18,20 +18,34 @@
           </div>
         </div>
         <div class="tabs-panel" id="panel2">
-          <form action="">
+          <form action="/search" id="searchForm">
             <div class="row">
               <div class="small-12 columns">
                 <label for="">Students
-                  <select name="students" id="students" multiple="multiple">
+                  <select name="students" class="s2" id="students" multiple="multiple">
                   </select>
                 </label>
               </div>
             </div>
+            <hr>
             <div class="row">
               <div class="small-12 columns">
                 <label for="">Teachers
-                  <select name="teachers" id="teachers" multiple="multiple">
+                  <select name="teachers" class="s2" id="teachers" multiple="multiple">
                   </select>
+                </label>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="small-12 columns">
+                <label>หน่วยงานที่จัด
+                  <select name="orgs" class="s2" id="orgs" multiple="multiple">
+                    <option value=""></option>
+                  </select>
+                  <span class="form-error">
+                    กรอกด้วย
+                  </span>
                 </label>
               </div>
             </div>
@@ -41,21 +55,9 @@
                   <input type="text" id="daterange">
                 </label>
               </div>
-            </div>
-            <div class="row">
               <div class="small-6 columns">
                 <label for="">ประเภท
-                  <select name="category" id="category" multiple="multiple" required>
-                    <option value="วิชาการ">วิชาการ</option>
-                    <option value="คุณธรรม">คุณธรรม</option>
-                  </select>
-                </label>
-              </div>
-            </div>
-            <div class="row">
-              <div class="small-6 columns">
-                <label for="">ประเภท
-                  <select name="ach_type" id="ach_type" multiple="multiple" required>
+                  <select name="ach_type" class="s2" id="ach_type" multiple="multiple">
                     <option value="1">Competition</option>
                     <option value="2">Ambassador</option>
                     <option value="3">Cert</option>
@@ -63,20 +65,36 @@
                 </label>
               </div>
             </div>
-            <div class="row">
+            <hr>
+            <div class="row" id="compet">
               <div class="small-12 columns">
-                <label>หน่วยงานที่จัด <i class="alert fi-asterisk"></i>
-                  <select name="orgs" id="orgs" multiple="multiple" required>
-                    <option value=""></option>
+                <label for="">ระดับ @* TODO select2.min.js:1 Uncaught TypeError: Cannot read property 'id' of undefined *@
+                  <select name="level" class="s2">
+                    <option value="ระดับชาติ">ระดับชาติ</option>
+                    <option value="ระดับโลก">ระดับโลก</option>
+                    <option value="ระดับจักรวาล">ระดับจักรวาล</option>
                   </select>
-                  <span class="form-error">
-                    กรอกด้วย
-                  </span>
                 </label>
+              </div>
+            </div>
+            <hr>
+
+            <div class="row">
+              <div class="small-12 columns small-centered">
+                <button id="submit" type="submit" class="small expanded button">Submit</button>
               </div>
             </div>
           </form>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="small-12 columns">
+      <h2>Result</h2>
+      <div class="callout" id="test">
+        test
       </div>
     </div>
   </div>
@@ -138,10 +156,30 @@
       width: '100%'
     };
 
-    $("#students").select2(select2_option);
-    $("#teachers").select2(select2_option);
-    $("#category").select2(select2_option);
-    $("#ach_type").select2(select2_option);
-    $("#orgs").select2(select2_option);
+    $('.s2').select2(select2_option);
+
+    $("#ach_type").change(function () {
+      if($(this).val() != null && $(this).val().length == 1 && $(this).val()[0] == 1) {
+        $("#compet").show();
+      } else {
+        $("#compet").hide();
+      }
+    });
+
+    $('#searchForm').submit(function (e) {
+      e.preventDefault();
+      var formdata = $("#searchForm").serializeArray();
+      formdata.push({name: "daterange", value: $("#daterange").val()});
+      console.log(formdata);
+      $.ajax({
+        url: '/search',
+        type: "POST",
+        data: formdata,
+        success: function (data) {
+          console.log(data);
+          $("#test").text(data[0]["achievement_name"])
+        }
+      });
+    });
   </script>
 }
