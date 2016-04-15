@@ -45,14 +45,20 @@ trait Show extends Controller with Pjax with AuthElement with AuthConfigImpl {
   }
 
   def jsonAll(id: Int) = StackAction(AuthorityKey -> Seq(Auth.Student, Auth.Teacher, Auth.Staff)) { implicit request =>
+    val teachers = models.Teacher.findAll().map(t => Json.obj("value" -> JsString(t.username), "label" -> JsString(t.th_name)))
+    val students = models.Student.findAll().map(s => Json.obj("value" -> JsString(s.username), "label" -> JsString(s.th_name)))
+    val staffs = models.Staff.findAll().map(s => Json.obj("value" -> JsString(s.username), "label" -> JsString(s.th_name)))
+    val all = teachers ++ students ++ staffs
+    println(all)
     val json: JsValue = id match {
+      case 0 => JsArray(all)
       case 1 => JsObject(models.Student.findAll().map(s => s.username -> JsString(s.th_name)))
-      case 2 => JsArray(models.Teacher.findAll().map(t => Json.obj("value" -> t.username, "label" -> t.th_name)))
+      case 2 => JsArray(teachers)
       case 3 => JsArray(Organization.findAll().map(o => Json.obj("value" -> o.id, "text" -> o.organization_name)))
     }
     Ok(json)
   }
-  
+
   protected val main: User => Template = html.main.apply
 }
 
