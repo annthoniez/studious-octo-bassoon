@@ -39,6 +39,9 @@ trait Search extends Controller with Pjax with AuthElement with AuthConfigImpl {
     if (textBody.get.isDefinedAt("orgs")) {
       result = result.filter(a => a.orgs.map(_.id.toString).exists(textBody.get("orgs").contains))
     }
+    if (textBody.get.isDefinedAt("category")) {
+      result = result.filter(a => textBody.get("category").contains(a.category))
+    }
     if (textBody.get("daterange").head != "") {
       val daterange = textBody.get("daterange").head.split(" to ").toSeq
       val startDate = LocalDate.parse(daterange.head)
@@ -47,6 +50,21 @@ trait Search extends Controller with Pjax with AuthElement with AuthConfigImpl {
     }
     if (textBody.get.isDefinedAt("ach_type")) {
       result = result.filter(a => textBody.get("ach_type").contains(a.achievement_type.toString))
+      if (textBody.get("ach_type").length == 1 && textBody.get("ach_type").head == "1") {
+        if (textBody.get.isDefinedAt("event_name")) {
+          result = result.filter(a => a.comp.get.event_name.contains(textBody.get("event_name").head))
+        }
+        if (textBody.get.isDefinedAt("rank")) {
+          result = result.filter(a => textBody.get("rank").contains(a.comp.get.rank))
+        }
+        if (textBody.get.isDefinedAt("level")) {
+          result = result.filter(a => textBody.get("level").contains(a.comp.get.level))
+        }
+      } else if (textBody.get("ach_type").length == 1 && textBody.get("ach_type").head == "2") {
+        if (!textBody.get.isDefinedAt("show_exp")) {
+          result = result.filter(a => a.cert.get.exp_date.isAfter(LocalDate.now()))
+        }
+      }
     }
 
     result.foreach(println)

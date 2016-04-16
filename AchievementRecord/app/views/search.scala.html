@@ -57,6 +57,16 @@
               </div>
               <div class="small-6 columns">
                 <label>ประเภท
+                  <select name="category" id="category" class="s2" multiple="multiple">
+                    <option value="วิชาการ">วิชาการ</option>
+                    <option value="คุณธรรม">คุณธรรม</option>
+                  </select>
+                </label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="small-12 columns">
+                <label>หมวด
                   <select name="ach_type" class="s2" id="ach_type" multiple="multiple">
                     <option value="1">Competition</option>
                     <option value="2">Cert</option>
@@ -66,15 +76,47 @@
               </div>
             </div>
             <hr>
-            <div class="row" id="compet">
-              <div class="small-12 columns">
-                <label>ระดับ
-                  <select name="level" id="level" class="s2" multiple="multiple">
-                    <option value="ระดับชาติ">ระดับชาติ</option>
-                    <option value="ระดับโลก">ระดับโลก</option>
-                    <option value="ระดับจักรวาล">ระดับจักรวาล</option>
-                  </select>
-                </label>
+            <div id="compet">
+              <div class="row">
+                <div class="small-12 columns">
+                  <label>ชื่อการแข่งขัน
+                    <input name="event_name" type="text" placeholder="Event Name">
+                  </label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="small-6 columns">
+                  <label>ระดับ
+                    <select name="level" id="level" class="s2" multiple="multiple">
+                      <option value="ระดับชาติ">ระดับชาติ</option>
+                      <option value="ระดับโลก">ระดับโลก</option>
+                      <option value="ระดับจักรวาล">ระดับจักรวาล</option>
+                    </select>
+                  </label>
+                </div>
+                <div class="small-6 columns">
+                  <label>อันดับ
+                    <select name="rank" id="rank" class="s2" multiple="multiple">
+                      <option value="รางวัลชนะเลิศ">รางวัลชนะเลิศ</option>
+                      <option value="รางวัลรองชนะเลิศอันดับที่ 1">รางวัลรองชนะเลิศอันดับที่ 1</option>
+                    </select>
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div id="cert">
+              <div class="row">
+                <div class="small-6 columns">
+                  <p>แสดงใบรับรองที่หมดอายุ</p>
+                  <div class="switch">
+                    <input class="switch-input" id="show_exp" type="checkbox" name="show_exp">
+                    <label class="switch-paddle" for="show_exp">
+                      <span class="show-for-sr">แสดงใบรับรองที่หมดอายุ</span>
+                      <span class="switch-active" aria-hidden="true">ใช่</span>
+                      <span class="switch-inactive" aria-hidden="true">ไม่</span>
+                    </label>
+                  </div>
+                </div>
               </div>
             </div>
             <hr>
@@ -93,8 +135,7 @@
   <div class="row">
     <div class="small-12 columns">
       <h2>Result</h2>
-      <div class="callout" id="test">
-        test
+      <div class="callout" id="result">
       </div>
     </div>
   </div>
@@ -149,6 +190,17 @@
         });
       }
     });
+    $.ajax({
+      url: 'jsonAll/6',
+      dataType: 'json',
+      async: false,
+      success: function(data) {
+        $("#rank").empty();
+        $.each(data, function(i, val) {
+          $("#rank").append($("<option>").text(val.text).attr("value", val.value));
+        });
+      }
+    });
 
     var select2_option = {
       allowClear: true,
@@ -159,10 +211,12 @@
     $('.s2').select2(select2_option);
 
     $("#ach_type").change(function () {
+      $("#compet").hide();
+      $("#cert").hide();
       if($(this).val() != null && $(this).val().length == 1 && $(this).val()[0] == 1) {
         $("#compet").show();
-      } else {
-        $("#compet").hide();
+      } else if ($(this).val() != null && $(this).val().length == 1 && $(this).val()[0] == 2) {
+        $("#cert").show();
       }
     });
 
@@ -175,10 +229,13 @@
         type: "POST",
         data: formdata,
         success: function (data) {
+          $("#result").empty();
           if (data.length != 0) {
-            $("#test").text(data[0]["achievement_name"])
+            $.each(data, function(i, val) {
+              $("#result").append('<p>'+val["achievement_name"]+'</p>');
+            })
           } else {
-            $("#test").text("NOT FOUND!!!")
+            $("#result").text("NOT FOUND!!!");
           }
         }
       });
