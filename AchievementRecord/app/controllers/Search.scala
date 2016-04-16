@@ -70,6 +70,7 @@ trait Search extends Controller with Pjax with AuthElement with AuthConfigImpl {
     result.foreach(println)
 
     val json = JsArray(result.map(r => Json.obj(
+      "achievement_id" -> r.id,
       "achievement_name" -> r.achievement_name,
       "photo" -> r.photo,
       "date" -> r.date,

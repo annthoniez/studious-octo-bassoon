@@ -131,13 +131,13 @@
       </div>
     </div>
   </div>
-
   <div class="row">
     <div class="small-12 columns">
       <h2>Result</h2>
-      <div class="callout" id="result">
-      </div>
     </div>
+  </div>
+  <div class="row small-up-2" id="result">
+
   </div>
 
   <script type="text/javascript">
@@ -232,7 +232,30 @@
           $("#result").empty();
           if (data.length != 0) {
             $.each(data, function(i, val) {
-              $("#result").append('<p>'+val["achievement_name"]+'</p>');
+              $("#result").append(
+                      '<div class="columns">' +
+                        '<a href="/achievement/' + val["achievement_id"] +'">' +
+                          '<div class="callout">' +
+                            '<h2>' + val["achievement_name"] + '</h2>' +
+                              '<p>' + val["date"] + '</p>' +
+                              '<p>' +
+                              $.map(val["students"], function(stu, key) {
+                                return stu["th_name"];
+                              }) +
+                              '</p>' +
+                              '<p>' +
+                              $.map(val["teachers"], function(te, key) {
+                                return te["th_name"];
+                              }) +
+                              '</p>' +
+                              '<p>' +
+                              $.map(val["orgs"], function(o, key) {
+                                return o["organization_name"];
+                              }) +
+                              '</p>' +
+                          '</div>' +
+                        '</a>' +
+                      '</div>');
             })
           } else {
             $("#result").text("NOT FOUND!!!");
