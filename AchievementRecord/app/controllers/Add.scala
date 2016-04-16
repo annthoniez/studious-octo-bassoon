@@ -35,6 +35,7 @@ trait Add extends Controller with Pjax with AuthElement with AuthConfigImpl  {
     val body: AnyContent = request.body
     val multiPartBody = body.asMultipartFormData
     val textBody = multiPartBody.get.asFormUrlEncoded
+    println(textBody)
     //println(multiPartBody.get.file("file"))
     var saveFileName = ""
 
