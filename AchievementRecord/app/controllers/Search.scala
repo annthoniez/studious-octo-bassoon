@@ -17,10 +17,26 @@ trait Search extends Controller with Pjax with AuthElement with AuthConfigImpl {
 
   def search() = StackAction(AuthorityKey -> Seq(Auth.Student, Auth.Teacher, Auth.Staff)) { implicit request =>
     val body: AnyContent = request.body
-    val textBody = body.asFormUrlEncoded
+    val textBody: Option[Map[String, Seq[String]]] = body.asFormUrlEncoded
     println(textBody)
-    var result = Achievement.joins(Achievement.accRef).joins(Achievement.orgRef).joins(Achievement.teacher_accRef).joins(Achievement.compRef).joins(Achievement.certRef).joins(Achievement.ambRef).findAll()
-    result = result.filter(a => a.accs.map(_.username).exists(textBody.get("students").contains))
+
+    var result = Achievement
+      .joins(Achievement.accRef)
+      .joins(Achievement.orgRef)
+      .joins(Achievement.teacher_accRef)
+      .joins(Achievement.compRef)
+      .joins(Achievement.certRef)
+      .joins(Achievement.ambRef).findAll()
+
+    if (textBody.get.isDefinedAt("students")) {
+      result = result.filter(a => a.accs.map(_.username).exists(textBody.get("students").contains))
+    }
+    if (textBody.get.isDefinedAt("teachers")) {
+      result = result.filter(a => a.t_accs.map(_.username).exists(textBody.get("teachers").contains))
+    }
+    if (textBody.get.isDefinedAt("orgs")) {
+      result = result.filter(a => a.orgs.map(_.id.toString).exists(textBody.get("orgs").contains))
+    }
     result.foreach(println)
     val json = JsArray(result.map(r => Json.obj(
       "achievement_name" -> r.achievement_name,
@@ -39,10 +55,10 @@ trait Search extends Controller with Pjax with AuthElement with AuthConfigImpl {
       "orgs" -> JsArray(r.orgs.map(o => Json.obj(
         "organization_name" -> o.organization_name))),
       "comp" -> Json.obj(
-        "event_name" -> r.comp.get.event_name,
-        "topic" -> r.comp.get.topic,
-        "level" -> r.comp.get.level,
-        "rank" -> r.comp.get.rank),
+        "event_name" -> r.comp.map(_.event_name).getOrElse("").toString,
+        "topic" -> r.comp.map(_.topic).getOrElse("").toString,
+        "level" -> r.comp.map(_.level).getOrElse("").toString,
+        "rank" -> r.comp.map(_.rank).getOrElse("").toString),
       "cert" -> Json.obj(
         "exp_date" -> r.cert.map(_.exp_date).getOrElse("").toString),
       "amb" -> Json.obj(

@@ -21,7 +21,7 @@
           <form action="/search" id="searchForm">
             <div class="row">
               <div class="small-12 columns">
-                <label for="">Students
+                <label>Students
                   <select name="students" class="s2" id="students" multiple="multiple">
                   </select>
                 </label>
@@ -30,7 +30,7 @@
             <hr>
             <div class="row">
               <div class="small-12 columns">
-                <label for="">Teachers
+                <label>Teachers
                   <select name="teachers" class="s2" id="teachers" multiple="multiple">
                   </select>
                 </label>
@@ -51,12 +51,12 @@
             </div>
             <div class="row">
               <div class="small-6 columns">
-                <label for="">Date Range
+                <label>Date Range
                   <input type="text" id="daterange">
                 </label>
               </div>
               <div class="small-6 columns">
-                <label for="">ประเภท
+                <label>ประเภท
                   <select name="ach_type" class="s2" id="ach_type" multiple="multiple">
                     <option value="1">Competition</option>
                     <option value="2">Ambassador</option>
@@ -68,8 +68,8 @@
             <hr>
             <div class="row" id="compet">
               <div class="small-12 columns">
-                <label for="">ระดับ @* TODO select2.min.js:1 Uncaught TypeError: Cannot read property 'id' of undefined *@
-                  <select name="level" class="s2">
+                <label>ระดับ
+                  <select name="level" id="level" class="s2" multiple="multiple">
                     <option value="ระดับชาติ">ระดับชาติ</option>
                     <option value="ระดับโลก">ระดับโลก</option>
                     <option value="ระดับจักรวาล">ระดับจักรวาล</option>
@@ -170,14 +170,16 @@
       e.preventDefault();
       var formdata = $("#searchForm").serializeArray();
       formdata.push({name: "daterange", value: $("#daterange").val()});
-      console.log(formdata);
       $.ajax({
         url: '/search',
         type: "POST",
         data: formdata,
         success: function (data) {
-          console.log(data);
-          $("#test").text(data[0]["achievement_name"])
+          if (data.length != 0) {
+            $("#test").text(data[0]["achievement_name"])
+          } else {
+            $("#test").text("NOT FOUND!!!")
+          }
         }
       });
     });
