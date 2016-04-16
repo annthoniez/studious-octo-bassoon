@@ -9,16 +9,7 @@
       </ul>
       <div class="tabs-content" data-tabs-content="example-tabs">
         <div class="tabs-panel is-active" id="panel1">
-          <div class="input-group">
-            <span class="input-group-label"><i class="fi-magnifying-glass"></i></span>
-            <input class="input-group-field" type="text" id="search">
-            <div class="input-group-button">
-              <input type="submit" class="button" value="Search">
-            </div>
-          </div>
-        </div>
-        <div class="tabs-panel" id="panel2">
-          <form action="/search" id="searchForm">
+          <form action="/search" id="achSearch">
             <div class="row">
               <div class="small-12 columns">
                 <label>Students
@@ -128,6 +119,19 @@
             </div>
           </form>
         </div>
+
+        <div class="tabs-panel" id="panel2">
+          <form action="/search" id="userSearch">
+            <div class="input-group">
+              <span class="input-group-label"><i class="fi-magnifying-glass"></i></span>
+              <input class="input-group-field" type="text" id="search">
+              <div class="input-group-button">
+                <input type="submit" class="button" value="Search">
+              </div>
+            </div>
+          </form>
+        </div>
+
       </div>
     </div>
   </div>
@@ -220,7 +224,7 @@
       }
     });
 
-    $('#searchForm').submit(function (e) {
+    $('#achSearch').submit(function (e) {
       e.preventDefault();
       var formdata = $("#searchForm").serializeArray();
       formdata.push({name: "daterange", value: $("#daterange").val()});
