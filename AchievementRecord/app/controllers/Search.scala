@@ -1,5 +1,7 @@
 package controllers
 
+import java.time.LocalDate
+
 import jp.t2v.lab.play2.auth.AuthElement
 import models._
 import play.api.libs.json.{JsArray, Json}
@@ -37,7 +39,18 @@ trait Search extends Controller with Pjax with AuthElement with AuthConfigImpl {
     if (textBody.get.isDefinedAt("orgs")) {
       result = result.filter(a => a.orgs.map(_.id.toString).exists(textBody.get("orgs").contains))
     }
+    if (textBody.get("daterange").head != "") {
+      val daterange = textBody.get("daterange").head.split(" to ").toSeq
+      val startDate = LocalDate.parse(daterange.head)
+      val endDate = LocalDate.parse(daterange.last)
+      result = result.filter(a => a.date.isBefore(endDate) && a.date.isAfter(startDate))
+    }
+    if (textBody.get.isDefinedAt("ach_type")) {
+      result = result.filter(a => textBody.get("ach_type").contains(a.achievement_type.toString))
+    }
+
     result.foreach(println)
+
     val json = JsArray(result.map(r => Json.obj(
       "achievement_name" -> r.achievement_name,
       "photo" -> r.photo,
