@@ -1,6 +1,30 @@
-@(title: String, ach: Option[Achievement], s_accs: Option[Seq[Student]], t_accs: Option[Seq[Teacher]])(implicit template: String => Html => Html)
+@(title: String, ach: Option[Achievement], s_accs: Option[Seq[Student]], t_accs: Option[Seq[Teacher]], orgs: Option[Seq[Organization]], canEdit: Boolean)(implicit template: String => Html => Html)
 @template(title) {
-  @ach<br>
-  @s_accs<br>
-  @t_accs
+  <div class="row header">
+    <div class="small-12 columns">
+      <div class="callout">
+        @if(canEdit) {
+          <button class="button docs-code-copy" id="copy-btn-1"><i class="fi-pencil"></i></button>
+        }
+        <h2>@ach.get.id: @ach.get.achievement_name</h2>
+        <p>@ach.get.date</p>
+
+        <ul>
+        @for(acc <- s_accs.get) {
+          <li>@acc</li>
+        }
+        </ul>
+        <ul>
+        @for(t <- t_accs.get) {
+          <li>@t</li>
+        }
+        </ul>
+        <ul>
+        @for(o <- orgs.get) {
+          <li>@o</li>
+        }
+        </ul>
+      </div>
+    </div>
+  </div>
 }

@@ -15,7 +15,9 @@ trait Show extends Controller with Pjax with AuthElement with AuthConfigImpl {
     val ach = Achievement.getAchWithChild(id)
     val s_accs = Achievement.joins(Achievement.accRef).findById(id).map(_.accs)
     val t_accs = Achievement.joins(Achievement.teacher_accRef).findById(id).map(_.t_accs)
-    Ok(html.achievement("achievement", ach, s_accs, t_accs))
+    val orgs = Achievement.joins(Achievement.orgRef).findById(id).map(_.orgs)
+    val canEdit = s_accs.get.map(_.username).contains(loggedIn.username.value)
+    Ok(html.achievement("achievement", ach, s_accs, t_accs, orgs, canEdit))
   }
 
   def profile(username: String) = StackAction(AuthorityKey -> Seq(Auth.Student, Auth.Teacher, Auth.Staff)) { implicit request =>
