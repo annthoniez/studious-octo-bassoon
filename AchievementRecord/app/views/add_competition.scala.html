@@ -63,7 +63,7 @@
             </div>
             <div class="small-4 columns">
               <label>หมวดการแข่งขัน
-                <input name="topic" type="text" placeholder="Event Topic" data-abide-ignore>
+                <input name="topic" type="text" placeholder="Event Topic" data-abide-ignore value="@ach.map(_.comp.get.topic).getOrElse("")">
               </label>
             </div>
           </div>
@@ -120,7 +120,7 @@
           <div class="row">
             <div class="small-12 columns">
               <label>ชื่อผลงาน <i class="alert fi-asterisk"></i>
-                <input type="text" name="achievement_name" required>
+                <input type="text" name="achievement_name" required value="@ach.map(_.achievement_name).getOrElse("")">
                 <span class="form-error">
                   กรอกด้วย
                 </span>
@@ -150,26 +150,28 @@
           <div class="row">
             <div class="small-12 columns">
               <label>รางวัล
-                <textarea name="reward" id="" cols="30" rows="3" placeholder="เช่น ทุนการศึกษา" data-abide-ignore></textarea>
+                <textarea name="reward" id="" cols="30" rows="3" placeholder="เช่น ทุนการศึกษา" data-abide-ignore>@ach.map(_.reward).getOrElse("")</textarea>
               </label>
             </div>
           </div>
           <div class="row">
             <div class="small-6 columns">
               <label>วันที่ได้รับ <i class="alert fi-asterisk"></i>
-                <input type="date" name="date" required>
+                <input type="date" name="date" required value="@ach.map(_.date).getOrElse("")">
                 <span class="form-error">
                   กรอกด้วย
                 </span>
               </label>
             </div>
           </div>
-          <div class="row">
-            <div class="small-12 columns">
-              <label for="exampleFileUpload" class="button">Upload File</label>
-              <input type="file" id="exampleFileUpload" class="show-for-sr" name="file" accept="image/jpeg, image/png">
+          @if(ach.isEmpty) {
+            <div class="row">
+              <div class="small-12 columns">
+                <label for="exampleFileUpload" class="button">Upload File</label>
+                <input type="file" id="exampleFileUpload" class="show-for-sr" name="file" accept="image/jpeg, image/png">
+              </div>
             </div>
-          </div>
+          }
 
           <div class="row">
             <div class="small-12 columns small-centered">
