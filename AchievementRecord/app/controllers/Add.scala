@@ -13,14 +13,14 @@ import views.html
 /**
   * Created by Pichai Sivawat on 4/8/2016.
   */
-trait Add extends Controller with Pjax with AuthElement with AuthConfigImpl  {
+trait Add extends Controller with Pjax with AuthElement with AuthConfigImpl {
 
   def achievement = StackAction(AuthorityKey -> Seq(Auth.Student)) { implicit request =>
     Ok(html.add("test"))
   }
 
   def competition = StackAction(AuthorityKey -> Seq(Auth.Student)) { implicit request =>
-    Ok(html.add_competition("competition"))
+    Ok(html.add_competition("competition", None))
   }
 
   def cert = StackAction(AuthorityKey -> Seq(Auth.Student)) { implicit request =>

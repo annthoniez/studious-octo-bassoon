@@ -27,5 +27,7 @@ POST    /add/cert               controllers.Add.postCert
 GET     /add/ambassador         controllers.Add.amb
 POST    /add/ambassador         controllers.Add.portAmb
 
+GET     /edit/:id   controllers.Edit.edit(id: Long)
+
 GET     /search                 controllers.Search.index
 POST    /search                 controllers.Search.search

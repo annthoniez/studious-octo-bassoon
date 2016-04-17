@@ -1,10 +1,14 @@
-@(title: String)(implicit template: String => Html => Html)
+@(title: String, ach: Option[Achievement])(implicit template: String => Html => Html)
 @template(title) {
   <div class="row header">
     <div class="small-12 columns">
       <h2>Add Achievement</h2>
       <div class="callout">
-        <form action="/add/competition" method="post" enctype="multipart/form-data" data-abide novalidate>
+        @if(ach.isDefined) {
+          <form action="/edit/competition/@ach.get.id" method="post" enctype="multipart/form-data" data-abide novalidate>
+        } else {
+          <form action="/add/competition" method="post" enctype="multipart/form-data" data-abide novalidate>
+        }
           <div class="alert callout" data-abide-error style="display: none;">
             <p><i class="fi_alert"></i> There are some errors in your form.</p>
           </div>
@@ -51,7 +55,7 @@
           <div class="row">
             <div class="small-8 columns">
               <label>ชื่อการแข่งขัน <i class="alert fi-asterisk"></i>
-                <input name="event_name" type="text" placeholder="Event Name" required>
+                <input name="event_name" type="text" placeholder="Event Name" required value="@ach.map(_.comp.get.event_name).getOrElse("")">
                 <span class="form-error">
                   กรอกด้วย
                 </span>

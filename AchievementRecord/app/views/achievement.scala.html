@@ -4,7 +4,7 @@
     <div class="small-12 columns">
       <div class="callout">
         @if(canEdit) {
-          <button class="button docs-code-copy" id="copy-btn-1"><i class="fi-pencil"></i></button>
+          <a href="@controllers.routes.Edit.edit(ach.get.id)"><button class="button docs-code-copy" id="copy-btn-1"><i class="fi-pencil"></i></button></a>
         }
         <h2>@ach.get.id: @ach.get.achievement_name</h2>
         <p>@ach.get.date</p>
