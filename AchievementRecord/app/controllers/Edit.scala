@@ -14,10 +14,14 @@ trait Edit extends Controller with Pjax with AuthElement with AuthConfigImpl {
       .joins(Achievement.accRef)
       .joins(Achievement.orgRef)
       .joins(Achievement.teacher_accRef)
-      .joins(Achievement.compRef).findById(id)
+      .joins(Achievement.compRef)
+      .joins(Achievement.certRef)
+      .joins(Achievement.ambRef)
+      .findById(id)
 
     ach.get.achievement_type match {
       case 1 => Ok(html.add_competition("competition", ach, loggedIn))
+      case 2 => Ok(html.add_cert("cert", ach, loggedIn))
     }
 
   }

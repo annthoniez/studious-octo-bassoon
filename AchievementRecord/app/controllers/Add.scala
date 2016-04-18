@@ -24,7 +24,7 @@ trait Add extends Controller with Pjax with AuthElement with AuthConfigImpl {
   }
 
   def cert = StackAction(AuthorityKey -> Seq(Auth.Student)) { implicit request =>
-    Ok(html.add_cert("cert"))
+    Ok(html.add_cert("cert", None, loggedIn))
   }
 
   def amb = StackAction(AuthorityKey -> Seq(Auth.Student)) { implicit request =>
