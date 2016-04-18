@@ -28,7 +28,7 @@ trait Add extends Controller with Pjax with AuthElement with AuthConfigImpl {
   }
 
   def amb = StackAction(AuthorityKey -> Seq(Auth.Student)) { implicit request =>
-    Ok(html.add_amb("amb"))
+    Ok(html.add_amb("amb", None, loggedIn))
   }
 
   def postCompetition = StackAction(AuthorityKey -> Seq(Auth.Student)) { implicit request =>

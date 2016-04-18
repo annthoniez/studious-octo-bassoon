@@ -22,6 +22,7 @@ trait Edit extends Controller with Pjax with AuthElement with AuthConfigImpl {
     ach.get.achievement_type match {
       case 1 => Ok(html.add_competition("competition", ach, loggedIn))
       case 2 => Ok(html.add_cert("cert", ach, loggedIn))
+      case 3 => Ok(html.add_amb("amb", ach, loggedIn))
     }
 
   }
