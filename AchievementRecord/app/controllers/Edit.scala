@@ -17,7 +17,7 @@ trait Edit extends Controller with Pjax with AuthElement with AuthConfigImpl {
       .joins(Achievement.compRef).findById(id)
 
     ach.get.achievement_type match {
-      case 1 => Ok(html.add_competition("competition", ach))
+      case 1 => Ok(html.add_competition("competition", ach, loggedIn))
     }
 
   }

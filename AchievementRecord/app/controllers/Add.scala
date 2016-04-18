@@ -20,7 +20,7 @@ trait Add extends Controller with Pjax with AuthElement with AuthConfigImpl {
   }
 
   def competition = StackAction(AuthorityKey -> Seq(Auth.Student)) { implicit request =>
-    Ok(html.add_competition("competition", None))
+    Ok(html.add_competition("competition", None, loggedIn))
   }
 
   def cert = StackAction(AuthorityKey -> Seq(Auth.Student)) { implicit request =>
