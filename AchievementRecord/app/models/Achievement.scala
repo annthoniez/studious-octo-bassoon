@@ -2,17 +2,19 @@ package models
 
 import java.time.LocalDate
 
+import org.joda.time.DateTime
 import scalikejdbc._
 import scalikejdbc.jsr310._
 import skinny.orm.SkinnyCRUDMapper
+import skinny.orm.feature.TimestampsFeature
 
 /**
   * Created by Pichai Sivawat on 3/29/2016.
   */
 
-case class Achievement(id: Long, achievement_name: String, date: LocalDate, photo: String, reward: String, category: String, achievement_type: Int, t_accs: Seq[Teacher] = Nil, accs: Seq[Student] = Nil, orgs: Seq[Organization] = Nil, comp: Option[Competition] = None, cert: Option[Cert] = None, amb: Option[Ambassador] = None)
+case class Achievement(id: Long, achievement_name: String, date: LocalDate, photo: String, reward: String, category: String, achievement_type: Int, created_at: DateTime, updated_at: DateTime, t_accs: Seq[Teacher] = Nil, accs: Seq[Student] = Nil, orgs: Seq[Organization] = Nil, comp: Option[Competition] = None, cert: Option[Cert] = None, amb: Option[Ambassador] = None)
 
-object Achievement extends SkinnyCRUDMapper[Achievement] {
+object Achievement extends SkinnyCRUDMapper[Achievement] with TimestampsFeature[Achievement] {
   override lazy val defaultAlias = createAlias("ach")
   override val tableName = "achievements"
 
@@ -23,7 +25,9 @@ object Achievement extends SkinnyCRUDMapper[Achievement] {
     photo = rs.get(n.photo),
     reward = rs.get(n.reward),
     category = rs.get(n.category),
-    achievement_type = rs.get(n.achievement_type)
+    achievement_type = rs.get(n.achievement_type),
+    created_at = rs.get(n.created_at),
+    updated_at = rs.get(n.updated_at)
   )
 
   lazy val teacher_accRef = hasManyThroughWithFk[Teacher](Teacher_Achievement, Teacher, "achievement_id", "teacher_id", (t_ach, t_accs) => t_ach.copy(t_accs = t_accs))
