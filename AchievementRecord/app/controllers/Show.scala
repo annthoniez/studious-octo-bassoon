@@ -1,5 +1,7 @@
 package controllers
 
+import java.time.LocalDate
+
 import jp.t2v.lab.play2.auth.AuthElement
 import models.{Achievement, Auth, Competition, Organization}
 import play.api.libs.json._
@@ -16,7 +18,7 @@ trait Show extends Controller with Pjax with AuthElement with AuthConfigImpl {
     val s_accs = Achievement.joins(Achievement.accRef).findById(id).map(_.accs)
     val t_accs = Achievement.joins(Achievement.teacher_accRef).findById(id).map(_.t_accs)
     val orgs = Achievement.joins(Achievement.orgRef).findById(id).map(_.orgs)
-    val canEdit = s_accs.get.map(_.username).contains(loggedIn.username.value)
+    val canEdit = s_accs.get.map(_.username).contains(loggedIn.username.value) && ach.get.created_at.isAfter(LocalDate.now().minusDays(3))
     Ok(html.achievement("achievement", ach, s_accs, t_accs, orgs, canEdit))
   }
 

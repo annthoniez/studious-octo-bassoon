@@ -2,7 +2,6 @@ package models
 
 import java.time.LocalDate
 
-import org.joda.time.DateTime
 import scalikejdbc._
 import scalikejdbc.jsr310._
 import skinny.orm.SkinnyCRUDMapper
@@ -12,7 +11,7 @@ import skinny.orm.feature.TimestampsFeature
   * Created by Pichai Sivawat on 3/29/2016.
   */
 
-case class Achievement(id: Long, achievement_name: String, date: LocalDate, photo: String, reward: String, category: String, achievement_type: Int, created_at: DateTime, updated_at: DateTime, t_accs: Seq[Teacher] = Nil, accs: Seq[Student] = Nil, orgs: Seq[Organization] = Nil, comp: Option[Competition] = None, cert: Option[Cert] = None, amb: Option[Ambassador] = None)
+case class Achievement(id: Long, achievement_name: String, date: LocalDate, photo: String, reward: String, category: String, achievement_type: Int, created_at: LocalDate, updated_at: LocalDate, t_accs: Seq[Teacher] = Nil, accs: Seq[Student] = Nil, orgs: Seq[Organization] = Nil, comp: Option[Competition] = None, cert: Option[Cert] = None, amb: Option[Ambassador] = None)
 
 object Achievement extends SkinnyCRUDMapper[Achievement] with TimestampsFeature[Achievement] {
   override lazy val defaultAlias = createAlias("ach")
