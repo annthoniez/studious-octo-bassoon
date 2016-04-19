@@ -29,6 +29,7 @@ POST    /add/ambassador         controllers.Add.portAmb
 
 GET     /edit/:id               controllers.Edit.edit(id: Long)
 POST    /edit/competition/:id   controllers.Edit.editCompetition(id: Long)
+POST    /edit/cert/:id          controllers.Edit.editCert(id: Long)
 
 GET     /search                 controllers.Search.index
 POST    /search                 controllers.Search.search
