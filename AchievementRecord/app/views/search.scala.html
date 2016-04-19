@@ -226,7 +226,7 @@
 
     $('#achSearch').submit(function (e) {
       e.preventDefault();
-      var formdata = $("#searchForm").serializeArray();
+      var formdata = $("#achSearch").serializeArray();
       formdata.push({name: "daterange", value: $("#daterange").val()});
       $.ajax({
         url: '/search',
