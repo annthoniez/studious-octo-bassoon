@@ -6,7 +6,17 @@ import skinny.orm.SkinnyCRUDMapperWithId
 /**
   * Created by Pichai Sivawat on 4/5/2016.
   */
-case class Student(student_id: Username, username: String, th_name: String, en_name: String, curriculum_id: Int, track_id: Int, email: String, achs: Seq[Achievement] = Nil, acc: Option[Account] = None, curri: Option[Curriculum] = None, track: Option[Track] = None)
+case class Student(student_id: Username,
+                   username: String,
+                   th_name: String,
+                   en_name: String,
+                   curriculum_id: Int,
+                   track_id: Int,
+                   email: String,
+                   achs: Seq[Achievement] = Nil,
+                   acc: Option[Account] = None,
+                   curri: Option[Curriculum] = None,
+                   track: Option[Track] = None)
 
 object Student extends SkinnyCRUDMapperWithId[Username, Student]{
   override val defaultAlias = createAlias("stu")
@@ -25,14 +35,38 @@ object Student extends SkinnyCRUDMapperWithId[Username, Student]{
     email = rs.get(n.email)
   )
 
-  lazy val achRef = hasManyThroughWithFk[Achievement](Student_Achievement, Achievement, "student_id", "achievement_id", (acc, achs) => acc.copy(achs = achs))
-  lazy val accRef = hasOneWithFk[Account](Account, "username", (stu, acc) => stu.copy(acc = acc))
-  lazy val curriRef = belongsToWithFk[Curriculum](Curriculum, "curriculum_id", (stu, curri) => stu.copy(curri = curri)).byDefault
-  lazy val trackRef = belongsToWithFk[Track](Track, "track_id", (stu, track) => stu.copy(track = track)).byDefault
+  lazy val achRef = hasManyThroughWithFk[Achievement](
+    Student_Achievement,
+    Achievement,
+    "student_id",
+    "achievement_id",
+    (acc, achs) => acc.copy(achs = achs))
 
-  def getProfile(username: String): Student = models.Student.joins(models.Student.curriRef).joins(models.Student.trackRef).findAll().filter(_.student_id.value == username).head
+  lazy val accRef = hasOneWithFk[Account](
+    Account,
+    "username",
+    (stu, acc) => stu.copy(acc = acc))
 
-  def getAchs(username: String): Seq[Achievement] = models.Student.joins(models.Student.achRef).findAll().filter(_.username == username).head.achs
+  lazy val curriRef = belongsToWithFk[Curriculum](
+    Curriculum,
+    "curriculum_id",
+    (stu, curri) => stu.copy(curri = curri)).byDefault
+
+  lazy val trackRef = belongsToWithFk[Track](
+    Track,
+    "track_id",
+    (stu, track) => stu.copy(track = track)).byDefault
+
+  def getProfile(username: String): Student =
+    models.Student
+      .joins(models.Student.curriRef)
+      .joins(models.Student.trackRef).findAll()
+      .filter(_.student_id.value == username).head
+
+  def getAchs(username: String): Seq[Achievement] =
+    models.Student
+      .joins(models.Student.achRef).findAll()
+      .filter(_.username == username).head.achs
 
 
 }

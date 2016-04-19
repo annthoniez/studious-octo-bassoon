@@ -52,13 +52,32 @@ trait Add extends Controller with Pjax with AuthElement with AuthConfigImpl {
     val orgs: Set[String] = textBody.get("orgs").head.toSet
     val rank = if (textBody.get("rank").head.head == "0") textBody.get("rank_des").head.head else textBody.get("rank").head.head
 
-    val ach_id = Achievement.create(textBody.get("achievement_name").head.head, textBody.get("date").head.head, saveFileName, textBody.get("reward").head.head, textBody.get("category").head.head, 1)
+    val ach_id = Achievement.create(
+      textBody.get("achievement_name").head.head,
+      textBody.get("date").head.head,
+      saveFileName,
+      textBody.get("reward").head.head,
+      textBody.get("category").head.head,
+      1)
 
-    student_ids.foreach(s => if (s != "") Student_Achievement.create(s, ach_id))
-    teacher_names.foreach(t => if (t != "") Teacher_Achievement.create(models.Teacher.getProfile(t).teacher_id.value, ach_id))
-    orgs.foreach(o => if (o != "") Organization_Achievement.create(o.toLong, ach_id))
+    student_ids.foreach(s =>
+      if (s != "")
+        Student_Achievement.create(s, ach_id))
 
-    Competition.create(textBody.get("event_name").head.head, textBody.get("topic").head.head, textBody.get("level").head.head, rank, ach_id)
+    teacher_names.foreach(t =>
+      if (t != "")
+        Teacher_Achievement.create(models.Teacher.getProfile(t).teacher_id.value, ach_id))
+
+    orgs.foreach(o =>
+      if (o != "")
+        Organization_Achievement.create(o.toLong, ach_id))
+
+    Competition.create(
+      textBody.get("event_name").head.head,
+      textBody.get("topic").head.head,
+      textBody.get("level").head.head,
+      rank,
+      ach_id)
     Ok("Got" + textBody)
   }
 
@@ -78,7 +97,13 @@ trait Add extends Controller with Pjax with AuthElement with AuthConfigImpl {
       }
     }
 
-    val ach_id = Achievement.create(textBody.get("achievement_name").head.head, textBody.get("date").head.head, saveFileName, "", "วิชาการ", 2)
+    val ach_id = Achievement.create(
+      textBody.get("achievement_name").head.head,
+      textBody.get("date").head.head,
+      saveFileName,
+      "",
+      "วิชาการ",
+      2)
     Student_Achievement.create(loggedIn.username.value, ach_id)
     Organization_Achievement.create(textBody.get("orgs").head.head.toLong, ach_id)
 
@@ -102,7 +127,14 @@ trait Add extends Controller with Pjax with AuthElement with AuthConfigImpl {
       }
     }
 
-    val ach_id = Achievement.create(textBody.get("achievement_name").head.head, textBody.get("date").head.head, saveFileName, "", "วิชาการ", 3)
+    val ach_id = Achievement.create(
+      textBody.get("achievement_name").head.head,
+      textBody.get("date").head.head,
+      saveFileName,
+      "",
+      "วิชาการ",
+      3)
+
     Student_Achievement.create(loggedIn.username.value, ach_id)
     Organization_Achievement.create(textBody.get("orgs").head.head.toLong, ach_id)
 

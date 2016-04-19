@@ -6,7 +6,10 @@ import skinny.orm.SkinnyMapper
 /**
   * Created by Pichai Sivawat on 4/10/2016.
   */
-case class Organization(id: Long, organization_name: String, organization_type: String, achs: Seq[Achievement] = Nil)
+case class Organization(id: Long,
+                        organization_name: String,
+                        organization_type: String,
+                        achs: Seq[Achievement] = Nil)
 object Organization extends SkinnyMapper[Organization] {
   override lazy val defaultAlias = createAlias("org")
   override val tableName = "organizations"
@@ -17,5 +20,10 @@ object Organization extends SkinnyMapper[Organization] {
     organization_type = rs.get(n.organization_type)
   )
 
-  lazy val achRef = hasManyThroughWithFk[Achievement](Organization_Achievement, Achievement, "organization_id", "achievement_id", (org, achs) => org.copy(achs = achs))
+  lazy val achRef = hasManyThroughWithFk[Achievement](
+    Organization_Achievement,
+    Achievement,
+    "organization_id",
+    "achievement_id",
+    (org, achs) => org.copy(achs = achs))
 }

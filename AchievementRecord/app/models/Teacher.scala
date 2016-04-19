@@ -6,7 +6,18 @@ import skinny.orm.SkinnyCRUDMapperWithId
 /**
   * Created by Pichai Sivawat on 4/6/2016.
   */
-case class Teacher(teacher_id: Username, username: String, th_prename: String, th_name: String, en_prename: String, en_name: String, status_id: Int, mobile: String, email: String, achs: Seq[Achievement] = Nil, acc: Option[Account] = None, stat: Option[Status] = None)
+case class Teacher(teacher_id: Username,
+                   username: String,
+                   th_prename: String,
+                   th_name: String,
+                   en_prename: String,
+                   en_name: String,
+                   status_id: Int,
+                   mobile: String,
+                   email: String,
+                   achs: Seq[Achievement] = Nil,
+                   acc: Option[Account] = None,
+                   stat: Option[Status] = None)
 object Teacher extends SkinnyCRUDMapperWithId[Username, Teacher]{
   override val defaultAlias = createAlias("teacher")
   override val tableName = "teacher"
@@ -25,11 +36,30 @@ object Teacher extends SkinnyCRUDMapperWithId[Username, Teacher]{
     mobile = rs.get(n.mobile),
     email = rs.get(n.email)
   )
-  lazy val achRef = hasManyThroughWithFk[Achievement](Teacher_Achievement, Achievement, "teacher_id", "achievement_id", (teacher, achs) => teacher.copy(achs = achs))
-  lazy val accRef = hasOneWithFk[Account](Account, "username", (teacher, acc) => teacher.copy(acc = acc))
-  lazy val statRef = belongsToWithFk[Status](Status, "status_id", (teacher, stat) => teacher.copy(stat = stat))
+  lazy val achRef = hasManyThroughWithFk[Achievement](
+    Teacher_Achievement,
+    Achievement,
+    "teacher_id",
+    "achievement_id",
+    (teacher, achs) => teacher.copy(achs = achs))
 
-  def getProfile(username: String): Teacher = models.Teacher.joins(models.Teacher.statRef).findAll().filter(_.username == username).head
+  lazy val accRef = hasOneWithFk[Account](
+    Account,
+    "username",
+    (teacher, acc) => teacher.copy(acc = acc))
 
-  def getAchs(username: String): Seq[Achievement] = models.Teacher.joins(models.Teacher.achRef).findAll().filter(_.username == username).head.achs
+  lazy val statRef = belongsToWithFk[Status](
+    Status,
+    "status_id",
+    (teacher, stat) => teacher.copy(stat = stat))
+
+  def getProfile(username: String): Teacher =
+    models.Teacher
+      .joins(models.Teacher.statRef).findAll()
+      .filter(_.username == username).head
+
+  def getAchs(username: String): Seq[Achievement] =
+    models.Teacher
+      .joins(models.Teacher.achRef).findAll()
+      .filter(_.username == username).head.achs
 }

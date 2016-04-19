@@ -11,7 +11,10 @@ object Username {
   implicit val typeBinder: TypeBinder[Username] = TypeBinder.string.map(Username.apply)
 }
 
-case class Account(username: Username, password: String, role_id: Int, stu: Option[Student] = None)
+case class Account(username: Username,
+                   password: String,
+                   role_id: Int,
+                   stu: Option[Student] = None)
 
 object Account extends SkinnyCRUDMapperWithId[Username, Account] {
   override lazy val defaultAlias = createAlias("usr")
@@ -26,7 +29,10 @@ object Account extends SkinnyCRUDMapperWithId[Username, Account] {
     role_id = rs.get(n.role_id)
   )
 
-  lazy val stuRef = belongsToWithFk[Student](Student, "username", (acc, stu) => acc.copy(stu = stu)).byDefault
+  lazy val stuRef = belongsToWithFk[Student](
+    Student,
+    "username",
+    (acc, stu) => acc.copy(stu = stu)).byDefault
 
   def authenticate(username: String, password: String): Option[Account] = findByUsername(username).filter({ account => password == account.password})
 

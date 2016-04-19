@@ -6,7 +6,10 @@ import skinny.orm.SkinnyCRUDMapper
 /**
   * Created by Pichai Sivawat on 4/10/2016.
   */
-case class Ambassador(id: Long, year: String, achievement_id: Long, ach: Option[Achievement] = None)
+case class Ambassador(id: Long,
+                      year: String,
+                      achievement_id: Long,
+                      ach: Option[Achievement] = None)
 object Ambassador extends SkinnyCRUDMapper[Ambassador] {
   override lazy val defaultAlias = createAlias("amb")
   override val tableName = "ambassadors"
@@ -24,5 +27,8 @@ object Ambassador extends SkinnyCRUDMapper[Ambassador] {
     achievement_id = rs.get(n.achievement_id)
   )
 
-  lazy val achRef = belongsToWithFk[Achievement](Achievement, "achievement_id", (amb, ach) => amb.copy(ach=ach))
+  lazy val achRef = belongsToWithFk[Achievement](
+    Achievement,
+    "achievement_id",
+    (amb, ach) => amb.copy(ach=ach))
 }

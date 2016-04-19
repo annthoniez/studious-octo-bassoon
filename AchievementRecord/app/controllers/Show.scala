@@ -15,10 +15,13 @@ trait Show extends Controller with Pjax with AuthElement with AuthConfigImpl {
 
   def achievement(id: Long) = StackAction(AuthorityKey -> Seq(Auth.Student, Auth.Teacher, Auth.Staff)) { implicit request =>
     val ach = Achievement.getAchWithChild(id)
+
     val s_accs = Achievement.joins(Achievement.accRef).findById(id).map(_.accs)
     val t_accs = Achievement.joins(Achievement.teacher_accRef).findById(id).map(_.t_accs)
     val orgs = Achievement.joins(Achievement.orgRef).findById(id).map(_.orgs)
+
     val canEdit = s_accs.get.map(_.username).contains(loggedIn.username.value) && ach.get.created_at.isAfter(LocalDate.now().minusDays(3))
+
     Ok(html.achievement("achievement", ach, s_accs, t_accs, orgs, canEdit))
   }
 
@@ -37,6 +40,7 @@ trait Show extends Controller with Pjax with AuthElement with AuthConfigImpl {
 
     val s_accs = Achievement.getStudentInAch(achs)
     val t_accs = Achievement.getTeacherInAch(achs)
+
     Ok(html.profile("Profile", profile, achs, s_accs, t_accs))
   }
 
@@ -49,9 +53,18 @@ trait Show extends Controller with Pjax with AuthElement with AuthConfigImpl {
   }
 
   def jsonAll(id: Int) = StackAction(AuthorityKey -> Seq(Auth.Student, Auth.Teacher, Auth.Staff)) { implicit request =>
-    val teachers = models.Teacher.findAll().map(t => Json.obj("value" -> JsString(t.username), "label" -> JsString(t.th_name)))
-    val students = models.Student.findAll().map(s => Json.obj("value" -> JsString(s.username), "label" -> JsString(s.th_name)))
-    val staffs = models.Staff.findAll().map(s => Json.obj("value" -> JsString(s.username), "label" -> JsString(s.th_name)))
+    val teachers = models.Teacher.findAll().map(t =>
+      Json.obj(
+        "value" -> JsString(t.username),
+        "label" -> JsString(t.th_name)))
+    val students = models.Student.findAll().map(s =>
+      Json.obj(
+        "value" -> JsString(s.username),
+        "label" -> JsString(s.th_name)))
+    val staffs = models.Staff.findAll().map(s =>
+      Json.obj(
+        "value" -> JsString(s.username),
+        "label" -> JsString(s.th_name)))
     val all = teachers ++ students ++ staffs
     val json: JsValue = id match {
       case 0 => JsArray(all)

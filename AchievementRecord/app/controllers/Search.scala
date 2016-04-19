@@ -31,38 +31,56 @@ trait Search extends Controller with Pjax with AuthElement with AuthConfigImpl {
       .joins(Achievement.ambRef).findAll()
 
     if (textBody.get.isDefinedAt("students")) {
-      result = result.filter(a => a.accs.map(_.username).exists(textBody.get("students").contains))
+      result = result.filter(a =>
+        a.accs
+          .map(_.username)
+          .exists(textBody.get("students").contains))
     }
     if (textBody.get.isDefinedAt("teachers")) {
-      result = result.filter(a => a.t_accs.map(_.username).exists(textBody.get("teachers").contains))
+      result = result.filter(a =>
+        a.t_accs
+          .map(_.username)
+          .exists(textBody.get("teachers").contains))
     }
     if (textBody.get.isDefinedAt("orgs")) {
-      result = result.filter(a => a.orgs.map(_.id.toString).exists(textBody.get("orgs").contains))
+      result = result.filter(a =>
+        a.orgs
+          .map(_.id.toString)
+          .exists(textBody.get("orgs").contains))
     }
     if (textBody.get.isDefinedAt("category")) {
-      result = result.filter(a => textBody.get("category").contains(a.category))
+      result = result.filter(a =>
+        textBody.get("category").contains(a.category))
     }
     if (textBody.get("daterange").head != "") {
       val daterange = textBody.get("daterange").head.split(" to ").toSeq
+
       val startDate = LocalDate.parse(daterange.head)
       val endDate = LocalDate.parse(daterange.last)
-      result = result.filter(a => a.date.isBefore(endDate) && a.date.isAfter(startDate))
+
+      result = result.filter(a =>
+        a.date.isBefore(endDate) && a.date.isAfter(startDate))
     }
     if (textBody.get.isDefinedAt("ach_type")) {
-      result = result.filter(a => textBody.get("ach_type").contains(a.achievement_type.toString))
+      result = result.filter(a =>
+        textBody.get("ach_type").contains(a.achievement_type.toString))
       if (textBody.get("ach_type").length == 1 && textBody.get("ach_type").head == "1") {
         if (textBody.get.isDefinedAt("event_name")) {
-          result = result.filter(a => a.comp.get.event_name.contains(textBody.get("event_name").head))
+          result = result.filter(a =>
+            a.comp.get.event_name.contains(textBody.get("event_name").head))
         }
         if (textBody.get.isDefinedAt("rank")) {
-          result = result.filter(a => textBody.get("rank").contains(a.comp.get.rank))
+          result = result.filter(a =>
+            textBody.get("rank").contains(a.comp.get.rank))
         }
         if (textBody.get.isDefinedAt("level")) {
-          result = result.filter(a => textBody.get("level").contains(a.comp.get.level))
+          result = result.filter(a =>
+            textBody.get("level").contains(a.comp.get.level))
         }
       } else if (textBody.get("ach_type").length == 1 && textBody.get("ach_type").head == "2") {
         if (!textBody.get.isDefinedAt("show_exp")) {
-          result = result.filter(a => a.cert.get.exp_date.isAfter(LocalDate.now()))
+          result = result.filter(a =>
+            a.cert.get.exp_date.isAfter(LocalDate.now()))
         }
       }
     }

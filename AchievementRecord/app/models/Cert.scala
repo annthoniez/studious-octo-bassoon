@@ -8,7 +8,10 @@ import skinny.orm.SkinnyCRUDMapper
 /**
   * Created by Pichai Sivawat on 4/10/2016.
   */
-case class Cert(id: Long, exp_date: LocalDate, achievement_id: Long, ach: Option[Achievement] = None)
+case class Cert(id: Long,
+                exp_date: LocalDate,
+                achievement_id: Long,
+                ach: Option[Achievement] = None)
 object Cert extends SkinnyCRUDMapper[Cert] {
   override lazy val defaultAlias = createAlias("cert")
   override val tableName = "certs"
@@ -25,5 +28,8 @@ object Cert extends SkinnyCRUDMapper[Cert] {
     achievement_id = rs.get(n.achievement_id)
   )
 
-  lazy val achRef = belongsToWithFk[Achievement](Achievement, "achievement_id", (cert, ach) => cert.copy(ach=ach))
+  lazy val achRef = belongsToWithFk[Achievement](
+    Achievement,
+    "achievement_id",
+    (cert, ach) => cert.copy(ach=ach))
 }

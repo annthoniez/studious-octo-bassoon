@@ -6,7 +6,13 @@ import skinny.orm.SkinnyCRUDMapper
 /**
   * Created by Pichai Sivawat on 4/10/2016.
   */
-case class Competition(id: Long, event_name: String, topic: String, level: String, rank: String, achievement_id: Long, ach: Option[Achievement] = None)
+case class Competition(id: Long,
+                       event_name: String,
+                       topic: String,
+                       level: String,
+                       rank: String,
+                       achievement_id: Long,
+                       ach: Option[Achievement] = None)
 object Competition extends SkinnyCRUDMapper[Competition] {
   override lazy val defaultAlias = createAlias("comp")
   override val tableName = "competitions"
@@ -30,5 +36,8 @@ object Competition extends SkinnyCRUDMapper[Competition] {
     achievement_id = rs.get(n.achievement_id)
   )
 
-  lazy val achRef = belongsToWithFk[Achievement](Achievement, "achievement_id", (comp, ach) => comp.copy(ach=ach))
+  lazy val achRef = belongsToWithFk[Achievement](
+    Achievement,
+    "achievement_id",
+    (comp, ach) => comp.copy(ach=ach))
 }
