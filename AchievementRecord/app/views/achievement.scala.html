@@ -4,7 +4,8 @@
     <div class="small-12 columns">
       <div class="callout">
         @if(canEdit) {
-          <a href="@controllers.routes.Edit.edit(ach.get.id)"><button class="button docs-code-copy" id="copy-btn-1"><i class="fi-pencil"></i></button></a>
+          <a href="@controllers.routes.Edit.edit(ach.get.id)"><button class="btn-edit"><i class="fi-pencil"></i></button></a>
+          <button class="btn-delete"><i class="fi-trash"></i></button>
         }
         <h2>@ach.get.id: @ach.get.achievement_name</h2>
         <p>@ach.get.date</p>
