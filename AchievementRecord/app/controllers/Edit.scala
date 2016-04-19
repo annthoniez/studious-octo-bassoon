@@ -1,8 +1,9 @@
 package controllers
 
 import jp.t2v.lab.play2.auth.AuthElement
-import models.{Achievement, Auth}
-import play.api.mvc.Controller
+import models._
+import play.api.mvc.{AnyContent, Controller}
+import scalikejdbc._
 import views.html
 
 /**
@@ -25,6 +26,49 @@ trait Edit extends Controller with Pjax with AuthElement with AuthConfigImpl {
       case 3 => Ok(html.add_amb("amb", ach, loggedIn))
     }
 
+  }
+
+  def editCompetition(id: Long) = StackAction(AuthorityKey -> Seq(Auth.Student)) { implicit request =>
+    val body: AnyContent = request.body
+    val multiPartBody = body.asMultipartFormData
+    val textBody = multiPartBody.get.asFormUrlEncoded
+    println(textBody)
+
+    //TODO update image
+
+    val ach = Achievement
+      .joins(Achievement.accRef)
+      .joins(Achievement.teacher_accRef)
+      .joins(Achievement.orgRef)
+      .joins(Achievement.compRef).findById(id)
+    val curStu: Set[String] = ach.get.accs.map(_.username).toSet[String] - loggedIn.username.value
+    val curTec: Set[String] = ach.get.t_accs.map(_.username).toSet[String]
+    val curOrg: Set[String] = ach.get.orgs.map(_.id.toString).toSet[String]
+    val updateStu: Set[String] = textBody.get("student_ids").head.toSet[String]
+    val updateTec: Set[String] = textBody.get("teacher_names").head.toSet[String]
+    val updateOrg: Set[String] = textBody.get("orgs").head.toSet[String]
+
+    val delStu: Set[String] = curStu -- updateStu
+    val delTec: Set[String] = curTec -- updateTec
+    val delOrg: Set[String] = curOrg -- updateOrg
+    val addStu: Set[String] = updateStu -- curStu
+    val addTec: Set[String] = updateTec -- curTec
+    val addOrg: Set[String] = updateOrg -- curOrg
+
+    val rank = if (textBody.get("rank").head.head == "0") textBody.get("rank_des").head.head else textBody.get("rank").head.head
+
+    //Student_Achievement.deleteBy(sqls.eq(Student_Achievement.column.student_id, "57070054").and.eq(Student_Achievement.column.achievement_id, "2"))
+    delStu.foreach(s => if (s != "") Student_Achievement.deleteBy(sqls.eq(Student_Achievement.column.student_id, s).and.eq(Student_Achievement.column.achievement_id, id)))
+    addStu.foreach(s => if (s != "") Student_Achievement.create(s, id))
+    delTec.foreach(t => if (t != "") Teacher_Achievement.deleteBy(sqls.eq(Teacher_Achievement.column.teacher_id, models.Teacher.getProfile(t).teacher_id.value).and.eq(Teacher_Achievement.column.achievement_id, id)))
+    addTec.foreach(t => if (t != "") Teacher_Achievement.create(models.Teacher.getProfile(t).teacher_id.value, id))
+    delOrg.foreach(o => if (o != "") Organization_Achievement.deleteBy(sqls.eq(Organization_Achievement.column.organization_id, o).and.eq(Organization_Achievement.column.achievement_id, id)))
+    addOrg.foreach(o => if (o != "") Organization_Achievement.create(o.toLong, id))
+
+    Achievement.updateById(id).withAttributes('achievement_name -> textBody.get("achievement_name").head.head, 'date -> textBody.get("date").head.head, 'reward -> textBody.get("reward").head.head, 'category -> textBody.get("category").head.head)
+
+    Competition.updateById(ach.get.id).withAttributes('event_name -> textBody.get("event_name").head.head, 'topic -> textBody.get("topic").head.head, 'level -> textBody.get("level").head.head, 'rank -> rank)
+    Ok("Got" + textBody)
   }
 
   protected val main: User => Template = html.main.apply
