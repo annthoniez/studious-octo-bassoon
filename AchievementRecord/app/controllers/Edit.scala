@@ -1,5 +1,7 @@
 package controllers
 
+import java.time.LocalDate
+
 import jp.t2v.lab.play2.auth.AuthElement
 import models._
 import play.api.mvc.{AnyContent, Controller}
@@ -20,10 +22,16 @@ trait Edit extends Controller with Pjax with AuthElement with AuthConfigImpl {
       .joins(Achievement.ambRef)
       .findById(id)
 
-    ach.get.achievement_type match {
-      case 1 => Ok(html.add_competition("competition", ach, loggedIn))
-      case 2 => Ok(html.add_cert("cert", ach, loggedIn))
-      case 3 => Ok(html.add_amb("amb", ach, loggedIn))
+    val canEdit = ach.get.accs.map(_.username).contains(loggedIn.username.value) && ach.get.created_at.isAfter(LocalDate.now().minusDays(3))
+
+    if (!canEdit) {
+      Forbidden("can't edit")
+    } else {
+      ach.get.achievement_type match {
+        case 1 => Ok(html.add_competition("competition", ach, loggedIn))
+        case 2 => Ok(html.add_cert("cert", ach, loggedIn))
+        case 3 => Ok(html.add_amb("amb", ach, loggedIn))
+      }
     }
 
   }
