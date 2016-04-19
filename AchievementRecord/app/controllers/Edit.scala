@@ -137,6 +137,29 @@ trait Edit extends Controller with Pjax with AuthElement with AuthConfigImpl {
     Ok("Got" + textBody)
   }
 
+  def editAmb(id: Long) = StackAction(AuthorityKey -> Seq(Auth.Student)) { implicit request =>
+    val body: AnyContent = request.body
+    val multipartBody = body.asMultipartFormData
+    val textBody: Map[String, Seq[String]] = multipartBody.get.asFormUrlEncoded
+    println(textBody)
+
+    val ach = Achievement
+      .joins(Achievement.orgRef)
+      .joins(Achievement.ambRef).findById(id)
+
+    editOrgs(id, textBody, ach, loggedIn)
+    Achievement.updateById(id)
+      .withAttributes(
+        'achievement_name -> textBody.get("achievement_name").head.head,
+        'date -> textBody.get("date").head.head)
+
+    Ambassador.updateById(ach.get.amb.get.id)
+      .withAttributes(
+        'year -> textBody.get("year").head.head)
+
+    Ok("Got" + textBody)
+  }
+
   protected val main: User => Template = html.main.apply
 }
 
