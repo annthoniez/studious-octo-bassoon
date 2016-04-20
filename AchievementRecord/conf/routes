@@ -35,3 +35,6 @@ GET     /delete/:id             controllers.Edit.del(id: Long)
 
 GET     /search                 controllers.Search.index
 POST    /search                 controllers.Search.search
+
+GET     /report                 controllers.Report.index
+POST    /report/result          controllers.Report.report

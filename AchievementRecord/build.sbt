@@ -30,7 +30,8 @@ libraryDependencies ++= Seq(
   "org.skinny-framework" %% "skinny-orm"      % "2.0.8",
   "com.h2database"       %  "h2"              % "1.4.+",
   "ch.qos.logback"       %  "logback-classic" % "1.1.+",
-  "ch.qos.logback"  % "logback-core" % "1.1+"
+  "ch.qos.logback"  % "logback-core" % "1.1+",
+  "it.innove" % "play2-pdf" % "1.4.0"
 )
 
 unmanagedResourceDirectories in Test <+=  baseDirectory ( _ /"target/web/public/test" )

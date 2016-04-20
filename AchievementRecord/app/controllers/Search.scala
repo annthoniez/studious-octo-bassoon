@@ -17,11 +17,7 @@ trait Search extends Controller with Pjax with AuthElement with AuthConfigImpl {
     Ok(html.search("search"))
   }
 
-  def search() = StackAction(AuthorityKey -> Seq(Auth.Student, Auth.Teacher, Auth.Staff)) { implicit request =>
-    val body: AnyContent = request.body
-    val textBody: Option[Map[String, Seq[String]]] = body.asFormUrlEncoded
-    println(textBody)
-
+  def getSearchResult(textBody: Option[Map[String, Seq[String]]]): Seq[Achievement] = {
     var result = Achievement
       .joins(Achievement.accRef)
       .joins(Achievement.orgRef)
@@ -84,6 +80,16 @@ trait Search extends Controller with Pjax with AuthElement with AuthConfigImpl {
         }
       }
     }
+
+    result
+  }
+
+  def search() = StackAction(AuthorityKey -> Seq(Auth.Student, Auth.Teacher, Auth.Staff)) { implicit request =>
+    val body: AnyContent = request.body
+    val textBody: Option[Map[String, Seq[String]]] = body.asFormUrlEncoded
+    println(textBody)
+
+    val result = getSearchResult(textBody)
 
     result.foreach(println)
 
