@@ -168,6 +168,31 @@ trait Edit extends Controller with Pjax with AuthElement with AuthConfigImpl {
     Ok("Got" + textBody)
   }
 
+  def del(id: Long) = StackAction(AuthorityKey -> Seq(Auth.Student)) { implicit request =>
+    val ach = Achievement
+      .joins(Achievement.accRef)
+      .joins(Achievement.teacher_accRef)
+      .joins(Achievement.orgRef)
+      .joins(Achievement.compRef)
+      .joins(Achievement.certRef).joins(Achievement.ambRef).findById(id)
+    val canDel = ach.get.accs.map(_.username).contains(loggedIn.username.value) && ach.get.created_at.isAfter(LocalDate.now().minusDays(3))
+
+    if (!canDel) {
+      Forbidden("Can't delete")
+    } else {
+      editStudents(id, Map("student_ids" -> Seq("")), ach, loggedIn)
+      editTeachers(id, Map("teacher_names" -> Seq("")), ach, loggedIn)
+      editOrgs(id, Map("orgs" -> Seq("")), ach, loggedIn)
+      ach.get.achievement_type match {
+        case 1 => Competition.deleteById(ach.get.comp.get.id)
+        case 2 => Cert.deleteById(ach.get.cert.get.id)
+        case 3 => Ambassador.deleteById(ach.get.amb.get.id)
+      }
+      Achievement.deleteById(id)
+      Ok("test")
+    }
+  }
+
   protected val main: User => Template = html.main.apply
 }
 
