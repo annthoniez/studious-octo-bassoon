@@ -39,4 +39,7 @@ i.alert {
 #cert {
     display: none;
 }
-i { margin-right: 8px; }
+
+i {
+    margin-right: 8px;
+}

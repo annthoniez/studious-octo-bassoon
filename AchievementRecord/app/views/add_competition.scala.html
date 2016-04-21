@@ -34,13 +34,13 @@
           @if(stu.username != account.username.value) {
             <div class="row">
               <div class="small-3 columns">
-                <input type="text" placeholder="AnotherStudent" class="student_ids" name="student_ids" pattern="number" value="@stu.username">
+                <input type="text" placeholder="รหัสเพื่อนร่วมทีม" class="student_ids" name="student_ids" pattern="number" value="@stu.username">
                 <span class="form-error">
                   ตัวเลข
                 </span>
               </div>
               <div class="small-8 columns">
-                <input type="text" palceholder="AnotherStudentName" class="student_names" name="student_names" disabled="disabled" value="@stu.th_name">
+                <input type="text" palceholder="" class="student_names" name="student_names" disabled="disabled" value="@stu.th_name">
               </div>
               <div class="small-1 columns">
                 <button type="button" class="alert small button removeStudent"><i class="fi-minus"></i></button>
@@ -51,13 +51,13 @@
       }
       <div class="row">
         <div class="small-3 columns">
-          <input type="text" placeholder="AnotherStudent" class="student_ids" name="student_ids" pattern="number">
+          <input type="text" placeholder="" class="student_ids" name="student_ids" pattern="number">
           <span class="form-error">
             ตัวเลข
           </span>
         </div>
         <div class="small-8 columns">
-          <input type="text" palceholder="AnotherStudentName" class="student_names" name="student_names" disabled="disabled">
+          <input type="text" placeholder="" class="student_names" name="student_names" disabled="disabled">
         </div>
         <div class="small-1 columns">
           <button type="button" class="small button addStudent"><i class="fi-plus"></i></button>
@@ -69,7 +69,7 @@
           @if(index == 0) {
             <div class="row">
               <div class="small-11 columns">
-                <label>ชื่ออาจารย์ที่ปรึกษา
+                <label>อาจารย์ที่ปรึกษา
                   <input id="firstTeacher" type="text" name="teacher_names" data-abide-ignore value="@teacher.username">
                 </label>
               </div>
@@ -277,7 +277,7 @@
 
       <div class="row">
         <div class="small-12 columns small-centered">
-          <button id="submit" type="submit" class="small expanded button">Submit</button>
+          <button id="submit" type="submit" class="expanded button"><i class="fa fa-floppy-o"></i>บันทึกข้อมูล</button>
         </div>
       </div>
     </form>

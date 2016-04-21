@@ -35,13 +35,13 @@
           <ul class="menu">
           @if(account != null) {
             @if(account.role_id == 2) {
-              <li><a href="@controllers.routes.Report.index">Report</a></li>
+              <li><a href="@controllers.routes.Report.index">รายงาน</a></li>
             }
-            <li><a href="@controllers.routes.Search.search">Search</a></li>
-            <li><a href="@controllers.routes.Show.profile(account.username.value)">Profile</a></li>
-            <li><a href="@controllers.routes.Application.logout">logout</a></li>
+            <li><a href="@controllers.routes.Search.search">สืบค้นผลงาน</a></li>
+            <li><a href="@controllers.routes.Show.profile(account.username.value)">โปรไฟล์</a></li>
+            <li><a href="@controllers.routes.Application.logout">ออกจากระบบ</a></li>
           } else {
-            <li><a href="@controllers.routes.Application.login">login</a></li>
+            <li><a href="@controllers.routes.Application.login">เข้าสู่ระบบ</a></li>
           }
           </ul>
         </div>

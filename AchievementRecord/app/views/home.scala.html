@@ -18,18 +18,20 @@
     </div>
     <div class="large-9 columns">
       @if(account.role_id == 3) {
-        <h3 class="kanit"><i class="fa fa-plus-circle" aria-hidden="true"></i>เพิ่มรายการใหม่</h3>
+        <h3 class="kanit"><i class="fa fa-plus-circle" aria-hidden="true"></i>เพิ่มผลงานใหม่</h3>
         <div class="expanded button-group">
-          <a class="success button" href="@controllers.routes.Add.competition"><i class="fa fa-trophy" aria-hidden="true" style="width: 23px;"></i>Competition </a>
-          <a class="success button" href="@controllers.routes.Add.amb"><i class="fa fa-star" aria-hidden="true" style="width: 23px;"></i>Ambassador </a>
-          <a class="success button" href="@controllers.routes.Add.cert"><i class="fa fa-check-square-o" aria-hidden="true" style="width: 23px;"></i>Certificate </a>
+          <a class="success button" href="@controllers.routes.Add.competition"><i class="fa fa-trophy" aria-hidden="true" style="width: 23px;"></i>การแข่งขัน </a>
+          <a class="success button" href="@controllers.routes.Add.amb"><i class="fa fa-star" aria-hidden="true" style="width: 23px;"></i>ทูตหรือตัวแทนองค์กร </a>
+          <a class="success button" href="@controllers.routes.Add.cert"><i class="fa fa-check-square-o" aria-hidden="true" style="width: 23px;"></i>ใบรับรองความเชี่ยวชาญพิเศษ </a>
         </div>
         <hr>
       }
       <h3 class="kanit"><i class="fa fa-list-alt" aria-hidden="true"></i>ผลงานทั้งหมด</h3>
       @for((ach, index) <- achs.zipWithIndex) {
         <div class="box">
-          <a href="@controllers.routes.Show.achievement(ach.get.id)"><h4 class="box-title"><i class="fa fa-cube"></i> @ach.get.id: @ach.get.achievement_name</h4></a>
+          <a href="@controllers.routes.Show.achievement(ach.get.id)">
+            <h4 class="box-title"><i class="fa fa-cube"></i>@ach.get.id: @ach.get.achievement_name</h4>
+          </a>
           @if(ach.get.photo == "") {
             <img src="http://placehold.it/1000x450" alt="">
           } else {
