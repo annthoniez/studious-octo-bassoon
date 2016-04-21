@@ -39,5 +39,6 @@ POST    /search                 controllers.Search.search
 GET     /report                 controllers.Report.index
 POST    /report/result          controllers.Report.report
 
+GET     /setting                controllers.Setting.index
 
 GET     /tarwised               controllers.Main.tarwised
