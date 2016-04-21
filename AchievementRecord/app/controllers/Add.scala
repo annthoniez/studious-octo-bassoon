@@ -78,7 +78,7 @@ trait Add extends Controller with Pjax with AuthElement with AuthConfigImpl {
       textBody.get("level").head.head,
       rank,
       ach_id)
-    Ok("Got" + textBody)
+    Redirect(routes.Show.achievement(ach_id))
   }
 
   def postCert = StackAction(AuthorityKey -> Seq(Auth.Student)) { implicit request =>
@@ -108,7 +108,7 @@ trait Add extends Controller with Pjax with AuthElement with AuthConfigImpl {
     Organization_Achievement.create(textBody.get("orgs").head.head.toLong, ach_id)
 
     Cert.create(textBody.get("exp_date").head.head, ach_id)
-    Ok("Got" + textBody)
+    Redirect(routes.Show.achievement(ach_id))
   }
 
   def portAmb = StackAction(AuthorityKey -> Seq(Auth.Student)) { implicit request =>
@@ -139,7 +139,7 @@ trait Add extends Controller with Pjax with AuthElement with AuthConfigImpl {
     Organization_Achievement.create(textBody.get("orgs").head.head.toLong, ach_id)
 
     Ambassador.create(textBody.get("year").head.head, ach_id)
-    Ok("Got" + textBody)
+    Redirect(routes.Show.achievement(ach_id))
   }
 
   protected val main: User => Template = html.main.apply
