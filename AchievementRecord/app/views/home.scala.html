@@ -1,10 +1,10 @@
-@(title: String, achs: Seq[Option[Achievement]], accs: Seq[Seq[Student]], t_accs: Seq[Seq[Teacher]], orgs: Seq[Seq[Organization]])(implicit template: String => Html => Html)
+@(title: String, achs: Seq[Option[Achievement]], accs: Seq[Seq[Student]], t_accs: Seq[Seq[Teacher]], orgs: Seq[Seq[Organization]], th_name: String, id: String)(implicit template: String => Html => Html)
 @template(title) {
   <div class="jumbotron">
     <div class="row">
       <div class="large-12 columns">
         <h1 class="kanit">ระบบกรอกข้อมูลผลงานของนักศึกษา</h1>
-        <p class="kanit">ชื่อยาวอยากเขียนอยู่แต่ขี้เกียจ นามสกุลยาวไม่เขียนนะ</p>
+        <p class="kanit">@th_name</p>
       </div>
     </div>
   </div>
@@ -12,8 +12,8 @@
     <div class="large-3 columns">
       <div class="kanit sidebar-header"><i class="fa fa-user" aria-hidden="true"></i> ข้อมูลส่วนตัว</div>
       <div class="meta">
-        <p><strong>ชื่อ - นามสกุล</strong> อลิสซาเบ็ต เจน</p>
-        <p><strong>รหัสนักศึกษา</strong> 57070030</p>
+        <p><strong>ชื่อ - นามสกุล</strong> @th_name</p>
+        <p><strong>รหัสประจำตัว</strong> @id</p>
       </div>
     </div>
     <div class="large-9 columns">
@@ -28,6 +28,11 @@
       @for((ach, index) <- achs.zipWithIndex) {
         <div class="box">
           <a href="@controllers.routes.Show.achievement(ach.get.id)"><h4 class="box-title"><i class="fa fa-cube"></i> @ach.get.id: @ach.get.achievement_name</h4></a>
+          @if(ach.get.photo == "") {
+            <img src="http://placehold.it/500x200" alt="">
+          } else {
+            <img src="assets/uploads/@ach.get.photo" alt="">
+          }
           <div class="meta">
             <strong>Date: </strong> @ach.get.date<br>
             <strong>Students: </strong>
