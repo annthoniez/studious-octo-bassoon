@@ -34,6 +34,9 @@
         <div class="top-bar-right align-self-middle">
           <ul class="menu">
           @if(account != null) {
+            @if(account.role_id == 2) {
+              <li><a href="@controllers.routes.Report.index">Report</a></li>
+            }
             <li><a href="@controllers.routes.Search.search">Search</a></li>
             <li><a href="@controllers.routes.Show.profile(account.username.value)">Profile</a></li>
             <li><a href="@controllers.routes.Application.logout">logout</a></li>
