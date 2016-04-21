@@ -1,24 +1,51 @@
-@(title: String, profile: Any, achs: Seq[Achievement], accs: Seq[Seq[Student]], t_accs: Seq[Seq[Teacher]])(implicit template: String => Html => Html)
+@(title: String, profile: Any, achs: Seq[Option[Achievement]], accs: Seq[Seq[Student]], t_accs: Seq[Seq[Teacher]], orgs: Seq[Seq[Organization]], th_name: String, id: String, account: Account)(implicit template: String => Html => Html)
 @template(title) {
-  <div class="row small-up-1 medium-up-1 large-up-2 header" data-equalizer data-equalize-by-row="true">
-  @for((ach, index) <- achs.zipWithIndex) {
-    <div class="column">
-      <div class="callout" data-equalizer-watch>
-        <h2>@ach.id: @ach.achievement_name</h2>
-        <p>@ach.date</p>
-
-        <ul>
-        @for(acc <- accs(index)) {
-          <li>@acc</li>
-        }
-        </ul>
-        <ul>
-        @for(t <- t_accs(index)) {
-          <li>@t</li>
-        }
-        </ul>
+  <div class="jumbotron">
+    <div class="row">
+      <div class="large-12 columns">
+        <h1 class="kanit">ระบบกรอกข้อมูลผลงานของนักศึกษา</h1>
+        <p class="kanit">@th_name</p>
       </div>
     </div>
-  }
+  </div>
+  <div id="content" class="row">
+    <div class="large-3 columns">
+      <div class="kanit sidebar-header"><i class="fa fa-user" aria-hidden="true"></i> ข้อมูลส่วนตัว</div>
+      <div class="meta">
+        <p><strong>ชื่อ - นามสกุล</strong> @th_name</p>
+        <p><strong>รหัสประจำตัว</strong> @id</p>
+      </div>
+    </div>
+    <div class="large-9 columns">
+      <h3 class="kanit"><i class="fa fa-list-alt" aria-hidden="true"></i>ผลงานทั้งหมด</h3>
+      @for((ach, index) <- achs.zipWithIndex) {
+        <div class="box">
+          <a href="@controllers.routes.Show.achievement(ach.get.id)"><h4 class="box-title"><i class="fa fa-cube"></i> @ach.get.id: @ach.get.achievement_name</h4></a>
+          @if(ach.get.photo == "") {
+            <img src="http://placehold.it/500x200" alt="">
+          } else {
+            <img src="/assets/uploads/@ach.get.photo" alt="">
+          }
+          <div class="meta">
+            <strong>Date: </strong> @ach.get.date<br>
+            <strong>Students: </strong>
+            @for(acc <- accs(index)) {
+              @acc.th_name
+            }
+            <br>
+            <strong>Instructors: </strong>
+            @for(t <- t_accs(index)) {
+              @t.th_name
+            }
+            <br>
+            <strong>Organizations: </strong>
+            @for(o <- orgs(index)) {
+              @o.organization_name
+            }
+            <br>
+          </div>
+        </div>
+      }
+    </div>
   </div>
 }
