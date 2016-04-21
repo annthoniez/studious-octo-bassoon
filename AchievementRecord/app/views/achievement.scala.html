@@ -1,5 +1,136 @@
 @(title: String, ach: Option[Achievement], s_accs: Option[Seq[Student]], t_accs: Option[Seq[Teacher]], orgs: Option[Seq[Organization]], canEdit: Boolean)(implicit template: String => Html => Html)
 @template(title) {
+  <div class="jumbotron">
+    <div class="row columns">
+      <div class="large-12 columns">
+        <h1 class="kanit">@ach.get.achievement_name</h1>
+        @*<p class="kanit">ผู้บันทึก นายกฤษติพงษ์ นามสมมุติ</p>*@
+      </div>
+    </div>
+  </div>
+  <div id="content" class="row columns">
+
+    <div class="box" style="position: relative;">
+      @if(canEdit) {
+        <div class="button-group" style="position: absolute; top: 0; right: 0">
+          <a href="@controllers.routes.Edit.edit(ach.get.id)" class="alert button"><i class="fi-trash"></i> ลบ</a>
+          <a href="@controllers.routes.Edit.del(ach.get.id)" class="success button"><i class="fi-pencil"></i> แก้ไข</a>
+        </div>
+      }
+      <div class="row">
+        <div class="large-10 columns">
+          <h4 class="box-title">@ach.get.achievement_name</h4>
+        </div>
+      </div>
+      <div class="row columns text-center show-img">
+        @if(ach.get.photo == "") {
+          <img src="http://placehold.it/500x200" alt="">
+        } else {
+          <img src="/assets/uploads/@ach.get.photo" alt="">
+        }
+      </div>
+      <div class="show-info">
+        <div class="row">
+          <div class="medium-12 columns">
+            <h4>ข้อมูล</h4>
+          </div>
+        </div>
+        <div class="row small-up-1 medium-up-1 large-up-2">
+          @for(acc <- s_accs.get) {
+            <div class="columns">
+              <div class="field">
+                <span class="title">รหัสนักศึกษา</span>
+                <span class="value">@acc.username</span>
+              </div>
+            </div>
+            <div class="columns">
+              <div class="field">
+                <span class="title">ชื่อ - นามสกุล</span>
+                <span class="value">@acc.th_name</span>
+              </div>
+            </div>
+          }
+          @for(acc <- t_accs.get) {
+            <div class="columns">
+              <div class="field">
+                <span class="title">อาจารย์ที่ปรึกษา</span>
+                <span class="value">@acc.th_prename @acc.th_name</span>
+              </div>
+            </div>
+          }
+          @for(o <- orgs.get) {
+            <div class="columns">
+              <div class="field">
+                <span class="title">หน่วยงานที่จัด</span>
+                <span class="value">@o.organization_name</span>
+              </div>
+            </div>
+          }
+          @if(ach.get.achievement_type == 1) {
+            <div class="columns">
+              <div class="field">
+                <span class="title">ชื่อการแข่งขัน</span>
+                <span class="value">@ach.get.comp.get.event_name</span>
+              </div>
+            </div>
+            <div class="columns">
+              <div class="field">
+                <span class="title">หมวดการแข่งขัน</span>
+                <span class="value">@ach.get.comp.get.topic</span>
+              </div>
+            </div>
+            <div class="columns">
+              <div class="field">
+                <span class="title">ระดับ</span>
+                <span class="value">@ach.get.comp.get.level</span>
+              </div>
+            </div>
+            <div class="columns">
+              <div class="field">
+                <span class="title">อันดับ</span>
+                <span class="value">@ach.get.comp.get.rank</span>
+              </div>
+            </div>
+          }
+          @if(ach.get.achievement_type == 2) {
+            <div class="columns">
+              <div class="field">
+                <span class="title">วันหมดอายุ</span>
+                <span class="value">@ach.get.cert.get.exp_date</span>
+              </div>
+            </div>
+          }
+          @if(ach.get.achievement_type == 3) {
+            <div class="columns">
+              <div class="field">
+                <span class="title">ประจำปี</span>
+                <span class="value">@ach.get.amb.get.year</span>
+              </div>
+            </div>
+          }
+          <div class="columns">
+            <div class="field">
+              <span class="title">วันที่ได้รับ</span>
+              <span class="value">@ach.get.date</span>
+            </div>
+          </div>
+          <div class="columns">
+            <div class="field">
+              <span class="title">รางวัล</span>
+              <span class="value">@ach.get.reward</span>
+            </div>
+          </div>
+          <div class="columns">
+            <div class="field">
+              <span class="title">ประเภท</span>
+              <span class="value">@ach.get.category</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="row header">
     <div class="small-12 columns">
       <div class="callout">
