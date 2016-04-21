@@ -42,6 +42,6 @@ Play2WarPlugin.play2WarSettings
 
 Play2WarKeys.servletVersion := "3.1"
 
-herokuAppName in Compile := "frozen-ridge-73985"
+herokuAppName in Compile := "glacial-depths-91432"
 
 herokuJdkVersion in Compile := "1.8"
