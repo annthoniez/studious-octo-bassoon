@@ -12,10 +12,6 @@
   background: #fff;
 }
 
-.top-bar > a {
-  color: #fff;
-}
-
 .hero {
   width: 100%;
   min-height: 600px;
@@ -121,9 +117,9 @@
 }
 
 .main-footer {
+  background-color: #434A54;
   position: relative;
   padding: 45px 0 45px;
-  background: url("../images/footer-bg.png") no-repeat 50% 0;
   color: #fff;
 }
 
@@ -156,6 +152,9 @@ h4 {
 a {
     color: #37BC9B;
 }
+a.title:hover {
+  color: #37BC9B;
+}
 
 .app-top-bar{
   background: #37BC9B;
@@ -164,12 +163,8 @@ a {
   padding: 15px 15px;
 }
 
-.app-top-bar > .top-bar-right > li {
-  background: #fff;
-}
-
 .jumbotron {
-  background-color: #434A54;
+  background: url("../images/footer-bg.png") no-repeat 50% 0;
   color: #fff;
   padding: 48px 0;
 }

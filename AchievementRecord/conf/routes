@@ -38,6 +38,7 @@ POST    /search                 controllers.Search.search
 
 GET     /report                 controllers.Report.index
 POST    /report/result          controllers.Report.report
+GET     /pdf                    controllers.Report.pdf
 
 GET     /setting                controllers.Setting.index
 
