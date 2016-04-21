@@ -30,7 +30,7 @@ trait Main extends Controller with Pjax with AuthElement with AuthConfigImpl {
     val s_accs = Achievement.getStudentInAch(achs)
     val t_accs = Achievement.getTeacherInAch(achs)
     val orgs = Achievement.getOrgInAch(achs)
-    Ok(html.home("Home", achs2, s_accs, t_accs, orgs, th_name, id.value, loggedIn))
+    Ok(html.home("ระบบกรอกข้อมูลผลงานต่างๆ ของนักศึกษา", achs2, s_accs, t_accs, orgs, th_name, id.value, loggedIn))
   }
 
   def tarwised = StackAction(AuthorityKey -> Seq(Auth.Student, Auth.Staff, Auth.Teacher)) { implicit request =>

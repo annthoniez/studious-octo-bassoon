@@ -28,9 +28,9 @@ trait Edit extends Controller with Pjax with AuthElement with AuthConfigImpl {
       Ok(html.tarwised.Forb("Forbidden"))
     } else {
       ach.get.achievement_type match {
-        case 1 => Ok(html.add_competition("competition", ach, loggedIn))
-        case 2 => Ok(html.add_cert("cert", ach, loggedIn))
-        case 3 => Ok(html.add_amb("amb", ach, loggedIn))
+        case 1 => Ok(html.add_competition("แก้ไขการแข่งขัน - ระบบกรอกข้อมูลผลงานต่างๆ ของนักศึกษา", ach, loggedIn))
+        case 2 => Ok(html.add_cert("แก้ไขใบรับรอง - ระบบกรอกข้อมูลผลงานต่างๆ ของนักศึกษา", ach, loggedIn))
+        case 3 => Ok(html.add_amb("แก้ไขตัวแทนองค์กร - ระบบกรอกข้อมูลผลงานต่างๆ ของนักศึกษา", ach, loggedIn))
       }
     }
 
@@ -120,7 +120,7 @@ trait Edit extends Controller with Pjax with AuthElement with AuthConfigImpl {
         'topic -> textBody.get("topic").head.head,
         'level -> textBody.get("level").head.head,
         'rank -> rank)
-    Ok("Got" + textBody)
+    Redirect(routes.Show.achievement(id))
   }
 
   def editCert(id: Long) = StackAction(AuthorityKey -> Seq(Auth.Student)) { implicit request =>
@@ -142,7 +142,7 @@ trait Edit extends Controller with Pjax with AuthElement with AuthConfigImpl {
     Cert.updateById(ach.get.cert.get.id)
       .withAttributes(
         'exp_date -> textBody.get("exp_date").head.head)
-    Ok("Got" + textBody)
+    Redirect(routes.Show.achievement(id))
   }
 
   def editAmb(id: Long) = StackAction(AuthorityKey -> Seq(Auth.Student)) { implicit request =>
@@ -165,7 +165,7 @@ trait Edit extends Controller with Pjax with AuthElement with AuthConfigImpl {
       .withAttributes(
         'year -> textBody.get("year").head.head)
 
-    Ok("Got" + textBody)
+    Redirect(routes.Show.achievement(id))
   }
 
   def del(id: Long) = StackAction(AuthorityKey -> Seq(Auth.Student)) { implicit request =>
@@ -189,7 +189,7 @@ trait Edit extends Controller with Pjax with AuthElement with AuthConfigImpl {
         case 3 => Ambassador.deleteById(ach.get.amb.get.id)
       }
       Achievement.deleteById(id)
-      Ok("test")
+      Redirect(routes.Main.home)
     }
   }
 

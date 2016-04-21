@@ -10,7 +10,7 @@ import views.html
   */
 trait Setting extends Controller with Pjax with AuthElement with AuthConfigImpl {
   def index = StackAction(AuthorityKey -> Seq(Auth.Student, Auth.Staff, Auth.Teacher)) { implicit request =>
-    Ok(html.setting("Setting"))
+    Ok(html.setting("ตั้งค่า - ระบบกรอกข้อมูลผลงานต่างๆ ของนักศึกษา"))
   }
 
   protected val main: User => Template = html.main.apply

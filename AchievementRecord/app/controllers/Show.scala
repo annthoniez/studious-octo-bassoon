@@ -27,7 +27,7 @@ trait Show extends Controller with Pjax with AuthElement with AuthConfigImpl {
 
       val canEdit = s_accs.get.map(_.username).contains(loggedIn.username.value) && ach.get.created_at.isAfter(LocalDate.now().minusDays(3))
 
-      Ok(html.achievement("achievement", ach, s_accs, t_accs, orgs, canEdit))
+      Ok(html.achievement("ผลงาน - ระบบกรอกข้อมูลผลงานต่างๆ ของนักศึกษา", ach, s_accs, t_accs, orgs, canEdit))
     }
   }
 
@@ -63,7 +63,7 @@ trait Show extends Controller with Pjax with AuthElement with AuthConfigImpl {
       val t_accs = Achievement.getTeacherInAch(achs)
       val orgs = Achievement.getOrgInAch(achs)
 
-      Ok(html.profile("Profile", profile, achs2, s_accs, t_accs, orgs, th_name, id.value, loggedIn))
+      Ok(html.profile("โปรไฟล์ - ระบบกรอกข้อมูลผลงานต่างๆ ของนักศึกษา", profile, achs2, s_accs, t_accs, orgs, th_name, id.value, loggedIn))
     }
   }
 

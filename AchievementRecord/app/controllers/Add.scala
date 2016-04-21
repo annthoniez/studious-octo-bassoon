@@ -20,15 +20,15 @@ trait Add extends Controller with Pjax with AuthElement with AuthConfigImpl {
   }
 
   def competition = StackAction(AuthorityKey -> Seq(Auth.Student)) { implicit request =>
-    Ok(html.add_competition("competition", None, loggedIn))
+    Ok(html.add_competition("เพิ่มการแข่งขัน - ระบบกรอกข้อมูลผลงานต่างๆ ของนักศึกษา", None, loggedIn))
   }
 
   def cert = StackAction(AuthorityKey -> Seq(Auth.Student)) { implicit request =>
-    Ok(html.add_cert("cert", None, loggedIn))
+    Ok(html.add_cert("เพิ่มใบรับรอง - ระบบกรอกข้อมูลผลงานต่างๆ ของนักศึกษา", None, loggedIn))
   }
 
   def amb = StackAction(AuthorityKey -> Seq(Auth.Student)) { implicit request =>
-    Ok(html.add_amb("amb", None, loggedIn))
+    Ok(html.add_amb("เพิ่มตัวแทนองค์กร - ระบบกรอกข้อมูลผลงานต่างๆ ของนักศึกษา", None, loggedIn))
   }
 
   def postCompetition = StackAction(AuthorityKey -> Seq(Auth.Student)) { implicit request =>

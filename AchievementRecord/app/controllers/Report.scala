@@ -18,7 +18,7 @@ trait Report extends Controller with Pjax with AuthElement with AuthConfigImpl {
   val pdfGenerator: PdfGenerator = new PdfGenerator
 
   def index() = StackAction(AuthorityKey -> Seq(Auth.Staff)) { implicit request =>
-    Ok(views.html.report("report"))
+    Ok(views.html.report("สร้างรายงาน - ระบบกรอกข้อมูลผลงานต่างๆ ของนักศึกษา"))
   }
 
   def report() = StackAction(AuthorityKey -> Seq(Auth.Staff)) { implicit request =>
