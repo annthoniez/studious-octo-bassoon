@@ -1,0 +1,6 @@
+@(title: String)(implicit template: String => Html => Html)
+@template(title) {
+  <div class="row column text-center">
+    <img src="@routes.Assets.at("/images/sticker.jpg")" alt="" >
+  </div>
+}

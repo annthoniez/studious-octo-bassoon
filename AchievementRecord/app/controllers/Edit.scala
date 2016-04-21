@@ -25,7 +25,7 @@ trait Edit extends Controller with Pjax with AuthElement with AuthConfigImpl {
     val canEdit = ach.get.accs.map(_.username).contains(loggedIn.username.value) && ach.get.created_at.isAfter(LocalDate.now().minusDays(3))
 
     if (!canEdit) {
-      Forbidden("can't edit")
+      Ok(html.tarwised.Forb("Forbidden"))
     } else {
       ach.get.achievement_type match {
         case 1 => Ok(html.add_competition("competition", ach, loggedIn))
@@ -178,7 +178,7 @@ trait Edit extends Controller with Pjax with AuthElement with AuthConfigImpl {
     val canDel = ach.get.accs.map(_.username).contains(loggedIn.username.value) && ach.get.created_at.isAfter(LocalDate.now().minusDays(3))
 
     if (!canDel) {
-      Forbidden("Can't delete")
+      Ok(html.tarwised.Forb("Forbidden"))
     } else {
       editStudents(id, Map("student_ids" -> Seq("")), ach, loggedIn)
       editTeachers(id, Map("teacher_names" -> Seq("")), ach, loggedIn)

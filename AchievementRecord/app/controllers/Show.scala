@@ -16,32 +16,42 @@ trait Show extends Controller with Pjax with AuthElement with AuthConfigImpl {
   def achievement(id: Long) = StackAction(AuthorityKey -> Seq(Auth.Student, Auth.Teacher, Auth.Staff)) { implicit request =>
     val ach = Achievement.getAchWithChild(id)
 
-    val s_accs = Achievement.joins(Achievement.accRef).findById(id).map(_.accs)
-    val t_accs = Achievement.joins(Achievement.teacher_accRef).findById(id).map(_.t_accs)
-    val orgs = Achievement.joins(Achievement.orgRef).findById(id).map(_.orgs)
+    if (loggedIn.role_id == 3 && !Achievement.joins(Achievement.accRef).findById(id).get.accs.map(_.username).contains(loggedIn.username.value)) {
+      Ok(html.tarwised.Forb("Forbidden"))
+    } else if (loggedIn.role_id == 1 && !Achievement.joins(Achievement.teacher_accRef).findById(id).get.t_accs.map(_.username).contains(loggedIn.username.value)) {
+      Ok(html.tarwised.Forb("Forbidden"))
+    } else {
+      val s_accs = Achievement.joins(Achievement.accRef).findById(id).map(_.accs)
+      val t_accs = Achievement.joins(Achievement.teacher_accRef).findById(id).map(_.t_accs)
+      val orgs = Achievement.joins(Achievement.orgRef).findById(id).map(_.orgs)
 
-    val canEdit = s_accs.get.map(_.username).contains(loggedIn.username.value) && ach.get.created_at.isAfter(LocalDate.now().minusDays(3))
+      val canEdit = s_accs.get.map(_.username).contains(loggedIn.username.value) && ach.get.created_at.isAfter(LocalDate.now().minusDays(3))
 
-    Ok(html.achievement("achievement", ach, s_accs, t_accs, orgs, canEdit))
+      Ok(html.achievement("achievement", ach, s_accs, t_accs, orgs, canEdit))
+    }
   }
 
   def profile(username: String) = StackAction(AuthorityKey -> Seq(Auth.Student, Auth.Teacher, Auth.Staff)) { implicit request =>
-    val role_id = models.Account.findByUsername(username).head.role_id
-    val profile = Auth.valueOf(role_id) match {
-      case Auth.Student => models.Student.getProfile(username)
-      case Auth.Staff => models.Staff.getProfile(username)
-      case Auth.Teacher => models.Teacher.getProfile(username)
-    }
-    val achs = Auth.valueOf(role_id) match {
-      case Auth.Student => models.Student.getAchs(username)
-      case Auth.Teacher => models.Teacher.getAchs(username)
-      case Auth.Staff => Achievement.findAll().filter(a => false)
-    }
+    if (loggedIn.role_id != 2 && loggedIn.username.value != username) {
+      Ok(html.tarwised.Forb("Forbidden"))
+    } else {
+      val role_id = models.Account.findByUsername(username).head.role_id
+      val profile = Auth.valueOf(role_id) match {
+        case Auth.Student => models.Student.getProfile(username)
+        case Auth.Staff => models.Staff.getProfile(username)
+        case Auth.Teacher => models.Teacher.getProfile(username)
+      }
+      val achs = Auth.valueOf(role_id) match {
+        case Auth.Student => models.Student.getAchs(username)
+        case Auth.Teacher => models.Teacher.getAchs(username)
+        case Auth.Staff => Achievement.findAll().filter(a => false)
+      }
 
-    val s_accs = Achievement.getStudentInAch(achs)
-    val t_accs = Achievement.getTeacherInAch(achs)
+      val s_accs = Achievement.getStudentInAch(achs)
+      val t_accs = Achievement.getTeacherInAch(achs)
 
-    Ok(html.profile("Profile", profile, achs, s_accs, t_accs))
+      Ok(html.profile("Profile", profile, achs, s_accs, t_accs))
+    }
   }
 
   def jsonProfile = StackAction(AuthorityKey -> Seq(Auth.Student)) { implicit request =>

@@ -33,6 +33,10 @@ trait Main extends Controller with Pjax with AuthElement with AuthConfigImpl {
     Ok(html.home("Home", achs2, s_accs, t_accs, orgs, th_name, id.value, loggedIn))
   }
 
+  def tarwised = StackAction(AuthorityKey -> Seq(Auth.Student, Auth.Staff, Auth.Teacher)) { implicit request =>
+    Ok(html.tarwised.Forb("Forbidden"))
+  }
+
   protected val main: User => Template = html.main.apply
 
 }
