@@ -41,3 +41,7 @@ resolvers += "scalaz-bintray" at "https://dl.bintray.com/scalaz/releases"
 Play2WarPlugin.play2WarSettings
 
 Play2WarKeys.servletVersion := "3.1"
+
+herokuAppName in Compile := "frozen-ridge-73985"
+
+herokuJdkVersion in Compile := "1.8"
