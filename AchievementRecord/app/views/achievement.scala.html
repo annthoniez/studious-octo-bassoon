@@ -130,33 +130,4 @@
       </div>
     </div>
   </div>
-
-  <div class="row header">
-    <div class="small-12 columns">
-      <div class="callout">
-        @if(canEdit) {
-          <a href="@controllers.routes.Edit.edit(ach.get.id)"><button class="btn-edit"><i class="fi-pencil"></i></button></a>
-          <a href="@controllers.routes.Edit.del(ach.get.id)"><button class="btn-delete"><i class="fi-trash"></i></button></a>
-        }
-        <h2>@ach.get.id: @ach.get.achievement_name</h2>
-        <p>@ach.get.date</p>
-
-        <ul>
-        @for(acc <- s_accs.get) {
-          <li>@acc</li>
-        }
-        </ul>
-        <ul>
-        @for(t <- t_accs.get) {
-          <li>@t</li>
-        }
-        </ul>
-        <ul>
-        @for(o <- orgs.get) {
-          <li>@o</li>
-        }
-        </ul>
-      </div>
-    </div>
-  </div>
 }
