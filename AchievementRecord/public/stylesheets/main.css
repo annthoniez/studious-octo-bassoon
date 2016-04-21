@@ -1,15 +1,15 @@
 .header {
     margin-top:40px;
 }
+.menu-text {
+    margin-bottom: 0;
+}
 i.alert {
     color: #ec5840;
 }
 .top-bar .top-bar-right { flex: none !important; }
 .top-bar > .row {
     display: inherit !important;
-}
-a.title {
-    color: #0a0a0a;
 }
 
 .btn-edit {

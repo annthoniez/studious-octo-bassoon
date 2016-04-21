@@ -1,6 +1,14 @@
 @(title: String)(implicit template: String => Html => Html)
 @template(title) {
-  <div class="row header">
+  <div class="jumbotron">
+    <div class="row">
+      <div class="large-12 columns">
+        <h1>List Item!</h1>
+        <p>Search!</p>
+      </div>
+    </div>
+  </div>
+  <div id="content" class="row">
     <div class="small-12 columns">
       <h2>Search</h2>
       <ul class="tabs" data-tabs id="example-tabs">
@@ -135,13 +143,13 @@
       </div>
     </div>
   </div>
-  <div class="row">
+  <div id="content" class="row" style="min-height: 100px;">
     <div class="small-12 columns">
       <h2>Result</h2>
-    </div>
-  </div>
-  <div class="row small-up-2" id="result">
+      <div id="result">
 
+      </div>
+    </div>
   </div>
 
   <script type="text/javascript">
@@ -237,28 +245,24 @@
           if (data.length != 0) {
             $.each(data, function(i, val) {
               $("#result").append(
-                      '<div class="columns">' +
+                      '<div class="box">' +
                         '<a href="/achievement/' + val["achievement_id"] +'">' +
-                          '<div class="callout">' +
-                            '<h2>' + val["achievement_name"] + '</h2>' +
-                              '<p>' + val["date"] + '</p>' +
-                              '<p>' +
+                            '<h4 class=box-title"><i class="fa fa-cube"></i>' + val["achievement_name"] + '</h4></a>' +
+                              '<div class="meta">' +
+                              '<strong>Date: </strong>' + val["date"] + '<br>' +
+                              '<strong>Students: </strong>' +
                               $.map(val["students"], function(stu, key) {
                                 return stu["th_name"];
-                              }) +
-                              '</p>' +
-                              '<p>' +
+                              }) + '<br>' +
+                              '<strong>Instructors: </strong>' +
                               $.map(val["teachers"], function(te, key) {
                                 return te["th_name"];
-                              }) +
-                              '</p>' +
-                              '<p>' +
+                              }) + '<br>' +
+                              '<strong>Organizations: </strong>' +
                               $.map(val["orgs"], function(o, key) {
                                 return o["organization_name"];
                               }) +
-                              '</p>' +
-                          '</div>' +
-                        '</a>' +
+                              '</div>' +
                       '</div>');
             })
           } else {

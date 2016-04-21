@@ -1,189 +1,168 @@
 @(title: String, ach: Option[Achievement], account: Account)(implicit template: String => Html => Html)
 @template(title) {
-  <div class="row header">
-    <div class="small-12 columns">
-      <h2>Add Achievement</h2>
-      <div class="callout">
-        @if(ach.isDefined) {
-          <form action="/edit/competition/@ach.get.id" method="post" enctype="multipart/form-data" data-abide novalidate>
-        } else {
-          <form action="/add/competition" method="post" enctype="multipart/form-data" data-abide novalidate>
-        }
-          <div class="alert callout" data-abide-error style="display: none;">
-            <p><i class="fi_alert"></i> There are some errors in your form.</p>
-          </div>
-          <div class="row">
-            <div class="small-3 columns">
-              <label>รหัสนักศึกษา
-                <input type="text" id="CurrentStudentId" placeholder="CurrentStudentId" class="student_ids" name="student_ids" disabled="disabled" />
-              </label>
-            </div>
-            <div class="small-9 columns">
-              <label>ชื่อ-สกุลนักศึกษา
-                <input type="text" id="CurrentStudentName" placeholder="CurrentStudentName" class="student_names" name="student_names" disabled="disabled">
-              </label>
-            </div>
-          </div>
-          @if(ach.isDefined) {
-            @for(stu <- ach.get.accs) {
-              @if(stu.username != account.username.value) {
-                <div class="row">
-                  <div class="small-3 columns">
-                    <input type="text" placeholder="AnotherStudent" class="student_ids" name="student_ids" pattern="number" value="@stu.username">
-                    <span class="form-error">
-                      ตัวเลข
-                    </span>
-                  </div>
-                  <div class="small-8 columns">
-                    <input type="text" palceholder="AnotherStudentName" class="student_names" name="student_names" disabled="disabled" value="@stu.th_name">
-                  </div>
-                  <div class="small-1 columns">
-                    <button type="button" class="alert small button removeStudent"><i class="fi-minus"></i></button>
-                  </div>
-                </div>
-              }
-            }
-          }
-          <div class="row">
-            <div class="small-3 columns">
-              <input type="text" placeholder="AnotherStudent" class="student_ids" name="student_ids" pattern="number">
-              <span class="form-error">
-                ตัวเลข
-              </span>
-            </div>
-            <div class="small-8 columns">
-              <input type="text" palceholder="AnotherStudentName" class="student_names" name="student_names" disabled="disabled">
-            </div>
-            <div class="small-1 columns">
-              <button type="button" class="small button addStudent"><i class="fi-plus"></i></button>
-            </div>
-          </div>
-          <hr>
-          @if(ach.isDefined) {
-            @for((teacher, index) <- ach.get.t_accs.zipWithIndex) {
-              @if(index == 0) {
-                <div class="row">
-                  <div class="small-11 columns">
-                    <label>ชื่ออาจารย์ที่ปรึกษา
-                      <input id="firstTeacher" type="text" name="teacher_names" data-abide-ignore value="@teacher.username">
-                    </label>
-                  </div>
-                  <div class="small-1 columns">
-                    <label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                      <button type="button" class="alert small button removeTeacher"><i class="fi-minus"></i></button>
-                    </label>
-                  </div>
-                </div>
-              } else {
-                <div class="row">
-                  <div class="small-11 columns">
-                    <input type="text" palceholder="AnotherTeacherName" name="teacher_names" data-abide-ignore value="@teacher.username">
-                  </div>
-                  <div class="small-1 columns">
-                    <button type="button" class="alert small button removeTeacher">
-                      <i class="fi-minus"></i>
-                    </button>
-                  </div>
-                </div>
-              }
-            }
+  <div class="jumbotron">
+    <div class="row columns">
+      <div class="large-12 columns">
+        <h1 class="kanit">เพิ่มรายการใหม่</h1>
+        <p class="kanit">Competition</p>
+      </div>
+    </div>
+  </div>
+  <div id="content" class="row columns">
+    @if(ach.isDefined) {
+      <form action="/edit/competition/@ach.get.id" method="post" enctype="multipart/form-data" data-abide novalidate>
+    } else {
+      <form action="/add/competition" method="post" enctype="multipart/form-data" data-abide novalidate>
+    }
+      <div class="alert callout" data-abide-error style="display: none;">
+        <p><i class="fi_alert"></i> There are some errors in your form.</p>
+      </div>
+      <div class="row">
+        <div class="small-3 columns">
+          <label>รหัสนักศึกษา
+            <input type="text" id="CurrentStudentId" placeholder="CurrentStudentId" class="student_ids" name="student_ids" disabled="disabled" />
+          </label>
+        </div>
+        <div class="small-9 columns">
+          <label>ชื่อ-สกุลนักศึกษา
+            <input type="text" id="CurrentStudentName" placeholder="CurrentStudentName" class="student_names" name="student_names" disabled="disabled">
+          </label>
+        </div>
+      </div>
+      @if(ach.isDefined) {
+        @for(stu <- ach.get.accs) {
+          @if(stu.username != account.username.value) {
             <div class="row">
-              <div class="small-11 columns">
-                <input type="text" palceholder="AnotherTeacherName" name="teacher_names" data-abide-ignore>
+              <div class="small-3 columns">
+                <input type="text" placeholder="AnotherStudent" class="student_ids" name="student_ids" pattern="number" value="@stu.username">
+                <span class="form-error">
+                  ตัวเลข
+                </span>
+              </div>
+              <div class="small-8 columns">
+                <input type="text" palceholder="AnotherStudentName" class="student_names" name="student_names" disabled="disabled" value="@stu.th_name">
               </div>
               <div class="small-1 columns">
-                <button type="button" class="small button addTeacher">
-                  <i class="fi-plus"></i>
-                </button>
+                <button type="button" class="alert small button removeStudent"><i class="fi-minus"></i></button>
               </div>
             </div>
-          } else {
+          }
+        }
+      }
+      <div class="row">
+        <div class="small-3 columns">
+          <input type="text" placeholder="AnotherStudent" class="student_ids" name="student_ids" pattern="number">
+          <span class="form-error">
+            ตัวเลข
+          </span>
+        </div>
+        <div class="small-8 columns">
+          <input type="text" palceholder="AnotherStudentName" class="student_names" name="student_names" disabled="disabled">
+        </div>
+        <div class="small-1 columns">
+          <button type="button" class="small button addStudent"><i class="fi-plus"></i></button>
+        </div>
+      </div>
+      <hr>
+      @if(ach.isDefined) {
+        @for((teacher, index) <- ach.get.t_accs.zipWithIndex) {
+          @if(index == 0) {
             <div class="row">
               <div class="small-11 columns">
                 <label>ชื่ออาจารย์ที่ปรึกษา
-                  <input id="firstTeacher" type="text" name="teacher_names" data-abide-ignore>
+                  <input id="firstTeacher" type="text" name="teacher_names" data-abide-ignore value="@teacher.username">
                 </label>
               </div>
               <div class="small-1 columns">
                 <label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  <button type="button" class="small button addTeacher"><i class="fi-plus"></i></button>
+                  <button type="button" class="alert small button removeTeacher"><i class="fi-minus"></i></button>
                 </label>
               </div>
             </div>
-          }
-
-          <hr>
-          <div class="row">
-            <div class="small-8 columns">
-              <label>ชื่อการแข่งขัน <i class="alert fi-asterisk"></i>
-                <input name="event_name" type="text" placeholder="Event Name" required value="@ach.map(_.comp.get.event_name).getOrElse("")">
-                <span class="form-error">
-                  กรอกด้วย
-                </span>
-              </label>
-            </div>
-            <div class="small-4 columns">
-              <label>หมวดการแข่งขัน
-                <input name="topic" type="text" placeholder="Event Topic" data-abide-ignore value="@ach.map(_.comp.get.topic).getOrElse("")">
-              </label>
-            </div>
-          </div>
-          <div class="row">
-            <div class="small-6 columns">
-              <label>ระดับ <i class="alert fi-asterisk"></i>
-                <select name="level" required>
-                  <option value=""></option>
-                  <option value="ระดับชาติ">ระดับชาติ</option>
-                  <option value="ระดับโลก">ระดับโลก</option>
-                  <option value="ระดับจักรวาล">ระดับจักรวาล</option>
-                </select>
-                <span class="form-error">
-                  กรอกด้วย
-                </span>
-              </label>
-            </div>
-            <div class="small-6 columns">
-              <label>ประเภท <i class="alert fi-asterisk"></i>
-                <select name="category" required>
-                  <option value=""></option>
-                  <option value="วิชาการ">วิชาการ</option>
-                  <option value="คุณธรรม">คุณธรรม</option>
-                </select>
-                <span class="form-error">
-                  กรอกด้วย
-                </span>
-              </label>
-            </div>
-          </div>
-          @if(ach.isDefined) {
-            @for((o, index) <- ach.get.orgs.zipWithIndex) {
-              @if(index == 0) {
-                <div class="row">
-                  <div class="small-12 columns">
-                    <label>หน่วยงานที่จัด <i class="alert fi-asterisk"></i>
-                      <select name="orgs" class="orgs" required>
-                        <option value=""></option>
-                      </select>
-                      <span class="form-error">
-                        กรอกด้วย
-                      </span>
-                    </label>
-                  </div>
-                </div>
-              } else {
-                <div class="row">
-                  <div class="small-11 columns">
-                    <select name="orgs" class="orgs">
-                      <option value="">เพิ่มได้ด้วย</option>
-                    </select>
-                  </div>
-                  <div class="small-1 columns">
-                    <button type="button" class="alert small button removeOrg"><i class="fi-minus"></i></button>
-                  </div>
-                </div>
-              }
-            }
           } else {
+            <div class="row">
+              <div class="small-11 columns">
+                <input type="text" palceholder="AnotherTeacherName" name="teacher_names" data-abide-ignore value="@teacher.username">
+              </div>
+              <div class="small-1 columns">
+                <button type="button" class="alert small button removeTeacher">
+                  <i class="fi-minus"></i>
+                </button>
+              </div>
+            </div>
+          }
+        }
+        <div class="row">
+          <div class="small-11 columns">
+            <input type="text" palceholder="AnotherTeacherName" name="teacher_names" data-abide-ignore>
+          </div>
+          <div class="small-1 columns">
+            <button type="button" class="small button addTeacher">
+              <i class="fi-plus"></i>
+            </button>
+          </div>
+        </div>
+      } else {
+        <div class="row">
+          <div class="small-11 columns">
+            <label>ชื่ออาจารย์ที่ปรึกษา
+              <input id="firstTeacher" type="text" name="teacher_names" data-abide-ignore>
+            </label>
+          </div>
+          <div class="small-1 columns">
+            <label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <button type="button" class="small button addTeacher"><i class="fi-plus"></i></button>
+            </label>
+          </div>
+        </div>
+      }
+
+      <hr>
+      <div class="row">
+        <div class="small-8 columns">
+          <label>ชื่อการแข่งขัน <i class="alert fi-asterisk"></i>
+            <input name="event_name" type="text" placeholder="Event Name" required value="@ach.map(_.comp.get.event_name).getOrElse("")">
+            <span class="form-error">
+              กรอกด้วย
+            </span>
+          </label>
+        </div>
+        <div class="small-4 columns">
+          <label>หมวดการแข่งขัน
+            <input name="topic" type="text" placeholder="Event Topic" data-abide-ignore value="@ach.map(_.comp.get.topic).getOrElse("")">
+          </label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="small-6 columns">
+          <label>ระดับ <i class="alert fi-asterisk"></i>
+            <select name="level" required>
+              <option value=""></option>
+              <option value="ระดับชาติ">ระดับชาติ</option>
+              <option value="ระดับโลก">ระดับโลก</option>
+              <option value="ระดับจักรวาล">ระดับจักรวาล</option>
+            </select>
+            <span class="form-error">
+              กรอกด้วย
+            </span>
+          </label>
+        </div>
+        <div class="small-6 columns">
+          <label>ประเภท <i class="alert fi-asterisk"></i>
+            <select name="category" required>
+              <option value=""></option>
+              <option value="วิชาการ">วิชาการ</option>
+              <option value="คุณธรรม">คุณธรรม</option>
+            </select>
+            <span class="form-error">
+              กรอกด้วย
+            </span>
+          </label>
+        </div>
+      </div>
+      @if(ach.isDefined) {
+        @for((o, index) <- ach.get.orgs.zipWithIndex) {
+          @if(index == 0) {
             <div class="row">
               <div class="small-12 columns">
                 <label>หน่วยงานที่จัด <i class="alert fi-asterisk"></i>
@@ -196,86 +175,111 @@
                 </label>
               </div>
             </div>
-          }
-          <div class="row">
-            <div class="small-11 columns">
-              <select name="orgs" class="orgs">
-                <option value="">เพิ่มได้ด้วย</option>
-              </select>
-            </div>
-            <div class="small-1 columns">
-              <button type="button" class="small button addOrg"><i class="fi-plus"></i></button>
-            </div>
-          </div>
-          <hr>
-          <div class="row">
-            <div class="small-12 columns">
-              <label>ชื่อผลงาน <i class="alert fi-asterisk"></i>
-                <input type="text" name="achievement_name" required value="@ach.map(_.achievement_name).getOrElse("")">
-                <span class="form-error">
-                  กรอกด้วย
-                </span>
-              </label>
-            </div>
-          </div>
-          <div class="row">
-            <div class="small-4 columns">
-              <label>อันดับ <i class="alert fi-asterisk"></i>
-                <select name="rank" id="rank" required>
-                  <option value=""></option>
-                  <option value="รางวัลชนะเลิศ">รางวัลชนะเลิศ</option>
-                  <option value="รางวัลรองชนะเลิศอันดับที่ 1">รางวัลรองชนะเลิศอันดับที่ 1</option>
-                  <option value="0">อื่นๆ</option>
-                </select>
-                <span class="form-error">
-                  กรอกด้วย
-                </span>
-              </label>
-            </div>
-            <div class="small-8 columns">
-              <label>&nbsp;
-                <input type="text" placeholder="Rank Description" id="rank_des" name="rank_des" disabled="disabled">
-              </label>
-            </div>
-          </div>
-          <div class="row">
-            <div class="small-12 columns">
-              <label>รางวัล
-                <textarea name="reward" cols="30" rows="3" placeholder="เช่น ทุนการศึกษา" data-abide-ignore>@ach.map(_.reward).getOrElse("")</textarea>
-              </label>
-            </div>
-          </div>
-          <div class="row">
-            <div class="small-6 columns">
-              <label>วันที่ได้รับ <i class="alert fi-asterisk"></i>
-                <input type="date" name="date" required value="@ach.map(_.date).getOrElse("")">
-                <span class="form-error">
-                  กรอกด้วย
-                </span>
-              </label>
-            </div>
-          </div>
-          @if(ach.isEmpty) {
+          } else {
             <div class="row">
-              <div class="small-12 columns">
-                <label for="exampleFileUpload" class="button">Upload File</label>
-                <input type="file" id="exampleFileUpload" class="show-for-sr" name="file" accept="image/jpeg, image/png">
+              <div class="small-11 columns">
+                <select name="orgs" class="orgs">
+                  <option value="">เพิ่มได้ด้วย</option>
+                </select>
+              </div>
+              <div class="small-1 columns">
+                <button type="button" class="alert small button removeOrg"><i class="fi-minus"></i></button>
               </div>
             </div>
           }
-
-          <div class="row">
-            <div class="small-12 columns small-centered">
-              <button id="submit" type="submit" class="small expanded button">Submit</button>
-            </div>
+        }
+      } else {
+        <div class="row">
+          <div class="small-12 columns">
+            <label>หน่วยงานที่จัด <i class="alert fi-asterisk"></i>
+              <select name="orgs" class="orgs" required>
+                <option value=""></option>
+              </select>
+              <span class="form-error">
+                กรอกด้วย
+              </span>
+            </label>
           </div>
-        </form>
+        </div>
+      }
+      <div class="row">
+        <div class="small-11 columns">
+          <select name="orgs" class="orgs">
+            <option value="">เพิ่มได้ด้วย</option>
+          </select>
+        </div>
+        <div class="small-1 columns">
+          <button type="button" class="small button addOrg"><i class="fi-plus"></i></button>
+        </div>
       </div>
-    </div>
+      <hr>
+      <div class="row">
+        <div class="small-12 columns">
+          <label>ชื่อผลงาน <i class="alert fi-asterisk"></i>
+            <input type="text" name="achievement_name" required value="@ach.map(_.achievement_name).getOrElse("")">
+            <span class="form-error">
+              กรอกด้วย
+            </span>
+          </label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="small-4 columns">
+          <label>อันดับ <i class="alert fi-asterisk"></i>
+            <select name="rank" id="rank" required>
+              <option value=""></option>
+              <option value="รางวัลชนะเลิศ">รางวัลชนะเลิศ</option>
+              <option value="รางวัลรองชนะเลิศอันดับที่ 1">รางวัลรองชนะเลิศอันดับที่ 1</option>
+              <option value="0">อื่นๆ</option>
+            </select>
+            <span class="form-error">
+              กรอกด้วย
+            </span>
+          </label>
+        </div>
+        <div class="small-8 columns">
+          <label>&nbsp;
+            <input type="text" placeholder="Rank Description" id="rank_des" name="rank_des" disabled="disabled">
+          </label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="small-12 columns">
+          <label>รางวัล
+            <textarea name="reward" cols="30" rows="3" placeholder="เช่น ทุนการศึกษา" data-abide-ignore>@ach.map(_.reward).getOrElse("")</textarea>
+          </label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="small-6 columns">
+          <label>วันที่ได้รับ <i class="alert fi-asterisk"></i>
+            <input type="date" name="date" required value="@ach.map(_.date).getOrElse("")">
+            <span class="form-error">
+              กรอกด้วย
+            </span>
+          </label>
+        </div>
+      </div>
+      @if(ach.isEmpty) {
+        <div class="row">
+          <div class="small-12 columns">
+            <label for="exampleFileUpload" class="button">Upload File</label>
+            <input type="file" id="exampleFileUpload" class="show-for-sr" name="file" accept="image/jpeg, image/png">
+          </div>
+        </div>
+      }
+      <hr>
+
+      <div class="row">
+        <div class="small-12 columns small-centered">
+          <button id="submit" type="submit" class="small expanded button">Submit</button>
+        </div>
+      </div>
+    </form>
   </div>
 
   <script type="text/javascript">
-    $(".header").on("click", ".addStudent", function(e) {
+    $("#content").on("click", ".addStudent", function(e) {
       e.stopPropagation();
       $(this).removeClass("addStudent");
       $('<div class="row"><div class="small-3 columns"><input type="text" placeholder="AnotherStudent" class="student_ids" name="student_ids"></div><div class="small-8 columns"><input type="text" placeholder="AnotherStudent" class="student_ids" name="student_ids" required pattern="number" disabled="disabled"><span class="form-error">กรอกด้วย</span></div><div class="small-1 columns"><button type="button" class="small button addStudent"><i class="fi-plus"></i></button></div></div>').insertAfter($(this).parent().parent());
@@ -284,12 +288,12 @@
       $(this).children().addClass("fi-minus");
     });
 
-    $(".header").on('click', ".removeStudent", function(e) {
+    $("#content").on('click', ".removeStudent", function(e) {
       e.stopPropagation();
       $(this).parent().parent().remove();
     });
 
-    $(".header").on('click', '.addOrg', function (e) {
+    $("#content").on('click', '.addOrg', function (e) {
       e.stopPropagation();
       $(this).removeClass("addOrg");
       $('<div class="row"><div class="small-11 columns"><select name="orgs" class="orgs"><option value="">เลือกหน่วยงาน</option></select></div><div class="small-1 columns"><button type="button" class="small button addOrg"><i class="fi-plus"></i></button></div></div>').insertAfter($(this).parent().parent());
@@ -311,12 +315,12 @@
       $(this).children().addClass("fi-minus");
     });
 
-    $(".header").on("click", ".removeOrg", function (e) {
+    $("#content").on("click", ".removeOrg", function (e) {
       e.stopPropagation();
       $(this).parent().parent().remove();
     });
 
-    $(".header").on('click', ".addTeacher", function (e) {
+    $("#content").on('click', ".addTeacher", function (e) {
       e.stopPropagation();
       $(this).removeClass("addTeacher");
       $('<div class="row"><div class="small-11 columns"><input type="text" palceholder="AnotherTeacherName" name="teacher_names" data-abide-ignore></div><div class="small-1 columns"><button type="button" class="small button addTeacher"><i class="fi-plus"></i></button></div></div>').insertAfter($(this).closest(".row"));
@@ -325,7 +329,7 @@
       $(this).children().addClass("fi-minus");
     });
 
-    $(".header").on('click', ".removeTeacher", function (e) {
+    $("#content").on('click', ".removeTeacher", function (e) {
       e.stopPropagation();
       if($(this).parent("label").length) {
         $("#firstTeacher").val($(this).closest(".row").next().children().first().children().val());
