@@ -13,6 +13,7 @@ case class Staff(staff_id: Username,
                  section_id: Int,
                  mobile: String,
                  email: String,
+                 noti: Boolean,
                  acc: Option[Account] = None,
                  section: Option[Section] = None)
 object Staff extends SkinnyCRUDMapperWithId[Username, Staff]{
@@ -29,7 +30,8 @@ object Staff extends SkinnyCRUDMapperWithId[Username, Staff]{
     en_name = rs.get(n.en_name),
     section_id = rs.get(n.section_id),
     mobile = rs.get(n.mobile),
-    email = rs.get(n.email)
+    email = rs.get(n.email),
+    noti = rs.get(n.noti)
   )
 
   lazy val accRef = hasOneWithFk[Account](

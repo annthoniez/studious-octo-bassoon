@@ -42,5 +42,6 @@ GET     /pdf                    controllers.Report.pdf
 
 GET     /setting                controllers.Setting.index
 POST    /setting/password       controllers.Setting.changePassword
+POST    /setting/notification   controllers.Setting.changeNoti
 
 GET     /tarwised               controllers.Main.tarwised
