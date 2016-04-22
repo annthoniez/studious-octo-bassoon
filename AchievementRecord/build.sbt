@@ -38,14 +38,6 @@ unmanagedResourceDirectories in Test <+=  baseDirectory ( _ /"target/web/public/
 
 resolvers += "scalaz-bintray" at "https://dl.bintray.com/scalaz/releases"
 
-resolvers ++= Seq(
-  "RoundEights" at "http://maven.spikemark.net/roundeights"
-)
-
-libraryDependencies ++= Seq(
-  "com.roundeights" %% "mailgun-scala" % "0.2"
-)
-
 Play2WarPlugin.play2WarSettings
 
 Play2WarKeys.servletVersion := "3.1"
