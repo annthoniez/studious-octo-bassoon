@@ -35,19 +35,19 @@ trait Show extends Controller with Pjax with AuthElement with AuthConfigImpl {
     if (loggedIn.role_id != 2 && loggedIn.username.value != username) {
       Ok(html.tarwised.Forb("Forbidden"))
     } else {
-      val username = loggedIn.username.value
-      val th_name = Auth.valueOf(loggedIn.role_id) match {
+      val role_id = models.Account.findByUsername(username).head.role_id
+      val th_name = Auth.valueOf(role_id) match {
         case Auth.Student => models.Student.getProfile(username).th_name
         case Auth.Staff => models.Staff.getProfile(username).th_name
         case Auth.Teacher => models.Teacher.getProfile(username).th_name
       }
-      val id = Auth.valueOf(loggedIn.role_id) match {
+      val id = Auth.valueOf(role_id) match {
         case Auth.Student => models.Student.getProfile(username).student_id
         case Auth.Staff => models.Staff.getProfile(username).staff_id
         case Auth.Teacher => models.Teacher.getProfile(username).teacher_id
       }
 
-      val role_id = models.Account.findByUsername(username).head.role_id
+
       val profile = Auth.valueOf(role_id) match {
         case Auth.Student => models.Student.getProfile(username)
         case Auth.Staff => models.Staff.getProfile(username)
@@ -62,6 +62,8 @@ trait Show extends Controller with Pjax with AuthElement with AuthConfigImpl {
       val s_accs = Achievement.getStudentInAch(achs)
       val t_accs = Achievement.getTeacherInAch(achs)
       val orgs = Achievement.getOrgInAch(achs)
+
+      println(profile)
 
       Ok(html.profile("โปรไฟล์ - ระบบกรอกข้อมูลผลงานต่างๆ ของนักศึกษา", profile, achs2, s_accs, t_accs, orgs, th_name, id.value, loggedIn))
     }
