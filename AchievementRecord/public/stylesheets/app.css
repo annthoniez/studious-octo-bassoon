@@ -1,0 +1,272 @@
+@import url(https://fonts.googleapis.com/css?family=Kanit:400,500&subset=latin,thai);
+
+.button{
+  margin: 0 0 0;
+}
+.top-bar{
+  background: #212B35;
+  color: #fff;
+}
+
+.top-bar > .top-bar-right > li {
+  background: #fff;
+}
+
+.hero {
+  width: 100%;
+  min-height: 600px;
+  height: auto;
+  background: url('../images/hero.jpg') no-repeat;
+  background-size: 100% 100%;
+  padding: 150px 50px 50px ;
+  color: #fff;
+}
+
+.kanit {
+  font-family: 'Kanit', sans-serif;
+}
+
+
+.profile-card {
+  padding: 1rem;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+  margin: 2rem 0;
+  background-color: #fff;
+}
+
+.profile-card img {
+  width: 8rem;
+  display: block;
+  margin: 2rem auto;
+  text-align: center;
+  border-radius: 50%;
+  box-shadow: 2px 2px 5px #888888;
+}
+
+.profile-card .profile-info {
+  padding: 1rem;
+}
+
+.profile-card .profile-info h2 {
+  margin-top: 0;
+  text-align: center;
+  text-transform: uppercase;
+}
+.profile-card .profile-info p {
+  text-align: center;
+}
+
+.profile-card .profile-info .inline-list {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.profile-card .profile-info .inline-list li {
+  float: none;
+  display: inline-block;
+}
+
+.profile-card .profile-info .inline-list i.fi-social-facebook {
+  font-size: 1.5rem;
+  color: #3b5998;
+}
+
+.profile-card .profile-info .inline-list i.fi-social-facebook:hover {
+  transform: scale(1.5);
+  transition: all .5s ease-in-out;
+}
+
+.profile-card .profile-info .inline-list i.fi-social-twitter {
+  font-size: 1.5rem;
+  color: #55acee;
+}
+
+.profile-card .profile-info .inline-list i.fi-social-twitter:hover {
+  transform: scale(1.5);
+  transition: all .5s ease-in-out;
+}
+
+.profile-card .profile-info .inline-list i.fi-social-linkedin {
+  font-size: 1.5rem;
+  color: #0077b5;
+}
+
+.profile-card .profile-info .inline-list i.fi-social-linkedin:hover {
+  transform: scale(1.5);
+  transition: all .5s ease-in-out;
+}
+
+.profile-card .profile-info .inline-list i.fi-social-github {
+  font-size: 1.5rem;
+  color: #333;
+}
+
+.profile-card .profile-info .inline-list i.fi-social-github:hover {
+  transform: scale(1.5);
+  transition: all .5s ease-in-out;
+}
+
+.profile-card .profile-info .inline-list i.fi-social-youtube {
+  font-size: 1.5rem;
+  color: #cc181e;
+}
+
+.profile-card .profile-info .inline-list i.fi-social-youtube:hover {
+  transform: scale(1.5);
+  transition: all .5s ease-in-out;
+}
+
+.main-footer {
+  background-color: #434A54;
+  position: relative;
+  padding: 45px 0 45px;
+  color: #fff;
+}
+
+.app {
+  background-color: #F5F7FA;
+  font-size: 13px;
+  line-height: 1.6em;
+  color: #333;
+}
+
+hr {
+  color: #eee;
+}
+h1 {
+  font-size: 36px;
+}
+
+h2 {
+  font-size: 30px;
+}
+
+h3 {
+  font-size: 24px;
+}
+
+h4 {
+  font-size: 18px;
+}
+
+a {
+    color: #37BC9B;
+}
+a.title:hover {
+  color: #37BC9B;
+}
+
+.app-top-bar{
+  background: #37BC9B;
+  color: #fff;
+  height: 50px;
+  padding: 15px 15px;
+}
+
+.jumbotron {
+  background: url("../images/footer-bg.png") no-repeat 50% 0;
+  color: #fff;
+  padding: 48px 0;
+}
+
+.jumbotron p {
+    margin-bottom: 15px;
+    font-size: 21px;
+    font-weight: 200;
+}
+
+#content {
+  background-color: #fff;
+  padding: 15px;
+  border-left: 1px solid #e0e0e0;
+  border-right: 1px solid #e0e0e0;
+  min-height: 600px;
+}
+
+.box {
+  margin-bottom: 20px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  -webkit-box-shadow: 0 1px 1px rgba(0,0,0,.05);
+  box-shadow: 0 1px 1px rgba(0,0,0,.05);
+  padding: 15px;
+}
+
+h4.box-title {
+  margin: 0 0 10px 0;
+  line-height: 1.6em;
+  font-size: 20px;
+}
+
+.box-meta {
+  border-bottom: 1px dashed #e0e0e0;
+  margin-bottom: 10px;
+  padding-bottom: 5px;
+  font-size: 11px;
+}
+
+.box-footer {
+  border-top: 1px solid #e0e0e0;
+  margin-left: -15px;
+  margin-right: -15px;
+  margin-bottom: -5px;
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-top: 10px;
+  background-color: #e0e0e0;
+}
+
+.meta {
+  margin-bottom: 0;
+  background: #f5f5f5;
+  box-shadow: none;
+  -webkit-box-shadow: none;
+  padding: 10px;
+  line-height: 1.8em;
+  color: #424242;
+}
+
+.sidebar-header {
+  color: #2c3e50;
+  font-weight: 500;
+  font-size: 18px;
+  border-bottom: 2px solid #2c3e50;
+  margin-bottom: 9px;
+}
+
+.app-footer {
+  background: #ebedef;
+  padding: 25px 0 15px 0;
+  font-size: 12px;
+  border-top: 10px solid #e0e0e0;
+}
+
+li a {
+    display: block;
+    padding: 10px 0 10px 16px;
+    text-decoration: none;
+    font-size: 16px;
+    color: #2c3e50;
+}
+
+li a:hover {
+    background-color: #2c3e50;
+    color: #fff;
+}
+.field {
+  width: 100%;
+  background: #ededed;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  margin-bottom: 10px;
+}
+
+.field > .title {
+  background: #fff;
+  padding: 10px 9px 10px 9px;
+  font-weight: bold;
+}
+
+.field > .value {
+  padding-left: 5px;
+}

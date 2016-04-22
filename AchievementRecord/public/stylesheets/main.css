@@ -1,3 +1,45 @@
 .header {
     margin-top:40px;
 }
+.menu-text {
+    margin-bottom: 0;
+}
+i.alert {
+    color: #ec5840;
+}
+.top-bar .top-bar-right { flex: none !important; }
+.top-bar > .row {
+    display: inherit !important;
+}
+
+.btn-edit {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: #2199e8;
+    color: white;
+    font-size: 0.8rem;
+    padding: 0.75rem 1rem;
+    z-index: 1;
+}
+.btn-delete {
+    position: absolute;
+    top: 0;
+    right: 40px;
+    background: #ec5840;
+    color: white;
+    font-size: 0.8rem;
+    padding: 0.75rem 1rem;
+    z-index: 1;
+}
+
+#compet {
+    display: none;
+}
+#cert {
+    display: none;
+}
+
+i {
+    margin-right: 8px;
+}

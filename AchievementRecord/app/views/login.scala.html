@@ -1,9 +1,13 @@
 @(form: Form[Option[Account]])(implicit flash: Flash)
-@fragment.header("Login") {
-  <div class="row header">
-    <div class="small-10 medium-6 large-4 small-centered columns">
-      <h2 class="text-center">Sign in</h2>
-      <div class="callout">
+@fragment.header(null)("เข้าสู่ระบบ - ระบบกรอกข้อมูลผลงานต่างๆ ของนักศึกษา") {
+  <section class="hero">
+    <div class="row">
+      <div class="large-8 columns">
+        <h2 class="kanit">ระบบกรอกข้อมูลผลงานต่างๆ ของนักศึกษา</h2>
+        <p>ภูมิทัศน์ละติน เมจิก คอร์ปเตี๊ยมฟรังก์อพาร์ตเมนต์ยังไง ตับ ไต ไส้ พุง เทรลเลอร์ ตุ๋ยวัจนะสเตย์คำสาป โมหจริตคาปูชิโนดีพาร์ทเมนต์ แหม็บโมเดิร์นกรุ๊ป แบล็กแยมโรล นู้ดบูติกอึ้ม ซูชินิรันดร์สึนามิ วอล์คผ้าห่ม ทอมเมคอัพ แจ็กพอตซิตี นอมินีสเตย์ดัมพ์ บาร์บีคิวแชมเปญทรูไฟต์ แอดมิสชันอุปนายิกา
+          สปายแบ็กโฮแม็กกาซีนไฮเทค หม่านโถวเมจิค กิฟท์ ออร์เดอร์ดีพาร์ทเมนต์ออร์แกนิกโจ๋ มอลล์รีทัชโปลิศภควัมปติ โจ๋เอสเพรสโซ โอวัลตินโง่เขลาอิมพีเรียลฮัม วืดโอเปอเรเตอร์ สต็อคถูกต้องโลชั่นกู๋เห่ย ออร์แกน ชนะเลิศเซอร์มอบตัว นิวยากูซ่า ทัวร์นาเมนท์การันตีว้าวสตริงวอร์รูม ซีเรียส มัฟฟินมิวสิคโหงวออสซี่ แฟกซ์แฟลชแจ๊กเก็ตมาร์ชแฮมเบอร์เกอร์</p>
+      </div>
+      <div class="large-4 columns">
         @helper.form(controllers.routes.Application.authenticate) {
           @form.globalError.map { e =>
             <div class="alert callout">
@@ -15,27 +19,75 @@
               <p><i class="fi_check"></i> Success</p>
             </div>
           }
-          <div class="row">
+          <div class="row" style="padding-top: 25px;">
             <div class="small-12 columns">
-              <label>Username
-                <input type="text" placeholder="Username" name="username" id="username" value="@form("username").value"/>
-              </label>
+              <input type="text" placeholder="Username" name="username" value="@form("username").value">
             </div>
           </div>
           <div class="row">
             <div class="small-12 columns">
-              <label>Password
-                <input type="password" placeholder="Password" name="password" id="password">
-              </label>
+              <input type="Password" placeholder="Password" name="password" id="password">
             </div>
           </div>
           <div class="row">
-            <div class="small-12 columns small-centered">
-              <button type="submit" class="small expanded button">Sign in</button>
+            <div class="small-12 columns">
+              <button type="submit" class="expanded success button"><i class="fa fa-sign-in" aria-hidden="true"></i>Sign in</button>
             </div>
           </div>
         }
       </div>
     </div>
-  </div>
+  </section>
+  <section class="main">
+    <div class="row">
+      <div class="medium-4 columns">
+        <div class="profile-card">
+          <img src="@routes.Assets.at("/images/Network-128.png")" alt="Inky">
+          <div class="profile-info">
+            <h2 class="subheader kanit">ครอบคลุม</h2>
+            <p>เทคช็อป มิลค์ พ่อค้าตูด</p>
+            <p><strong>สไลด์โจ๋สุริยยาตร์ซิงพ่อค้า </strong>โพลารอยด์อัลไซเมอร์แบ็กโฮสตรอเบอร์รี มาราธอนคอมพ์แอสเตอร์งี้ แอปพริคอท เธคอ่อนด้อยเพียบแปร้ช็อปปิ้งตัวเอง เกรย์ติ๋มวิลเลจซาดิสม์แป๋ว เวิร์คท็อปบู๊ทสวีท อุปนายกสโตนคอนเฟิร์มแรงดูดซาดิสต์ สเปคโปรวานิลลา พาโตรนุม</p>
+            <p><a href="http://foundation.zurb.com/forum">Forum</a> | <a href="http://zurb.com/ink/">Website</a></p>
+            <ul class="inline-list">
+              <li><a href="https://www.facebook.com/ZURB"><i class="fi-social-facebook"></i></a></li>
+              <li><a href="https://twitter.com/zurbink"><i class="fi-social-twitter"></i></a></li>
+              <li><a href="https://github.com/zurb/ink"><i class="fi-social-github"></i></a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="medium-4 columns">
+        <div class="profile-card">
+          <img src="@routes.Assets.at("/images/Light-Bulb-128.png")" alt="Yeti">
+          <div class="profile-info">
+            <h2 class="subheader kanit">ใช้งานง่าย</h2>
+            <p>อุปนายก รามสเปคโปรวานิลลา</p>
+            <p><strong>มาราธอนคอมพ์แอสเตอร์งี้ </strong>โพลารอยด์อัลไซเมอร์แบ็กโฮสตรอเบอร์รี มาราธอนคอมพ์แอสเตอร์งี้ แอปพริคอท เธคอ่อนด้อยเพียบแปร้ช็อปปิ้งตัวเอง เกรย์ติ๋มวิลเลจซาดิสม์แป๋ว เวิร์คท็อปบู๊ทสวีท อุปนายกสโตนคอนเฟิร์มแรงดูดซาดิสต์ สเปคโปรวานิลลา พาโตรนุม</p>
+            <p><a href="http://foundation.zurb.com/forum">Forum</a> | <a href="http://foundation.zurb.com/">Website</a></p>
+            <ul class="inline-list">
+              <li><a href="https://www.facebook.com/ZURB"><i class="fi-social-facebook"></i></a></li>
+              <li><a href="https://twitter.com/ZURBfoundation"><i class="fi-social-twitter"></i></a></li>
+              <li><a href="https://github.com/zurb/foundation"><i class="fi-social-github"></i></a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="medium-4 columns">
+        <div class="profile-card">
+          <img src="@routes.Assets.at("/images/Bill-128.png")">
+          <div class="profile-info">
+            <h2 class="subheader kanit">ทำรายงานได้ทันที</h2>
+            <p>คอนแทค รามเทพวีเจ</p>
+            <p><strong>โบตั๋นโยโย่กิมจิ </strong>โพลารอยด์อัลไซเมอร์แบ็กโฮสตรอเบอร์รี มาราธอนคอมพ์แอสเตอร์งี้ แอปพริคอท เธคอ่อนด้อยเพียบแปร้ช็อปปิ้งตัวเอง เกรย์ติ๋มวิลเลจซาดิสม์แป๋ว เวิร์คท็อปบู๊ทสวีท อุปนายกสโตนคอนเฟิร์มแรงดูดซาดิสต์ สเปคโปรวานิลลา พาโตรนุม</p>
+            <p><a href="http://foundation.zurb.com/forum">Forum</a> | <a href="http://foundation.zurb.com/">Website</a></p>
+            <ul class="inline-list">
+              <li><a href="https://www.facebook.com/ZURB"><i class="fi-social-facebook"></i></a></li>
+              <li><a href="https://twitter.com/ZURBfoundation"><i class="fi-social-twitter"></i></a></li>
+              <li><a href="https://github.com/zurb/foundation"><i class="fi-social-github"></i></a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 }

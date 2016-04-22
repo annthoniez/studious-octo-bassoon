@@ -1,0 +1,62 @@
+@(achs: Seq[Achievement])(implicit template: String => Html => Html)
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <style type="text/css"><!--
+      body {
+        font-family: 'TH Sarabun New', sans-serif;
+      }
+    table {
+      border-spacing: 0;
+      border: 1px none black;
+      border-collapse: collapse;
+      background-color: white;
+    }
+    table th {
+      padding: 5px;
+      border: 1px inset gray;
+      background-color: #e5e5e5;
+      -moz-border-radius: ;
+    }
+    table td {
+      padding: 5px;
+      border: 1px inset gray;
+      background-color: white;
+      -moz-border-radius: ;
+    }
+    --></style>
+  </head>
+  <body class="app">
+    <div class="row expanded column">
+      <h3>รายชื่อนักศึกษาที่ได้รับรางวัลหรือประกาศเกียรติคุณยกย่อง</h3>
+      <p>คณะเทคโนโลยีสารสนเทศ สถาบันเทคโนโลยีพระจอมเกล้าเจ้าคุณทหารลาดกระบัง ปีการศึกษา 2555</p>
+      <table>
+        <thead>
+          <tr>
+            <th width="20px">ลำดับ</th>
+            <th>ชื่อ-นามสกุลนักศึกษา</th>
+            <th>ชื่อผลงาน</th>
+            <th>อาจารย์ที่ปรึกษา</th>
+            <th>หน่วยงานที่จัด</th>
+            <th>วันที่ได้รับ</th>
+            <th>ประเภท</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for((ach, index) <- achs.zipWithIndex) {
+            <tr>
+              <th>@index</th>
+              <td>@for(s <- ach.accs) { @s.th_name  }</td>
+              <td>@ach.achievement_name</td>
+              <td>@for(t <- ach.t_accs) { @t.th_prename @t.th_name }</td>
+              <td>@for(o <- ach.orgs) { @o.organization_name }</td>
+              <td>@ach.date</td>
+              <td>@ach.category</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </body>
+</html>

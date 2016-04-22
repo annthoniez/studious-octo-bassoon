@@ -3,3 +3,7 @@ logLevel := Level.Warn
 resolvers += "Typesafe repository" at "http://repo.typesafe.com/typesafe/releases/"
 
 addSbtPlugin("com.typesafe.play" % "sbt-plugin" % "2.4.2")
+
+addSbtPlugin("com.github.play2war" % "play2-war-plugin" % "1.4-beta1")
+
+addSbtPlugin("com.heroku" % "sbt-heroku" % "0.5.1")

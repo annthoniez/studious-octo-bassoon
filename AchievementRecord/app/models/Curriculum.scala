@@ -1,12 +1,14 @@
 package models
 
 import scalikejdbc._
-import skinny.orm.{Alias, SkinnyMapper}
+import skinny.orm.SkinnyMapper
 
 /**
   * Created by Pichai Sivawat on 4/5/2016.
   */
-case class Curriculum(curriculum_id: Int, th_name: String, en_name: String)
+case class Curriculum(curriculum_id: Int,
+                      th_name: String,
+                      en_name: String)
 object Curriculum extends SkinnyMapper[Curriculum]{
   override val defaultAlias = createAlias("cur")
   override val tableName = "curriculum"

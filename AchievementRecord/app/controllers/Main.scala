@@ -2,7 +2,6 @@ package controllers
 
 import jp.t2v.lab.play2.auth.AuthElement
 import models._
-import models.Auth._
 import play.api.mvc._
 import views.html
 
@@ -11,20 +10,31 @@ import views.html
   */
 trait Main extends Controller with Pjax with AuthElement with AuthConfigImpl {
   def home = StackAction(AuthorityKey -> Seq(Auth.Student, Auth.Teacher, Auth.Staff)) { implicit request =>
-//    val achs = Achievement.joins(Achievement.accRef).findAll()
-    val achs = Account.joins(Account.achRef).findAll().filter(_.username == loggedIn.username).head.achs
-    val accs = Achievement.joins(Achievement.accRef).findAll().filter(_.accs.map(_.username).contains(loggedIn.username)).map(_.accs)
-    Ok(html.home("Home", achs, accs))
+    val username = loggedIn.username.value
+    val th_name = Auth.valueOf(loggedIn.role_id) match {
+      case Auth.Student => models.Student.getProfile(username).th_name
+      case Auth.Staff => models.Staff.getProfile(username).th_name
+      case Auth.Teacher => models.Teacher.getProfile(username).th_name
+    }
+    val id = Auth.valueOf(loggedIn.role_id) match {
+      case Auth.Student => models.Student.getProfile(username).student_id
+      case Auth.Staff => models.Staff.getProfile(username).staff_id
+      case Auth.Teacher => models.Teacher.getProfile(username).teacher_id
+    }
+    val achs = Auth.valueOf(loggedIn.role_id) match {
+      case Auth.Student => models.Student.getAchs(loggedIn.username.value)
+      case Auth.Teacher => models.Teacher.getAchs(loggedIn.username.value)
+      case Auth.Staff => Achievement.findAll()
+    }
+    val achs2 = achs.map(a => Achievement.getAchWithChild(a.id))
+    val s_accs = Achievement.getStudentInAch(achs)
+    val t_accs = Achievement.getTeacherInAch(achs)
+    val orgs = Achievement.getOrgInAch(achs)
+    Ok(html.home("ระบบกรอกข้อมูลผลงานต่างๆ ของนักศึกษา", achs2, s_accs, t_accs, orgs, th_name, id.value, loggedIn))
   }
 
-  def profile = StackAction(AuthorityKey -> Seq(Auth.Student, Auth.Teacher, Auth.Staff)) { implicit request =>
-    //val account = Account.joins(Account.stuRef).findAll().filter(_.username == loggedIn.username).head.stu
-    val profile = Auth.valueOf(loggedIn.role_id) match {
-      case Auth.Student => models.Student.joins(models.Student.curriRef).joins(models.Student.trackRef).findAll().filter(_.student_id == loggedIn.username).head
-      case Auth.Staff => models.Staff.joins(models.Staff.sectionRef).findAll().filter(_.username == loggedIn.username.value).head
-      case Auth.Teacher => models.Teacher.joins(models.Teacher.statRef).findAll().filter(_.username == loggedIn.username.value).head
-    }
-    Ok(html.profile("Profile", profile))
+  def tarwised = StackAction(AuthorityKey -> Seq(Auth.Student, Auth.Staff, Auth.Teacher)) { implicit request =>
+    Ok(html.tarwised.Forb("Forbidden"))
   }
 
   protected val main: User => Template = html.main.apply

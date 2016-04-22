@@ -8,11 +8,40 @@
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
 
-#GET     /                      controllers.Application.users
-
 GET     /               controllers.Application.login
 POST    /login          controllers.Application.authenticate
 GET     /logout         controllers.Application.logout
 
-GET     /home            controllers.Main.home
-GET     /profile        controllers.Main.profile
+GET     /home           controllers.Main.home
+
+GET     /profile/:username        controllers.Show.profile(username: String)
+GET     /achievement/:id        controllers.Show.achievement(id: Long)
+GET     /jsonProfile                controllers.Show.jsonProfile
+GET     /jsonAll/:id            controllers.Show.jsonAll(id: Int)
+
+GET     /add                    controllers.Add.achievement
+GET     /add/competition        controllers.Add.competition
+POST    /add/competition        controllers.Add.postCompetition
+GET     /add/cert               controllers.Add.cert
+POST    /add/cert               controllers.Add.postCert
+GET     /add/ambassador         controllers.Add.amb
+POST    /add/ambassador         controllers.Add.portAmb
+
+GET     /edit/:id               controllers.Edit.edit(id: Long)
+POST    /edit/competition/:id   controllers.Edit.editCompetition(id: Long)
+POST    /edit/cert/:id          controllers.Edit.editCert(id: Long)
+POST    /edit/ambassador/:id    controllers.Edit.editAmb(id: Long)
+GET     /delete/:id             controllers.Edit.del(id: Long)
+
+GET     /search                 controllers.Search.index
+POST    /search                 controllers.Search.search
+
+GET     /report                 controllers.Report.index
+POST    /report/result          controllers.Report.report
+GET     /pdf                    controllers.Report.pdf
+
+GET     /setting                controllers.Setting.index
+POST    /setting/password       controllers.Setting.changePassword
+POST    /setting/notification   controllers.Setting.changeNoti
+
+GET     /tarwised               controllers.Main.tarwised

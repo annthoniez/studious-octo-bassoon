@@ -1,0 +1,242 @@
+@(title: String)(implicit template: String => Html => Html)
+@template(title) {
+  <div class="row header">
+    <div class="small-12 columns">
+      <h2>สร้างรายงาน</h2>
+      <ul class="tabs" data-tabs id="example-tabs">
+        <li class="tabs-title is-active"><a href="#panel1" aria-selected="true">Tab 1</a></li>
+        <li class="tabs-title"><a href="#panel2">Tab 2</a></li>
+      </ul>
+      <div class="tabs-content" data-tabs-content="example-tabs">
+        <div class="tabs-panel is-active" id="panel1">
+          <form action="/report" id="achSearch">
+            <div class="row">
+              <div class="small-12 columns">
+                <label>ชื่อ-สกุลนักศึกษา
+                  <select name="students" class="s2" id="students" multiple="multiple">
+                  </select>
+                </label>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="small-12 columns">
+                <label>ชื่ออาจารย์ที่ปรึกษา
+                  <select name="teachers" class="s2" id="teachers" multiple="multiple">
+                  </select>
+                </label>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="small-12 columns">
+                <label>หน่วยงานที่จัด
+                  <select name="orgs" class="s2" id="orgs" multiple="multiple">
+                    <option value=""></option>
+                  </select>
+                  <span class="form-error">
+                    กรอกด้วย
+                  </span>
+                </label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="small-6 columns">
+                <label>ช่วงเวลา
+                  <input type="text" id="daterange">
+                </label>
+              </div>
+              <div class="small-6 columns">
+                <label>ประเภท
+                  <select name="category" id="category" class="s2" multiple="multiple">
+                    <option value="วิชาการ">วิชาการ</option>
+                    <option value="คุณธรรม">คุณธรรม</option>
+                  </select>
+                </label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="small-12 columns">
+                <label>หมวด
+                  <select name="ach_type" class="s2" id="ach_type" multiple="multiple">
+                    <option value="1">Competition</option>
+                    <option value="2">Cert</option>
+                    <option value="3">Ambassador</option>
+                  </select>
+                </label>
+              </div>
+            </div>
+            <hr>
+            <div id="compet">
+              <div class="row">
+                <div class="small-12 columns">
+                  <label>ชื่อการแข่งขัน
+                    <input name="event_name" type="text" placeholder="Event Name">
+                  </label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="small-6 columns">
+                  <label>ระดับ
+                    <select name="level" id="level" class="s2" multiple="multiple">
+                      <option value="ระดับชาติ">ระดับชาติ</option>
+                      <option value="ระดับโลก">ระดับโลก</option>
+                      <option value="ระดับจักรวาล">ระดับจักรวาล</option>
+                    </select>
+                  </label>
+                </div>
+                <div class="small-6 columns">
+                  <label>อันดับ
+                    <select name="rank" id="rank" class="s2" multiple="multiple">
+                      <option value="รางวัลชนะเลิศ">รางวัลชนะเลิศ</option>
+                      <option value="รางวัลรองชนะเลิศอันดับที่ 1">รางวัลรองชนะเลิศอันดับที่ 1</option>
+                    </select>
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div id="cert">
+              <div class="row">
+                <div class="small-6 columns">
+                  <p>แสดงใบรับรองที่หมดอายุ</p>
+                  <div class="switch">
+                    <input class="switch-input" id="show_exp" type="checkbox" name="show_exp">
+                    <label class="switch-paddle" for="show_exp">
+                      <span class="show-for-sr">แสดงใบรับรองที่หมดอายุ</span>
+                      <span class="switch-active" aria-hidden="true">ใช่</span>
+                      <span class="switch-inactive" aria-hidden="true">ไม่</span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <hr>
+
+            <div class="row">
+              <div class="small-12 columns small-centered">
+                <button id="submit" type="submit" class="small expanded button">สร้างรายงาน</button>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <div class="tabs-panel" id="panel2">
+          <form action="/report" id="userSearch">
+            <div class="input-group">
+              <span class="input-group-label"><i class="fi-magnifying-glass"></i></span>
+              <input class="input-group-field" type="text" id="search">
+              <div class="input-group-button">
+                <input type="submit" class="button" value="Search">
+              </div>
+            </div>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="small-12 columns">
+      <h2>Result</h2>
+    </div>
+  </div>
+  <div class="row small-up-2" id="result">
+
+  </div>
+
+  <script type="text/javascript">
+          var usernames = [];
+          $.ajax({
+            url: '/jsonAll/0',
+            async: false,
+            dataType: 'json',
+            success: function (data) {
+              usernames = data;
+            }
+          });
+          var autocomplete_option = {
+            source: usernames,
+            minLength: 2
+          };
+          $("#search").autocomplete(autocomplete_option);
+
+          $('#daterange').dateRangePicker();
+          $.ajax({
+            url: '/jsonAll/3',
+            dataType: 'json',
+            async: false,
+            success: function (data) {
+              $("#orgs").empty();
+              $.each(data, function(i, val) {
+                $("#orgs").append($("<option>").text(val.text).attr("value", val.value));
+              });
+            }
+          });
+          $.ajax({
+            url: 'jsonAll/4',
+            dataType: 'json',
+            async: false,
+            success: function(data) {
+              $("#students").empty();
+              $.each(data, function(i, val) {
+                $("#students").append($("<option>").text(val.text).attr("value", val.value));
+              });
+            }
+          });
+          $.ajax({
+            url: 'jsonAll/5',
+            dataType: 'json',
+            async: false,
+            success: function(data) {
+              $("#teachers").empty();
+              $.each(data, function(i, val) {
+                $("#teachers").append($("<option>").text(val.text).attr("value", val.value));
+              });
+            }
+          });
+          $.ajax({
+            url: 'jsonAll/6',
+            dataType: 'json',
+            async: false,
+            success: function(data) {
+              $("#rank").empty();
+              $.each(data, function(i, val) {
+                $("#rank").append($("<option>").text(val.text).attr("value", val.value));
+              });
+            }
+          });
+
+          var select2_option = {
+            allowClear: true,
+            theme: "foundation",
+            width: '100%'
+          };
+
+          $('.s2').select2(select2_option);
+
+          $("#ach_type").change(function () {
+            $("#compet").hide();
+            $("#cert").hide();
+            if($(this).val() != null && $(this).val().length == 1 && $(this).val()[0] == 1) {
+              $("#compet").show();
+            } else if ($(this).val() != null && $(this).val().length == 1 && $(this).val()[0] == 2) {
+              $("#cert").show();
+            }
+          });
+
+          $('#achSearch').submit(function (e) {
+            e.preventDefault();
+            var formdata = $("#achSearch").serializeArray();
+            formdata.push({name: "daterange", value: $("#daterange").val()});
+            $.ajax({
+              url: '/report/result',
+              type: "POST",
+              data: formdata,
+              success: function (data) {
+                console.log(data);
+                window.location = data;
+              }
+            });
+          });
+  </script>
+}
