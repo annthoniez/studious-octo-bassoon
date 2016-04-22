@@ -1,4 +1,4 @@
-@(title: String)(implicit template: String => Html => Html)
+@(title: String)(implicit template: String => Html => Html, flash: Flash)
 @template(title) {
   <div class="jumbotron">
     <div class="row columns">
@@ -8,6 +8,11 @@
     </div>
   </div>
   <div id="content" class="row columns">
+    @flash.get("result").map { f =>
+      <div class="success callout">
+        <p><i class="fi_check"></i> @f</p>
+      </div>
+    }
     <div class="box">
       <div class="box-title"><h3 class="kanit"><i class="fa fa-bell" aria-hidden="true"></i>Notification</h3></div>
       <form action="">
@@ -43,14 +48,20 @@
     </div>
     <div class="box">
       <div class="box-title"><h3 class="kanit"><i class="fa fa-unlock-alt" aria-hidden="true"></i>Change Password</h3></div>
-      <form action="">
+      <form action="/setting/password" method="post" enctype="application/x-www-form-urlencoded" data-abide novalidate>
         <div class="small-7 large-offset-2 columns">
+          <div data-abide-error class="alert callout" style="display: none;">
+            <p><i class="fi-alert"></i> There are some errors in your form.</p>
+          </div>
           <div class="row">
             <div class="small-3 columns">
               <label for="middle-label" class="text-right middle">รหัสผ่านใหม่</label>
             </div>
             <div class="small-9 columns">
-              <input type="password" id="middle-label" placeholder="New password">
+              <input type="password" id="password" name="password" placeholder="New password" required>
+              <span class="form-error">
+                I'm required!
+              </span>
             </div>
           </div>
           <div class="row">
@@ -58,12 +69,15 @@
               <label for="middle-label" class="text-right middle">กรอกรหัสผ่านอีกครั้ง</label>
             </div>
             <div class="small-9 columns">
-              <input type="password" id="middle-label" placeholder="Confirm new password">
+              <input type="password" id="middle-label" name="password_rep" placeholder="Confirm new password" required data-equalto="password">
+              <span class="form-error">
+                Hey, passwords are supposed to match!
+              </span>
             </div>
           </div>
           <div class="row">
             <div class="large-offset-6 columns">
-              <button type="button" class="button"><i class="fa fa-floppy-o" aria-hidden="true"></i>Save</button>
+              <button type="submit" class="button"><i class="fa fa-floppy-o" aria-hidden="true"></i>Save</button>
             </div>
           </div>
         </div>
