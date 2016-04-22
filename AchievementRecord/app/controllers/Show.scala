@@ -47,7 +47,6 @@ trait Show extends Controller with Pjax with AuthElement with AuthConfigImpl {
         case Auth.Teacher => models.Teacher.getProfile(username).teacher_id
       }
 
-
       val profile = Auth.valueOf(role_id) match {
         case Auth.Student => models.Student.getProfile(username)
         case Auth.Staff => models.Staff.getProfile(username)
