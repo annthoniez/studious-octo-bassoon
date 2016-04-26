@@ -64,58 +64,13 @@
         </div>
       </div>
       <hr>
-      @if(ach.isDefined) {
-        @for((teacher, index) <- ach.get.t_accs.zipWithIndex) {
-          @if(index == 0) {
-            <div class="row">
-              <div class="small-11 columns">
-                <label>อาจารย์ที่ปรึกษา
-                  <input id="firstTeacher" type="text" name="teacher_names" data-abide-ignore value="@teacher.username">
-                </label>
-              </div>
-              <div class="small-1 columns">
-                <label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  <button type="button" class="alert small button removeTeacher"><i class="fi-minus"></i></button>
-                </label>
-              </div>
-            </div>
-          } else {
-            <div class="row">
-              <div class="small-11 columns">
-                <input type="text" palceholder="AnotherTeacherName" name="teacher_names" data-abide-ignore value="@teacher.username">
-              </div>
-              <div class="small-1 columns">
-                <button type="button" class="alert small button removeTeacher">
-                  <i class="fi-minus"></i>
-                </button>
-              </div>
-            </div>
-          }
-        }
-        <div class="row">
-          <div class="small-11 columns">
-            <input type="text" palceholder="AnotherTeacherName" name="teacher_names" data-abide-ignore>
-          </div>
-          <div class="small-1 columns">
-            <button type="button" class="small button addTeacher">
-              <i class="fi-plus"></i>
-            </button>
-          </div>
+      <div class="row">
+        <div class="div small-12 columns">
+          <label>อาจารย์ที่ปรึกษา
+            <select name="teacher_names" id="teachers" class="s2" multiple="multiple"></select>
+          </label>
         </div>
-      } else {
-        <div class="row">
-          <div class="small-11 columns">
-            <label>ชื่ออาจารย์ที่ปรึกษา
-              <input id="firstTeacher" type="text" name="teacher_names" data-abide-ignore>
-            </label>
-          </div>
-          <div class="small-1 columns">
-            <label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              <button type="button" class="small button addTeacher"><i class="fi-plus"></i></button>
-            </label>
-          </div>
-        </div>
-      }
+      </div>
 
       <hr>
       <div class="row">
@@ -325,31 +280,6 @@
       $(this).parent().parent().remove();
     });
 
-    $("#content").on('click', ".addTeacher", function (e) {
-      e.stopPropagation();
-      $(this).removeClass("addTeacher");
-      $('<div class="row"><div class="small-11 columns"><input type="text" palceholder="AnotherTeacherName" name="teacher_names" data-abide-ignore></div><div class="small-1 columns"><button type="button" class="small button addTeacher"><i class="fi-plus"></i></button></div></div>').insertAfter($(this).closest(".row"));
-      $(this).addClass("alert").addClass("removeTeacher");
-      $(this).children().removeClass("fi-plus");
-      $(this).children().addClass("fi-minus");
-    });
-
-    $("#content").on('click', ".removeTeacher", function (e) {
-      e.stopPropagation();
-      if($(this).parent("label").length) {
-        $("#firstTeacher").val($(this).closest(".row").next().children().first().children().val());
-        if($(".removeTeacher").length == 1) {
-          $(this).removeClass("removeTeacher").removeClass("alert");
-          $(this).addClass("addTeacher");
-          $(this).children().removeClass("fi-minus");
-          $(this).children().addClass("fi-plus");
-        }
-        $(this).closest(".row").next().remove();
-      } else {
-        $(this).closest(".row").remove();
-      }
-    });
-
     $("#rank").change(function () {
       if($("#rank").val() == 0) {
         $("#rank_des").prop("disabled", false);
@@ -389,23 +319,6 @@
       $(this).autocomplete(student_autocomplete_option);
     });
 
-    var teachers = [];
-    $.ajax({
-      url: '/jsonAll/2',
-      async: false,
-      dataType: 'json',
-      success: function (data) {
-        teachers = data;
-      }
-    });
-    var teacher_autocomplete_option = {
-      source: teachers
-    };
-    $("input[name^='teacher_names']").autocomplete(teacher_autocomplete_option);
-    $(document).on('keydown.autocomplete', "input[name^='teacher_names']", function () {
-      $(this).autocomplete(teacher_autocomplete_option);
-    });
-
     $.ajax({
       url: '/jsonAll/3',
       dataType: 'json',
@@ -436,6 +349,45 @@
       @for((o, index) <- ach.get.orgs.zipWithIndex) {
         $("select[name^='orgs']").eq(@index).val("@o.id");
       }
+      var t_accs = [];
+      @for(t <- ach.get.t_accs) {
+        t_accs.push("@t.username");
+      }
+      $.ajax({
+        url: '/jsonAll/5',
+        dataType: 'json',
+        async: false,
+        success: function (data) {
+          $("#teachers").empty();
+          $.each(data, function (i, val) {
+            if(isInArray(val.value ,t_accs)) {
+              $("#teachers").append($("<option selected='selected'>").text(val.text).attr("value", val.value));
+            } else {
+              $("#teachers").append($("<option>").text(val.text).attr("value", val.value));
+            }
+          });
+        }
+      });
+    } else {
+      $.ajax({
+        url: '/jsonAll/5',
+        dataType: 'json',
+        async: false,
+        success: function (data) {
+          $("#teachers").empty();
+          $.each(data, function (i, val) {
+            $("#teachers").append($("<option>").text(val.text).attr("value", val.value));
+          });
+        }
+      });
     }
+
+    var select2_option = {
+      allowClear: true,
+      theme: "foundation",
+      width: '100%'
+    };
+
+    $('.s2').select2(select2_option);
   </script>
 }
