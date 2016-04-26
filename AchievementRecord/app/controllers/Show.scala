@@ -3,7 +3,7 @@ package controllers
 import java.time.LocalDate
 
 import jp.t2v.lab.play2.auth.AuthElement
-import models.{Achievement, Auth, Competition, Organization}
+import models._
 import play.api.libs.json._
 import play.api.mvc.Controller
 import views.html
@@ -32,7 +32,7 @@ trait Show extends Controller with Pjax with AuthElement with AuthConfigImpl {
   }
 
   def profile(username: String) = StackAction(AuthorityKey -> Seq(Auth.Student, Auth.Teacher, Auth.Staff)) { implicit request =>
-    if (loggedIn.role_id != 2 && loggedIn.username.value != username) {
+    if ((loggedIn.role_id == 3 && loggedIn.username.value != username) || (loggedIn.role_id == 1 && Account.findByUsername(username).get.role_id == 2)) {
       Ok(html.tarwised.Forb("Forbidden"))
     } else {
       val role_id = models.Account.findByUsername(username).head.role_id
