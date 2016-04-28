@@ -31,6 +31,11 @@ trait Add extends Controller with Pjax with AuthElement with AuthConfigImpl {
     Ok(html.add_amb("เพิ่มตัวแทนองค์กร - ระบบกรอกข้อมูลผลงานต่างๆ ของนักศึกษา", None, loggedIn))
   }
 
+  def createOrg(name: String): Long = {
+    val id: Long = Organization.create(name)
+    id
+  }
+
   def postCompetition = StackAction(AuthorityKey -> Seq(Auth.Student)) { implicit request =>
     val body: AnyContent = request.body
     val multiPartBody = body.asMultipartFormData
@@ -49,7 +54,9 @@ trait Add extends Controller with Pjax with AuthElement with AuthConfigImpl {
     }
     val student_ids: Set[String] = textBody.get("student_ids").head.toSet + loggedIn.username.value
     val teacher_names: Set[String] = textBody.get("teacher_names").head.toSet
-    val orgs: Set[String] = textBody.get("orgs").head.toSet
+    //val orgs: Set[String] = textBody.get("orgs").head.toSet
+    val orgs: Set[String] = textBody.get("orgs").head.toSet[String].map(o => if(!o.forall(_.isDigit)) Organization.create(o).toString else o)
+    println(orgs)
     val rank = if (textBody.get("rank").head.head == "0") textBody.get("rank_des").head.head else textBody.get("rank").head.head
 
     val ach_id = Achievement.create(

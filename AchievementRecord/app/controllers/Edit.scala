@@ -72,7 +72,7 @@ trait Edit extends Controller with Pjax with AuthElement with AuthConfigImpl {
 
   def editOrgs(id: Long, textBody: Map[String, Seq[String]], ach: Option[Achievement], loggedIn: Account) = {
     val curOrg: Set[String] = ach.get.orgs.map(_.id.toString).toSet[String]
-    val updateOrg: Set[String] = textBody.get("orgs").head.toSet[String]
+    val updateOrg: Set[String] = textBody.get("orgs").head.toSet[String].map(o => if(!o.forall(_.isDigit)) Organization.create(o).toString else o)
 
     val delOrg: Set[String] = curOrg -- updateOrg
     val addOrg: Set[String] = updateOrg -- curOrg

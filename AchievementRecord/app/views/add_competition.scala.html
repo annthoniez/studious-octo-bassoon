@@ -117,56 +117,11 @@
           </label>
         </div>
       </div>
-      @if(ach.isDefined) {
-        @for((o, index) <- ach.get.orgs.zipWithIndex) {
-          @if(index == 0) {
-            <div class="row">
-              <div class="small-12 columns">
-                <label>หน่วยงานที่จัด <i class="alert fi-asterisk"></i>
-                  <select name="orgs" class="orgs" required>
-                    <option value=""></option>
-                  </select>
-                  <span class="form-error">
-                    กรอกด้วย
-                  </span>
-                </label>
-              </div>
-            </div>
-          } else {
-            <div class="row">
-              <div class="small-11 columns">
-                <select name="orgs" class="orgs">
-                  <option value="">เพิ่มได้ด้วย</option>
-                </select>
-              </div>
-              <div class="small-1 columns">
-                <button type="button" class="alert small button removeOrg"><i class="fi-minus"></i></button>
-              </div>
-            </div>
-          }
-        }
-      } else {
-        <div class="row">
-          <div class="small-12 columns">
-            <label>หน่วยงานที่จัด <i class="alert fi-asterisk"></i>
-              <select name="orgs" class="orgs" required>
-                <option value=""></option>
-              </select>
-              <span class="form-error">
-                กรอกด้วย
-              </span>
-            </label>
-          </div>
-        </div>
-      }
       <div class="row">
-        <div class="small-11 columns">
-          <select name="orgs" class="orgs">
-            <option value="">เพิ่มได้ด้วย</option>
-          </select>
-        </div>
-        <div class="small-1 columns">
-          <button type="button" class="small button addOrg"><i class="fi-plus"></i></button>
+        <div class="div small-12 columns">
+          <label>orgs
+            <select name="orgs" id="orgs" class="s2" multiple="multiple"></select>
+          </label>
         </div>
       </div>
       <hr>
@@ -253,33 +208,6 @@
       $(this).parent().parent().remove();
     });
 
-    $("#content").on('click', '.addOrg', function (e) {
-      e.stopPropagation();
-      $(this).removeClass("addOrg");
-      $('<div class="row"><div class="small-11 columns"><select name="orgs" class="orgs"><option value="">เลือกหน่วยงาน</option></select></div><div class="small-1 columns"><button type="button" class="small button addOrg"><i class="fi-plus"></i></button></div></div>').insertAfter($(this).parent().parent());
-      aaa = $(this).closest(".row").next().children().first().children();
-      console.log(aaa)
-      $.ajax({
-        url: '/jsonAll/3',
-        dataType: 'json',
-        success: function (data) {
-          aaa.empty();
-          aaa.append($("<option>").text("เลือกหน่วยงาน").attr("value", ""));
-          $.each(data, function(i, val) {
-            aaa.append($("<option>").text(val.text).attr("value", val.value));
-          });
-        }
-      });
-      $(this).addClass("alert").addClass("removeOrg");
-      $(this).children().removeClass("fi-plus");
-      $(this).children().addClass("fi-minus");
-    });
-
-    $("#content").on("click", ".removeOrg", function (e) {
-      e.stopPropagation();
-      $(this).parent().parent().remove();
-    });
-
     $("#rank").change(function () {
       if($("#rank").val() == 0) {
         $("#rank_des").prop("disabled", false);
@@ -346,12 +274,13 @@
         $("#rank_des").prop("disabled", false);
         $("input[name^='rank_des']").val("@ach.get.comp.get.rank");
       }
-      @for((o, index) <- ach.get.orgs.zipWithIndex) {
-        $("select[name^='orgs']").eq(@index).val("@o.id");
-      }
       var t_accs = [];
       @for(t <- ach.get.t_accs) {
         t_accs.push("@t.username");
+      }
+      var orgs = [];
+      @for(o <- ach.get.orgs) {
+        orgs.push("@o.id");
       }
       $.ajax({
         url: '/jsonAll/5',
@@ -368,6 +297,21 @@
           });
         }
       });
+      $.ajax({
+        url: '/jsonAll/3',
+        dataType: 'json',
+        async: false,
+        success: function (data) {
+          $("#orgs").empty();
+          $.each(data, function(i, val) {
+            if (isInArray(val.value.toString(), orgs)) {
+              $("#orgs").append($("<option selected='selected'>").text(val.text).attr("value", val.value));
+            } else {
+              $("#orgs").append($("<option>").text(val.text).attr("value", val.value));
+            }
+          });
+        }
+      });
     } else {
       $.ajax({
         url: '/jsonAll/5',
@@ -380,12 +324,25 @@
           });
         }
       });
+      $.ajax({
+        url: '/jsonAll/3',
+        dataType: 'json',
+        async: false,
+        success: function (data) {
+          $("#orgs").empty();
+          $.each(data, function(i, val) {
+            $("#orgs").append($("<option>").text(val.text).attr("value", val.value));
+          });
+        }
+      });
     }
 
     var select2_option = {
       allowClear: true,
       theme: "foundation",
-      width: '100%'
+      width: '100%',
+      tags: true,
+      tokenSeparators: [',', ' ']
     };
 
     $('.s2').select2(select2_option);

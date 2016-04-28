@@ -1,7 +1,7 @@
 package models
 
 import scalikejdbc._
-import skinny.orm.SkinnyMapper
+import skinny.orm.SkinnyCRUDMapper
 
 /**
   * Created by Pichai Sivawat on 4/10/2016.
@@ -10,7 +10,7 @@ case class Organization(id: Long,
                         organization_name: String,
                         organization_type: String,
                         achs: Seq[Achievement] = Nil)
-object Organization extends SkinnyMapper[Organization] {
+object Organization extends SkinnyCRUDMapper[Organization] {
   override lazy val defaultAlias = createAlias("org")
   override val tableName = "organizations"
 
@@ -26,4 +26,11 @@ object Organization extends SkinnyMapper[Organization] {
     "organization_id",
     "achievement_id",
     (org, achs) => org.copy(achs = achs))
+
+  def create(organization_name: String): Long = {
+    createWithNamedValues(
+      column.organization_name -> organization_name,
+      column.organization_type -> 3
+    )
+  }
 }
