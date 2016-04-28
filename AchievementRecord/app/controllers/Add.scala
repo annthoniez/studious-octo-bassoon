@@ -31,9 +31,17 @@ trait Add extends Controller with Pjax with AuthElement with AuthConfigImpl {
     Ok(html.add_amb("เพิ่มตัวแทนองค์กร - ระบบกรอกข้อมูลผลงานต่างๆ ของนักศึกษา", None, loggedIn))
   }
 
-  def createOrg(name: String): Long = {
-    val id: Long = Organization.create(name)
-    id
+  def isOrgExists(name: String): Boolean = {
+    print(name + " ")
+    if (name.forall(_.isDigit)) {
+      val org: Option[Organization] = Organization.findById(name.toLong)
+      println("ID " + org.isDefined)
+      org.isDefined
+    } else {
+      val org: Seq[Organization] = Organization.findAll().filter(o => o.organization_name == name)
+      println("NAME " + org.nonEmpty)
+      org.nonEmpty
+    }
   }
 
   def postCompetition = StackAction(AuthorityKey -> Seq(Auth.Student)) { implicit request =>
@@ -55,7 +63,7 @@ trait Add extends Controller with Pjax with AuthElement with AuthConfigImpl {
     val student_ids: Set[String] = textBody.get("student_ids").head.toSet + loggedIn.username.value
     val teacher_names: Set[String] = textBody.get("teacher_names").head.toSet
     //val orgs: Set[String] = textBody.get("orgs").head.toSet
-    val orgs: Set[String] = textBody.get("orgs").head.toSet[String].map(o => if(!o.forall(_.isDigit)) Organization.create(o).toString else o)
+    val orgs: Set[String] = textBody.get("orgs").head.toSet[String].map(o => if(!isOrgExists(o)) Organization.create(o).toString else o)
     println(orgs)
     val rank = if (textBody.get("rank").head.head == "0") textBody.get("rank_des").head.head else textBody.get("rank").head.head
 
@@ -113,7 +121,7 @@ trait Add extends Controller with Pjax with AuthElement with AuthConfigImpl {
       2)
 
     val o: String = textBody.get("orgs").head.head.toString
-    val org_id: Long = if(!o.forall(_.isDigit)) Organization.create(o) else o.toLong
+    val org_id: Long = if(!isOrgExists(o)) Organization.create(o) else o.toLong
     Student_Achievement.create(loggedIn.username.value, ach_id)
     Organization_Achievement.create(org_id, ach_id)
 
@@ -146,7 +154,7 @@ trait Add extends Controller with Pjax with AuthElement with AuthConfigImpl {
       3)
 
     val o: String = textBody.get("orgs").head.head.toString
-    val org_id: Long = if(!o.forall(_.isDigit)) Organization.create(o) else o.toLong
+    val org_id: Long = if(!isOrgExists(o)) Organization.create(o) else o.toLong
 
     Student_Achievement.create(loggedIn.username.value, ach_id)
     Organization_Achievement.create(org_id, ach_id)
