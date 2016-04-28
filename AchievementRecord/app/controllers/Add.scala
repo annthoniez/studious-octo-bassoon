@@ -32,14 +32,11 @@ trait Add extends Controller with Pjax with AuthElement with AuthConfigImpl {
   }
 
   def isOrgExists(name: String): Boolean = {
-    print(name + " ")
     if (name.forall(_.isDigit)) {
       val org: Option[Organization] = Organization.findById(name.toLong)
-      println("ID " + org.isDefined)
       org.isDefined
     } else {
       val org: Seq[Organization] = Organization.findAll().filter(o => o.organization_name == name)
-      println("NAME " + org.nonEmpty)
       org.nonEmpty
     }
   }
