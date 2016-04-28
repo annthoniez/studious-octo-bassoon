@@ -111,8 +111,11 @@ trait Add extends Controller with Pjax with AuthElement with AuthConfigImpl {
       "",
       "วิชาการ",
       2)
+
+    val o: String = textBody.get("orgs").head.head.toString
+    val org_id: Long = if(!o.forall(_.isDigit)) Organization.create(o) else o.toLong
     Student_Achievement.create(loggedIn.username.value, ach_id)
-    Organization_Achievement.create(textBody.get("orgs").head.head.toLong, ach_id)
+    Organization_Achievement.create(org_id, ach_id)
 
     Cert.create(textBody.get("exp_date").head.head, ach_id)
     Redirect(routes.Show.achievement(ach_id))
@@ -142,8 +145,11 @@ trait Add extends Controller with Pjax with AuthElement with AuthConfigImpl {
       "วิชาการ",
       3)
 
+    val o: String = textBody.get("orgs").head.head.toString
+    val org_id: Long = if(!o.forall(_.isDigit)) Organization.create(o) else o.toLong
+
     Student_Achievement.create(loggedIn.username.value, ach_id)
-    Organization_Achievement.create(textBody.get("orgs").head.head.toLong, ach_id)
+    Organization_Achievement.create(org_id, ach_id)
 
     Ambassador.create(textBody.get("year").head.head, ach_id)
     Redirect(routes.Show.achievement(ach_id))

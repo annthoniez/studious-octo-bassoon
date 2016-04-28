@@ -41,14 +41,9 @@
         </div>
       </div>
       <div class="row">
-        <div class="small-12 columns">
-          <label>หน่วยงานที่จัด <i class="alert fi-asterisk"></i>
-            <select name="orgs" class="orgs" required>
-              <option value=""></option>
-            </select>
-            <span class="form-error">
-              กรอกด้วย
-            </span>
+        <div class="div small-12 columns">
+          <label>orgs
+            <select name="orgs" id="orgs" class="s2"></select>
           </label>
         </div>
       </div>
@@ -94,21 +89,52 @@
       $("#CurrentStudentName").attr("placeholder", data["th_name"]);
     });
 
-    $.ajax({
-      url: '/jsonAll/3',
-      dataType: 'json',
-      async: false,
-      success: function (data) {
-        $(".orgs").empty();
-        $(".orgs").append($("<option>").text("เลือกหน่วยงาน").attr("value", ""));
-        $.each(data, function(i, val) {
-          $(".orgs").append($("<option>").text(val.text).attr("value", val.value));
-        });
-      }
-    });
+    function isInArray(value, array) {
+      return array.indexOf(value) > -1;
+    }
 
     @if(ach.isDefined) {
-      $("select[name^='orgs']").val("@ach.get.orgs.head.id");
+      var orgs = [];
+      @for(o <- ach.get.orgs) {
+      orgs.push("@o.id");
+      }
+
+      $.ajax({
+        url: '/jsonAll/3',
+        dataType: 'json',
+        async: false,
+        success: function (data) {
+          $("#orgs").empty();
+          $.each(data, function(i, val) {
+            if (isInArray(val.value.toString(), orgs)) {
+              $("#orgs").append($("<option selected='selected'>").text(val.text).attr("value", val.value));
+            } else {
+              $("#orgs").append($("<option>").text(val.text).attr("value", val.value));
+            }
+          });
+        }
+      });
+    } else {
+      $.ajax({
+        url: '/jsonAll/3',
+        dataType: 'json',
+        async: false,
+        success: function (data) {
+          $("#orgs").empty();
+          $.each(data, function(i, val) {
+            $("#orgs").append($("<option>").text(val.text).attr("value", val.value));
+          });
+        }
+      });
     }
+
+    var select2_option = {
+      allowClear: true,
+      theme: "foundation",
+      width: '100%',
+      tags: true
+    };
+
+    $('.s2').select2(select2_option);
   </script>
 }
