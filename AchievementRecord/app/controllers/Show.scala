@@ -57,7 +57,7 @@ trait Show extends Controller with Pjax with AuthElement with AuthConfigImpl {
         case Auth.Teacher => models.Teacher.getAchs(username)
         case Auth.Staff => Achievement.findAll().filter(a => false)
       }
-      val achs2 = achs.map(a => Achievement.getAchWithChild(a.id))
+      val achs2 = achs.map(a => Achievement.getAchWithChild(a.id)).reverse
       val s_accs = Achievement.getStudentInAch(achs)
       val t_accs = Achievement.getTeacherInAch(achs)
       val orgs = Achievement.getOrgInAch(achs)
