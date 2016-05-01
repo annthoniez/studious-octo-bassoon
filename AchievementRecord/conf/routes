@@ -14,9 +14,10 @@ GET     /logout         controllers.Application.logout
 
 GET     /home           controllers.Main.home
 
-GET     /profile/:username        controllers.Show.profile(username: String)
+GET     /profile/:username      controllers.Show.profile(username: String)
 GET     /achievement/:id        controllers.Show.achievement(id: Long)
-GET     /jsonProfile                controllers.Show.jsonProfile
+GET     /list                   controllers.Show.list
+GET     /jsonProfile            controllers.Show.jsonProfile
 GET     /jsonAll/:id            controllers.Show.jsonAll(id: Int)
 
 GET     /add                    controllers.Add.achievement

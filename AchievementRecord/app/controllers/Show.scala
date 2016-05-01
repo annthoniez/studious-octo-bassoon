@@ -68,6 +68,11 @@ trait Show extends Controller with Pjax with AuthElement with AuthConfigImpl {
     }
   }
 
+  def list = StackAction(AuthorityKey -> Seq(Auth.Teacher, Auth.Staff)) { implicit request =>
+    val acc: Seq[Account] = Account.joins(Account.stuRef).joins(Account.teaRef).findAll().filter(a => a.role_id != 2)
+    Ok(html.list("list", acc))
+  }
+
   def jsonProfile = StackAction(AuthorityKey -> Seq(Auth.Student)) { implicit request =>
     val json: JsValue = Json.obj(
       "username" -> loggedIn.username.value,

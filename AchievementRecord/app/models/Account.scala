@@ -14,7 +14,8 @@ object Username {
 case class Account(username: Username,
                    password: String,
                    role_id: Int,
-                   stu: Option[Student] = None)
+                   stu: Option[Student] = None,
+                   teacher: Option[Teacher] = None)
 
 object Account extends SkinnyCRUDMapperWithId[Username, Account] {
   override lazy val defaultAlias = createAlias("usr")
@@ -32,7 +33,14 @@ object Account extends SkinnyCRUDMapperWithId[Username, Account] {
   lazy val stuRef = belongsToWithFk[Student](
     Student,
     "username",
-    (acc, stu) => acc.copy(stu = stu)).byDefault
+    (acc, stu) => acc.copy(stu = stu)
+  ).byDefault
+
+  lazy val teaRef = hasOneWithFk[Teacher](
+    Teacher,
+    "username",
+    (acc, teacher) => acc.copy(teacher = teacher)
+  ).byDefault
 
   def authenticate(username: String, password: String): Option[Account] = findByUsername(username).filter({ account => password == account.password})
 
