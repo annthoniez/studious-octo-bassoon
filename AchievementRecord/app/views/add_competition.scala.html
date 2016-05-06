@@ -17,30 +17,32 @@
       <div class="alert callout" data-abide-error style="display: none;">
         <p><i class="fi_alert"></i> There are some errors in your form.</p>
       </div>
-      <div class="row">
-        <div class="small-3 columns">
-          <label>รหัสนักศึกษา
-            <input type="text" id="CurrentStudentId" placeholder="CurrentStudentId" class="student_ids" name="student_ids" disabled="disabled" />
-          </label>
+      @if(account.role_id == 3) {
+        <div class="row">
+          <div class="small-3 columns">
+            <label>รหัสนักศึกษา
+              <input type="text" id="CurrentStudentId" placeholder="CurrentStudentId" class="student_ids" name="student_ids" disabled="disabled" />
+            </label>
+          </div>
+          <div class="small-9 columns">
+            <label>ชื่อ-สกุลนักศึกษา
+              <input type="text" id="CurrentStudentName" placeholder="CurrentStudentName" class="student_names" name="student_names" disabled="disabled">
+            </label>
+          </div>
         </div>
-        <div class="small-9 columns">
-          <label>ชื่อ-สกุลนักศึกษา
-            <input type="text" id="CurrentStudentName" placeholder="CurrentStudentName" class="student_names" name="student_names" disabled="disabled">
-          </label>
-        </div>
-      </div>
+      }
       @if(ach.isDefined) {
         @for(stu <- ach.get.accs) {
           @if(stu.username != account.username.value) {
             <div class="row">
               <div class="small-3 columns">
-                <input type="text" placeholder="รหัสเพื่อนร่วมทีม" class="student_ids" name="student_ids" pattern="number" value="@stu.username">
+                <input type="text" placeholder="รหัสเพื่อนร่วมทีม" class="student_ids" name="student_ids" pattern="number" value="@stu.username" @if(account.role_id == 2) {disabled="disabled"}>
                 <span class="form-error">
                   ตัวเลข
                 </span>
               </div>
               <div class="small-8 columns">
-                <input type="text" palceholder="" class="student_names" name="student_names" disabled="disabled" value="@stu.th_name">
+                <input type="text"  class="student_names" name="student_names" disabled="disabled" value="@stu.th_name">
               </div>
               <div class="small-1 columns">
                 <button type="button" class="alert small button removeStudent"><i class="fi-minus"></i></button>
@@ -49,20 +51,22 @@
           }
         }
       }
-      <div class="row">
-        <div class="small-3 columns">
-          <input type="text" placeholder="" class="student_ids" name="student_ids" pattern="number">
-          <span class="form-error">
-            ตัวเลข
-          </span>
+      @if(account.role_id == 3) {
+        <div class="row">
+          <div class="small-3 columns">
+            <input type="text" placeholder="" class="student_ids" name="student_ids" pattern="number">
+            <span class="form-error">
+              ตัวเลข
+            </span>
+          </div>
+          <div class="small-8 columns">
+            <input type="text" placeholder="" class="student_names" name="student_names" disabled="disabled">
+          </div>
+          <div class="small-1 columns">
+            <button type="button" class="small button addStudent"><i class="fi-plus"></i></button>
+          </div>
         </div>
-        <div class="small-8 columns">
-          <input type="text" placeholder="" class="student_names" name="student_names" disabled="disabled">
-        </div>
-        <div class="small-1 columns">
-          <button type="button" class="small button addStudent"><i class="fi-plus"></i></button>
-        </div>
-      </div>
+      }
       <hr>
       <div class="row">
         <div class="div small-12 columns">

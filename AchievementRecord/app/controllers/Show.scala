@@ -16,16 +16,28 @@ trait Show extends Controller with Pjax with AuthElement with AuthConfigImpl {
   def achievement(id: Long) = StackAction(AuthorityKey -> Seq(Auth.Student, Auth.Teacher, Auth.Staff)) { implicit request =>
     val ach = Achievement.getAchWithChild(id)
 
-    if (loggedIn.role_id == 3 && !Achievement.joins(Achievement.accRef).findById(id).get.accs.map(_.username).contains(loggedIn.username.value)) {
+    if (loggedIn.role_id == 3 &&
+      !Achievement.joins(Achievement.accRef).findById(id)
+        .get.accs.map(_.username)
+        .contains(loggedIn.username.value)) {
       Ok(html.tarwised.Forb("Forbidden"))
-    } else if (loggedIn.role_id == 1 && !Achievement.joins(Achievement.teacher_accRef).findById(id).get.t_accs.map(_.username).contains(loggedIn.username.value)) {
+    } else if (loggedIn.role_id == 1 &&
+      !Achievement.joins(Achievement.teacher_accRef).findById(id)
+        .get.t_accs.map(_.username)
+        .contains(loggedIn.username.value)) {
       Ok(html.tarwised.Forb("Forbidden"))
     } else {
       val s_accs = Achievement.joins(Achievement.accRef).findById(id).map(_.accs)
       val t_accs = Achievement.joins(Achievement.teacher_accRef).findById(id).map(_.t_accs)
       val orgs = Achievement.joins(Achievement.orgRef).findById(id).map(_.orgs)
 
-      val canEdit = s_accs.get.map(_.username).contains(loggedIn.username.value) && ach.get.created_at.isAfter(LocalDate.now().minusDays(3))
+      var canEdit: Boolean = false
+      if (loggedIn.role_id == 2) {
+        canEdit = true
+      } else if (loggedIn.role_id == 3) {
+        println(ach)
+        canEdit = s_accs.get.map(_.username).contains(loggedIn.username.value) && ach.get.created_at.isAfter(LocalDate.now().minusDays(3))
+      }
 
       Ok(html.achievement("ผลงาน - ระบบกรอกข้อมูลผลงานต่างๆ ของนักศึกษา", ach, s_accs, t_accs, orgs, canEdit))
     }

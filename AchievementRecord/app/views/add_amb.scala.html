@@ -17,18 +17,33 @@
       <div class="alert callout" data-abide-error style="display: none;">
         <p><i class="fi_alert"></i> There are some errors in your form.</p>
       </div>
-      <div class="row">
-        <div class="small-3 columns">
-          <label>รหัสนักศึกษา
-            <input type="text" id="CurrentStudentId" placeholder="CurrentStudentId" class="student_ids" name="student_ids" disabled="disabled" />
-          </label>
+      @if(ach.isDefined) {
+        <div class="row">
+          <div class="small-3 columns">
+            <label>รหัสนักศึกษา
+              <input type="text" id="CurrentStudentId" placeholder="CurrentStudentId" class="student_ids" name="student_ids" disabled="disabled" value="@ach.get.accs.head.username"/>
+            </label>
+          </div>
+          <div class="small-9 columns">
+            <label>ชื่อ-สกุลนักศึกษา
+              <input type="text" id="CurrentStudentName" placeholder="CurrentStudentName" class="student_names" name="student_names" disabled="disabled" value="@ach.get.accs.head.th_name">
+            </label>
+          </div>
         </div>
-        <div class="small-9 columns">
-          <label>ชื่อ-สกุลนักศึกษา
-            <input type="text" id="CurrentStudentName" placeholder="CurrentStudentName" class="student_names" name="student_names" disabled="disabled">
-          </label>
+      } else {
+        <div class="row">
+          <div class="small-3 columns">
+            <label>รหัสนักศึกษา
+              <input type="text" id="CurrentStudentId" placeholder="CurrentStudentId" class="student_ids" name="student_ids" disabled="disabled" />
+            </label>
+          </div>
+          <div class="small-9 columns">
+            <label>ชื่อ-สกุลนักศึกษา
+              <input type="text" id="CurrentStudentName" placeholder="CurrentStudentName" class="student_names" name="student_names" disabled="disabled">
+            </label>
+          </div>
         </div>
-      </div>
+      }
       <hr>
       <div class="row">
         <div class="small-12 columns">

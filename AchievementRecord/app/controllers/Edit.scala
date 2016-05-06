@@ -12,7 +12,7 @@ import views.html
   * Created by Pichai Sivawat on 4/17/2016.
   */
 trait Edit extends Controller with Pjax with AuthElement with AuthConfigImpl {
-  def edit(id: Long) = StackAction(AuthorityKey -> Seq(Auth.Student)) { implicit request =>
+  def edit(id: Long) = StackAction(AuthorityKey -> Seq(Auth.Student, Auth.Staff)) { implicit request =>
     val ach = Achievement
       .joins(Achievement.accRef)
       .joins(Achievement.orgRef)
@@ -22,7 +22,12 @@ trait Edit extends Controller with Pjax with AuthElement with AuthConfigImpl {
       .joins(Achievement.ambRef)
       .findById(id)
 
-    val canEdit = ach.get.accs.map(_.username).contains(loggedIn.username.value) && ach.get.created_at.isAfter(LocalDate.now().minusDays(3))
+    var canEdit: Boolean = false
+    if (loggedIn.role_id == 2) {
+      canEdit = true
+    } else {
+      canEdit = ach.get.accs.map(_.username).contains(loggedIn.username.value) && ach.get.created_at.isAfter(LocalDate.now().minusDays(3))
+    }
 
     if (!canEdit) {
       Ok(html.tarwised.Forb("Forbidden"))
