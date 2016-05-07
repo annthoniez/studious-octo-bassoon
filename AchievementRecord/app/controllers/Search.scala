@@ -14,7 +14,7 @@ import views.html
 trait Search extends Controller with Pjax with AuthElement with AuthConfigImpl {
 
   def index() = StackAction(AuthorityKey -> Seq(Auth.Student, Auth.Staff, Auth.Teacher)) { implicit request =>
-    Ok(html.search("ค้นหา - ระบบกรอกข้อมูลผลงานต่างๆ ของนักศึกษา"))
+    Ok(html.search("ค้นหา - ระบบกรอกข้อมูลผลงานต่างๆ ของนักศึกษา", loggedIn))
   }
 
   def getSearchResult(textBody: Option[Map[String, Seq[String]]]): Seq[Achievement] = {

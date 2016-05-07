@@ -1,4 +1,4 @@
-@(title: String)(implicit template: String => Html => Html)
+@(title: String, account: Account)(implicit template: String => Html => Html)
 @template(title) {
   <div class="jumbotron">
     <div class="row">
@@ -10,8 +10,8 @@
   <div id="content" class="row">
     <div class="small-12 columns">
       <ul class="tabs" data-tabs id="example-tabs">
-        <li class="tabs-title is-active"><a href="#panel1" aria-selected="true">Tab 1</a></li>
-        <li class="tabs-title"><a href="#panel2">Tab 2</a></li>
+        <li class="tabs-title is-active"><a href="#panel1" aria-selected="true">ผลงาน</a></li>
+        @if(account.role_id == 2) { <li class="tabs-title"><a href="#panel2">ผู้ใช้</a></li> }
       </ul>
       <div class="tabs-content" data-tabs-content="example-tabs">
         <div class="tabs-panel is-active" id="panel1">
@@ -140,7 +140,7 @@
   </div>
   <div id="content" class="row">
     <div class="small-12 columns">
-      <h2>Result</h2>
+      <h2>ผลลัพธ์</h2>
       <div class="row small-up-2" id="result">
 
       </div>
