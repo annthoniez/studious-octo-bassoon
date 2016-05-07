@@ -20,7 +20,6 @@ GET     /jsonProfile            controllers.Show.jsonProfile
 GET     /jsonAll/:id            controllers.Show.jsonAll(id: Int)
 GET     /jsonUser/:text         controllers.Show.jsonUser(text: String)
 
-GET     /add                    controllers.Add.achievement
 GET     /add/competition        controllers.Add.competition
 POST    /add/competition        controllers.Add.postCompetition
 GET     /add/cert               controllers.Add.cert
