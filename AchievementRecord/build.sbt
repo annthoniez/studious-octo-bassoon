@@ -34,6 +34,10 @@ libraryDependencies ++= Seq(
   "it.innove" % "play2-pdf" % "1.4.0"
 )
 
+libraryDependencies += "com.sun.jersey" % "jersey-core" % "1.19.1"
+
+libraryDependencies += "com.sun.jersey" % "jersey-client" % "1.19.1"
+
 unmanagedResourceDirectories in Test <+=  baseDirectory ( _ /"target/web/public/test" )
 
 resolvers += "scalaz-bintray" at "https://dl.bintray.com/scalaz/releases"

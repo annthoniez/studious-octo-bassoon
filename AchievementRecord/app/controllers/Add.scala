@@ -3,12 +3,18 @@ package controllers
 import java.io.File
 import java.time.LocalDateTime
 import java.util.UUID
+import javax.ws.rs.core.MediaType
 
+import com.sun.jersey.api.client.Client
+import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter
+import com.sun.jersey.core.util.MultivaluedMapImpl
 import jp.t2v.lab.play2.auth.AuthElement
 import models._
 import play.api.libs.Crypto
+import play.api.libs.json.Json
 import play.api.mvc.{AnyContent, Controller}
 import views.html
+import views.html.helper.form
 
 /**
   * Created by Pichai Sivawat on 4/8/2016.
@@ -153,6 +159,29 @@ trait Add extends Controller with Pjax with AuthElement with AuthConfigImpl {
 
     Ambassador.create(textBody.get("year").head.head, ach_id)
     Redirect(routes.Show.achievement(ach_id))
+  }
+
+  def sendMail = StackAction(AuthorityKey -> Seq(Auth.Student)) { implicit request =>
+    val mailLst: Seq[String] = models.Staff.where('noti -> 1).apply().map(_.email)
+    val recipientVar = Json.toJson(mailLst.map(m => m -> Map("uid" -> UUID.randomUUID().toString.slice(0, 8))).toMap)
+    println(recipientVar)
+
+    val client = Client.create()
+    client.addFilter(new HTTPBasicAuthFilter("api", "key-ca55036df0415f832d094da420707beb"))
+    val webResource = client.resource("https://api.mailgun.net/v3/sandbox72112086319e44f5962246e6fe1ddecb.mailgun.org/messages")
+
+    val form = new MultivaluedMapImpl
+    form.add("from", "System <postmaster@sandbox72112086319e44f5962246e6fe1ddecb.mailgun.org>")
+    mailLst.foreach(m => form.add("to", m))
+    form.add("recipient-variables", recipientVar)
+    form.add("subject", "testMailGun")
+    form.add("html", "WOW")
+
+    println(form)
+
+    webResource.`type`(MediaType.APPLICATION_FORM_URLENCODED).post(form)
+
+    Ok("test")
   }
 
   protected val main: User => Template = html.main.apply
