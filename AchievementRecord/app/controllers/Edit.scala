@@ -125,6 +125,7 @@ trait Edit extends Controller with Pjax with AuthElement with AuthConfigImpl {
         'topic -> textBody.get("topic").head.head,
         'level -> textBody.get("level").head.head,
         'rank -> rank)
+    Add.sendMail("Edit ach noti", routes.Show.achievement(id).absoluteURL())
     Redirect(routes.Show.achievement(id))
   }
 
@@ -170,6 +171,7 @@ trait Edit extends Controller with Pjax with AuthElement with AuthConfigImpl {
       .withAttributes(
         'year -> textBody.get("year").head.head)
 
+    Add.sendMail("Edit ach noti", routes.Show.achievement(id).absoluteURL())
     Redirect(routes.Show.achievement(id))
   }
 

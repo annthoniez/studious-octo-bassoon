@@ -91,6 +91,8 @@ trait Add extends Controller with Pjax with AuthElement with AuthConfigImpl {
       textBody.get("level").head.head,
       rank,
       ach_id)
+
+    sendMail("Add ach noti", routes.Show.achievement(ach_id).absoluteURL())
     Redirect(routes.Show.achievement(ach_id))
   }
 
@@ -158,10 +160,11 @@ trait Add extends Controller with Pjax with AuthElement with AuthConfigImpl {
     Organization_Achievement.create(org_id, ach_id)
 
     Ambassador.create(textBody.get("year").head.head, ach_id)
+    sendMail("Add ach noti", routes.Show.achievement(ach_id).absoluteURL())
     Redirect(routes.Show.achievement(ach_id))
   }
 
-  def sendMail = StackAction(AuthorityKey -> Seq(Auth.Student)) { implicit request =>
+  def sendMail(title: String, url: String) = {
     val mailLst: Seq[String] = models.Staff.where('noti -> 1).apply().map(_.email)
     val recipientVar = Json.toJson(mailLst.map(m => m -> Map("uid" -> UUID.randomUUID().toString.slice(0, 8))).toMap)
     println(recipientVar)
@@ -174,8 +177,8 @@ trait Add extends Controller with Pjax with AuthElement with AuthConfigImpl {
     form.add("from", "System <postmaster@sandbox72112086319e44f5962246e6fe1ddecb.mailgun.org>")
     mailLst.foreach(m => form.add("to", m))
     form.add("recipient-variables", recipientVar)
-    form.add("subject", "testMailGun")
-    form.add("html", "WOW")
+    form.add("subject", title)
+    form.add("html", url)
 
     println(form)
 
