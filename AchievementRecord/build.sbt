@@ -38,6 +38,8 @@ libraryDependencies += "com.sun.jersey" % "jersey-core" % "1.19.1"
 
 libraryDependencies += "com.sun.jersey" % "jersey-client" % "1.19.1"
 
+libraryDependencies += "com.norbitltd" % "spoiwo" % "1.0.3"
+
 unmanagedResourceDirectories in Test <+=  baseDirectory ( _ /"target/web/public/test" )
 
 resolvers += "scalaz-bintray" at "https://dl.bintray.com/scalaz/releases"
