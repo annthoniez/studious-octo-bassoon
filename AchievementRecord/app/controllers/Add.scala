@@ -8,13 +8,15 @@ import javax.ws.rs.core.MediaType
 import com.sun.jersey.api.client.Client
 import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter
 import com.sun.jersey.core.util.MultivaluedMapImpl
-import jp.t2v.lab.play2.auth.AuthElement
+import jp.t2v.lab.play2.auth._
 import models._
 import play.api.libs.Crypto
-import play.api.libs.json.Json
+import play.api.libs.json.{JsArray, Json}
 import play.api.mvc.{AnyContent, Controller}
 import views.html
 import views.html.helper.form
+
+import scala.collection.mutable.ListBuffer
 
 /**
   * Created by Pichai Sivawat on 4/8/2016.
@@ -47,17 +49,25 @@ trait Add extends Controller with Pjax with AuthElement with AuthConfigImpl {
     val multiPartBody = body.asMultipartFormData
     val textBody = multiPartBody.get.asFormUrlEncoded
     println(textBody)
-    //println(multiPartBody.get.file("file"))
+    println("multipart: " + multiPartBody.get.files)
     var saveFileName = ""
+    var filenames: ListBuffer[String] = ListBuffer();
 
-    multiPartBody.get.file("file").map { p =>
+    multiPartBody.get.files.map { p =>
       val contentType: Option[String] = p.contentType
       if (Seq("image/jpeg", "image/png").contains(contentType.get)) {
         println(contentType)
+        println(p.filename)
         saveFileName = Crypto.sign(UUID.randomUUID().toString + LocalDateTime.now().toString + loggedIn.username.value)
+        filenames += saveFileName
         p.ref.moveTo(new File(play.Play.application().path().toString + s"/public/uploads/$saveFileName"))
       }
     }
+
+    println(filenames)
+    val jsonFilenames = Json.toJson(filenames)
+    println(jsonFilenames.toString())
+
     val student_ids: Set[String] = textBody.get("student_ids").head.toSet + loggedIn.username.value
     val teacher_names: Set[String] = textBody.get("teacher_names").head.toSet
     //val orgs: Set[String] = textBody.get("orgs").head.toSet
@@ -68,7 +78,7 @@ trait Add extends Controller with Pjax with AuthElement with AuthConfigImpl {
     val ach_id = Achievement.create(
       textBody.get("achievement_name").head.head,
       textBody.get("date").head.head,
-      saveFileName,
+      jsonFilenames.toString(),
       textBody.get("reward").head.head,
       textBody.get("category").head.head,
       1)
@@ -102,20 +112,24 @@ trait Add extends Controller with Pjax with AuthElement with AuthConfigImpl {
     val textBody = multiPartBody.get.asFormUrlEncoded
     //println(multiPartBody.get.file("file"))
     var saveFileName = ""
+    var filenames: ListBuffer[String] = ListBuffer();
 
-    multiPartBody.get.file("file").map { p =>
+    multiPartBody.get.files.map { p =>
       val contentType: Option[String] = p.contentType
       if (Seq("image/jpeg", "image/png").contains(contentType.get)) {
         println(contentType)
         saveFileName = Crypto.sign(UUID.randomUUID().toString + LocalDateTime.now().toString + loggedIn.username.value)
+        filenames += saveFileName
         p.ref.moveTo(new File(play.Play.application().path().toString + s"/public/uploads/$saveFileName"))
       }
     }
 
+    val jsonFilenames = Json.toJson(filenames)
+
     val ach_id = Achievement.create(
       textBody.get("achievement_name").head.head,
       textBody.get("date").head.head,
-      saveFileName,
+      jsonFilenames.toString(),
       "",
       "วิชาการ",
       2)
@@ -135,20 +149,24 @@ trait Add extends Controller with Pjax with AuthElement with AuthConfigImpl {
     val textBody = multiPartBody.get.asFormUrlEncoded
     //println(multiPartBody.get.file("file"))
     var saveFileName = ""
+    var filenames: ListBuffer[String] = ListBuffer();
 
-    multiPartBody.get.file("file").map { p =>
+    multiPartBody.get.files.map { p =>
       val contentType: Option[String] = p.contentType
       if (Seq("image/jpeg", "image/png").contains(contentType.get)) {
         println(contentType)
         saveFileName = Crypto.sign(UUID.randomUUID().toString + LocalDateTime.now().toString + loggedIn.username.value)
+        filenames += saveFileName
         p.ref.moveTo(new File(play.Play.application().path().toString + s"/public/uploads/$saveFileName"))
       }
     }
 
+    val jsonFilenames = Json.toJson(filenames)
+
     val ach_id = Achievement.create(
       textBody.get("achievement_name").head.head,
       textBody.get("date").head.head,
-      saveFileName,
+      jsonFilenames.toString(),
       "",
       "วิชาการ",
       3)

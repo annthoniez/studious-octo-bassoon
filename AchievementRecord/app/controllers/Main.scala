@@ -1,7 +1,8 @@
 package controllers
 
-import jp.t2v.lab.play2.auth.AuthElement
+import jp.t2v.lab.play2.auth._
 import models._
+import play.api.libs.json.Json
 import play.api.mvc._
 import views.html
 
@@ -30,7 +31,10 @@ trait Main extends Controller with Pjax with AuthElement with AuthConfigImpl {
     val s_accs = Achievement.getStudentInAch(achs).reverse
     val t_accs = Achievement.getTeacherInAch(achs).reverse
     val orgs = Achievement.getOrgInAch(achs).reverse
-    Ok(html.home("ระบบกรอกข้อมูลผลงานต่างๆ ของนักศึกษา", achs2, s_accs, t_accs, orgs, th_name, id.value, loggedIn))
+
+    val photos = achs2.map(a => Json.parse(a.get.photo).as[List[String]])
+    println(photos)
+    Ok(html.home("ระบบกรอกข้อมูลผลงานต่างๆ ของนักศึกษา", achs2, s_accs, t_accs, orgs, th_name, id.value, loggedIn, photos))
   }
 
   def tarwised = StackAction(AuthorityKey -> Seq(Auth.Student, Auth.Staff, Auth.Teacher)) { implicit request =>

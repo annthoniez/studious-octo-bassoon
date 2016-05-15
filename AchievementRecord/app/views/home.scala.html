@@ -1,4 +1,4 @@
-@(title: String, achs: Seq[Option[Achievement]], accs: Seq[Seq[Student]], t_accs: Seq[Seq[Teacher]], orgs: Seq[Seq[Organization]], th_name: String, id: String, account: Account)(implicit template: String => Html => Html)
+@(title: String, achs: Seq[Option[Achievement]], accs: Seq[Seq[Student]], t_accs: Seq[Seq[Teacher]], orgs: Seq[Seq[Organization]], th_name: String, id: String, account: Account, photos: Seq[Seq[String]])(implicit template: String => Html => Html)
 @template(title) {
   <div class="jumbotron">
     <div class="row">
@@ -38,7 +38,9 @@
             @if(ach.get.photo == "") {
               <img src="http://placehold.it/1000x450" alt="">
             } else {
-              <img src="assets/uploads/@ach.get.photo" alt="">
+              @for(p <- photos(index)) {
+                <img src="assets/uploads/@p" alt="">
+              }
             }
             <div class="meta">
               <strong>Date: </strong> @ach.get.date<br>
