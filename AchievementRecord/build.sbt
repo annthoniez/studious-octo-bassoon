@@ -17,7 +17,6 @@ libraryDependencies += "com.typesafe.play" %% "play-slick" % "1.1.1"
 libraryDependencies += "com.typesafe.play" %% "play-slick-evolutions" % "1.1.1"
 
 libraryDependencies ++= Seq("jp.t2v" %% "play2-auth"        % "0.14.2",
-  "jp.t2v" %% "play2-auth-social" % "0.14.2", // for social login
   "jp.t2v" %% "play2-auth-test"   % "0.14.2" % "test")
 
 libraryDependencies ++= Seq(
