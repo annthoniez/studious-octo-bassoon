@@ -163,7 +163,10 @@
     };
     $("#search").autocomplete(autocomplete_option);
 
-    $('#daterange').dateRangePicker();
+    $('#daterange').dateRangePicker({
+      batchMode: 'month-range',
+      showShortcuts: false
+    });
     $.ajax({
       url: '/jsonAll/3',
       dataType: 'json',
