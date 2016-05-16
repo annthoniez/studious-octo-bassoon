@@ -2,7 +2,7 @@ package controllers
 
 import java.time.LocalDate
 
-import jp.t2v.lab.play2.auth.AuthElement
+import jp.t2v.lab.play2.auth._
 import models._
 import play.api.libs.json._
 import play.api.mvc.Controller
@@ -39,7 +39,10 @@ trait Show extends Controller with Pjax with AuthElement with AuthConfigImpl {
         canEdit = s_accs.get.map(_.username).contains(loggedIn.username.value) && ach.get.created_at.isAfter(LocalDate.now().minusDays(3))
       }
 
-      Ok(html.achievement("ผลงาน - ระบบกรอกข้อมูลผลงานต่างๆ ของนักศึกษา", ach, s_accs, t_accs, orgs, canEdit))
+      val photo = Json.parse(ach.get.photo).as[List[String]]
+      println("photos" + photo)
+
+      Ok(html.achievement("ผลงาน - ระบบกรอกข้อมูลผลงานต่างๆ ของนักศึกษา", ach, s_accs, t_accs, orgs, canEdit, photo))
     }
   }
 
@@ -76,7 +79,10 @@ trait Show extends Controller with Pjax with AuthElement with AuthConfigImpl {
 
       println(profile)
 
-      Ok(html.profile("โปรไฟล์ - ระบบกรอกข้อมูลผลงานต่างๆ ของนักศึกษา", profile, achs2, s_accs, t_accs, orgs, th_name, id.value, loggedIn))
+      val photos = achs2.map(a => Json.parse(a.get.photo).as[List[String]])
+      println(photos)
+
+      Ok(html.profile("โปรไฟล์ - ระบบกรอกข้อมูลผลงานต่างๆ ของนักศึกษา", profile, achs2, s_accs, t_accs, orgs, th_name, id.value, photos, loggedIn))
     }
   }
 
