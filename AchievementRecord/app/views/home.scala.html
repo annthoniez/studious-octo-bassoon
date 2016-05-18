@@ -1,4 +1,5 @@
 @(title: String, profile: Any, achs: Seq[Option[Achievement]], accs: Seq[Seq[Student]], t_accs: Seq[Seq[Teacher]], orgs: Seq[Seq[Organization]], th_name: String, id: String, account: Account, photos: Seq[Seq[String]])(implicit template: String => Html => Html)
+@import java.time.LocalDate
 @template(title) {
   <div class="jumbotron">
     <div class="row">
@@ -33,6 +34,22 @@
         }
       </div>
       <h3 class="kanit"><i class="fa fa-list-alt" aria-hidden="true"></i>ผลงานทั้งหมด</h3>
+      @if(account.role_id == 2) {
+        <div class="row">
+          <div class="medium-6 columns">
+            <div class="callout primary">
+              <h3>ผลงานทั้งหมด</h3>
+              <h4>@achs.length</h4>
+            </div>
+          </div>
+          <div class="medium-6 columns">
+            <div class="callout success">
+              <h3>new!</h3>
+              <h4>@achs.filter(a => a.get.date.isBefore(LocalDate.now().withDayOfMonth(LocalDate.now().lengthOfMonth())) && a.get.date.isAfter(LocalDate.now().withDayOfMonth(1))).length</h4>
+            </div>
+          </div>
+        </div>
+      }
       <div class="row small-up-2">
         @for((ach, index) <- achs.zipWithIndex) {
           <div class="box columns">
