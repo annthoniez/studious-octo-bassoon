@@ -47,43 +47,47 @@ trait Show extends Controller with Pjax with AuthElement with AuthConfigImpl {
   }
 
   def profile(username: String) = StackAction(AuthorityKey -> Seq(Auth.Student, Auth.Teacher, Auth.Staff)) { implicit request =>
-    if ((loggedIn.role_id == 3 && loggedIn.username.value != username) ||
-      (loggedIn.role_id == 1 && Account.findByUsername(username).get.role_id == 2)) {
-      Ok(html.tarwised.Forb("Forbidden"))
+    if (models.Account.findByUsername(username).head.role_id == 2) {
+      Redirect("/home")
     } else {
-      val role_id = models.Account.findByUsername(username).head.role_id
-      val th_name = Auth.valueOf(role_id) match {
-        case Auth.Student => models.Student.getProfile(username).th_name
-        case Auth.Staff => models.Staff.getProfile(username).th_name
-        case Auth.Teacher => models.Teacher.getProfile(username).th_prename + models.Teacher.getProfile(username).th_name
-      }
-      val id = Auth.valueOf(role_id) match {
-        case Auth.Student => models.Student.getProfile(username).student_id
-        case Auth.Staff => models.Staff.getProfile(username).staff_id
-        case Auth.Teacher => models.Teacher.getProfile(username).teacher_id
-      }
+      if ((loggedIn.role_id == 3 && loggedIn.username.value != username) ||
+        (loggedIn.role_id == 1 && Account.findByUsername(username).get.role_id == 2)) {
+        Ok(html.tarwised.Forb("Forbidden"))
+      } else {
+        val role_id = models.Account.findByUsername(username).head.role_id
+        val th_name = Auth.valueOf(role_id) match {
+          case Auth.Student => models.Student.getProfile(username).th_name
+          case Auth.Staff => models.Staff.getProfile(username).th_name
+          case Auth.Teacher => models.Teacher.getProfile(username).th_prename + models.Teacher.getProfile(username).th_name
+        }
+        val id = Auth.valueOf(role_id) match {
+          case Auth.Student => models.Student.getProfile(username).student_id
+          case Auth.Staff => models.Staff.getProfile(username).staff_id
+          case Auth.Teacher => models.Teacher.getProfile(username).teacher_id
+        }
 
-      val profile = Auth.valueOf(role_id) match {
-        case Auth.Student => models.Student.getProfile(username)
-        case Auth.Staff => models.Staff.getProfile(username)
-        case Auth.Teacher => models.Teacher.getProfile(username)
+        val profile = Auth.valueOf(role_id) match {
+          case Auth.Student => models.Student.getProfile(username)
+          case Auth.Staff => models.Staff.getProfile(username)
+          case Auth.Teacher => models.Teacher.getProfile(username)
+        }
+        val achs = Auth.valueOf(role_id) match {
+          case Auth.Student => models.Student.getAchs(username)
+          case Auth.Teacher => models.Teacher.getAchs(username)
+          case Auth.Staff => Achievement.findAll().filter(a => false)
+        }
+        val achs2 = achs.map(a => Achievement.getAchWithChild(a.id)).reverse
+        val s_accs = Achievement.getStudentInAch(achs)
+        val t_accs = Achievement.getTeacherInAch(achs)
+        val orgs = Achievement.getOrgInAch(achs)
+
+        println(profile)
+
+        val photos = achs2.map(a => Json.parse(a.get.photo).as[List[String]])
+        println(photos)
+
+        Ok(html.profile("โปรไฟล์ - ระบบกรอกข้อมูลผลงานต่างๆ ของนักศึกษา", profile, achs2, s_accs, t_accs, orgs, th_name, id.value, photos, loggedIn))
       }
-      val achs = Auth.valueOf(role_id) match {
-        case Auth.Student => models.Student.getAchs(username)
-        case Auth.Teacher => models.Teacher.getAchs(username)
-        case Auth.Staff => Achievement.findAll().filter(a => false)
-      }
-      val achs2 = achs.map(a => Achievement.getAchWithChild(a.id)).reverse
-      val s_accs = Achievement.getStudentInAch(achs)
-      val t_accs = Achievement.getTeacherInAch(achs)
-      val orgs = Achievement.getOrgInAch(achs)
-
-      println(profile)
-
-      val photos = achs2.map(a => Json.parse(a.get.photo).as[List[String]])
-      println(photos)
-
-      Ok(html.profile("โปรไฟล์ - ระบบกรอกข้อมูลผลงานต่างๆ ของนักศึกษา", profile, achs2, s_accs, t_accs, orgs, th_name, id.value, photos, loggedIn))
     }
   }
 
