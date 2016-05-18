@@ -51,46 +51,56 @@
         </div>
       }
       <div class="row small-up-2">
-        @for((ach, index) <- achs.zipWithIndex) {
-          <div class="box columns">
-            <a href="@controllers.routes.Show.achievement(ach.get.id)">
-              <h4 class="box-title"><i class="fa fa-cube"></i>@ach.get.id: @ach.get.achievement_name</h4>
-            </a>
-            <div class="orbit" role="region" aria-label="Favorite Space Pictures" data-orbit>
-              <ul class="orbit-container">
-                <button class="orbit-previous"><span class="show-for-sr">Previous Slide</span>&#9664;&#xFE0E;</button>
-                <button class="orbit-next"><span class="show-for-sr">Next Slide</span>&#9654;&#xFE0E;</button>
-                @if(ach.get.photo == "") {
-                  <img src="http://placehold.it/1000x450" alt="">
-                } else {
-                  @for(p <- photos(index)) {
-                    <li class="is-active orbit-slide">
-                      <img class="orbit-image" src="assets/uploads/@p" alt="">
-                    </li>
+        <table class="hover">
+          <thead>
+            <th>index</th>
+            <th>Name</th>
+            <th>date</th>
+            <th>stus</th>
+            <th>teachers</th>
+            <th>orgs</th>
+            <th>type</th>
+          </thead>
+          <tbody>
+            @for((ach, index) <- achs.zipWithIndex) {
+              <tr>
+                <td>@(index+1)</td>
+                <td>
+                  <a href="@controllers.routes.Show.achievement(ach.get.id)">
+                  @ach.get.achievement_name
+                  </a>
+                </td>
+                <td>@ach.get.date</td>
+                <td>
+                  @for(acc <- accs(index)) {
+                    @acc.th_name <br>
                   }
-                }
-              </ul>
-            </div>
-            <div class="meta">
-              <strong>Date: </strong> @ach.get.date<br>
-              <strong>Students: </strong>
-              @for(acc <- accs(index)) {
-                @acc.th_name
-              }
-              <br>
-              <strong>Instructors: </strong>
-              @for(t <- t_accs(index)) {
-                @t.th_name
-              }
-              <br>
-              <strong>Organizations: </strong>
-              @for(o <- orgs(index)) {
-                @o.organization_name
-              }
-              <br>
-            </div>
-          </div>
-        }
+                </td>
+                <td>
+                  @for(t <- t_accs(index)) {
+                    @t.th_name <br>
+                  }
+                </td>
+                <td>
+                  @for(o <- orgs(index)) {
+                    @o.organization_name <br>
+                  }
+                </td>
+                <td>
+                  @if(ach.get.achievement_type == 1) {
+                    Competition
+                  } else {
+                    @if(ach.get.achievement_type == 2) {
+                      Cert
+                    } else {
+                      Ambassador
+                    }
+                  }
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
