@@ -47,7 +47,8 @@ trait Show extends Controller with Pjax with AuthElement with AuthConfigImpl {
   }
 
   def profile(username: String) = StackAction(AuthorityKey -> Seq(Auth.Student, Auth.Teacher, Auth.Staff)) { implicit request =>
-    if ((loggedIn.role_id == 3 && loggedIn.username.value != username) || (loggedIn.role_id == 1 && Account.findByUsername(username).get.role_id == 2)) {
+    if ((loggedIn.role_id == 3 && loggedIn.username.value != username) ||
+      (loggedIn.role_id == 1 && Account.findByUsername(username).get.role_id == 2)) {
       Ok(html.tarwised.Forb("Forbidden"))
     } else {
       val role_id = models.Account.findByUsername(username).head.role_id

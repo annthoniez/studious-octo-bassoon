@@ -157,6 +157,7 @@ trait Add extends Controller with Pjax with AuthElement with AuthConfigImpl {
         println(contentType)
         saveFileName = Crypto.sign(UUID.randomUUID().toString + LocalDateTime.now().toString + loggedIn.username.value)
         filenames += saveFileName
+//        p.ref.moveTo(new File(play.Play.application().path().getCanonicalPath() + "/../webapps/" + s"/public/uploads/$saveFileName"))
         p.ref.moveTo(new File(play.Play.application().path().toString + s"/public/uploads/$saveFileName"))
       }
     }
