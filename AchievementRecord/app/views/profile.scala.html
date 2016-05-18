@@ -14,6 +14,10 @@
       <div class="meta">
         <p><strong>ชื่อ - นามสกุล</strong> @th_name</p>
         <p><strong>รหัสประจำตัว</strong> @id</p>
+        @if(account.role_id == 3) {
+          <p><strong>แขนงวิชา</strong> @{profile.asInstanceOf[Student].track.get.th_name}</p>
+          <p><strong>หลักสูตร</strong> @{profile.asInstanceOf[Student].curri.get.th_name}</p>
+        }
       </div>
     </div>
     <div class="large-9 columns">
