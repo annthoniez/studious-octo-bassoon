@@ -37,7 +37,7 @@ libraryDependencies += "com.sun.jersey" % "jersey-core" % "1.19.1"
 
 libraryDependencies += "com.sun.jersey" % "jersey-client" % "1.19.1"
 
-libraryDependencies += "com.norbitltd" % "spoiwo" % "1.0.3"
+libraryDependencies += "com.norbitltd" % "spoiwo" % "1.0.6"
 
 unmanagedResourceDirectories in Test <+=  baseDirectory ( _ /"target/web/public/test" )
 
