@@ -23,6 +23,15 @@ trait Report extends Controller with Pjax with AuthElement with AuthConfigImpl {
     Ok(views.html.report("สร้างรายงาน - ระบบกรอกข้อมูลผลงานต่างๆ ของนักศึกษา"))
   }
 
+  def typeConvert(ach_type: Int) = {
+    val result = ach_type match {
+      case 1 => "Competition"
+      case 2 => "Cert"
+      case 3 => "Ambassador"
+    }
+    result
+  }
+
   def report() = StackAction(AuthorityKey -> Seq(Auth.Staff)) { implicit request =>
     val body: AnyContent = request.body
     val textBody: Option[Map[String, Seq[String]]] = body.asFormUrlEncoded
@@ -49,16 +58,28 @@ trait Report extends Controller with Pjax with AuthElement with AuthConfigImpl {
           "t_accs",
           "orgs",
           "date",
-          "category")) ++
+          "category",
+          "reward",
+          "type")) ++
         result.map(r =>
           Row()
-            .withCellValues(r.accs.map(a => a.th_name).mkString(", "),
+            .withCellValues(r.accs.map(a => a.th_name).mkString("\n"),
               r.achievement_name,
-              r.t_accs.map(t => t.th_prename + t.th_name).mkString(", "),
-              r.orgs.map(o => o.organization_name).mkString(", "),
+              r.t_accs.map(t => t.th_prename + t.th_name).mkString("\n"),
+              r.orgs.map(o => o.organization_name).mkString("\n"),
               r.date.toString,
-              r.category))
+              r.category,
+              r.reward,
+              typeConvert(r.achievement_type)))
           .toList
+    ).withColumns(
+      Column(index = 0, autoSized = true),
+      Column(index = 1, autoSized = true),
+      Column(index = 2, autoSized = true),
+      Column(index = 3, autoSized = true),
+      Column(index = 4, autoSized = true),
+      Column(index = 6, autoSized = true),
+      Column(index = 7, autoSized = true)
     )
     helloWorldSheet.saveAsXlsx(play.Play.application().path().toString + s"/public/xlsxs/$saveFileName.xlsx")
 
