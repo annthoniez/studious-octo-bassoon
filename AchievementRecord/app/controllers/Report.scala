@@ -3,6 +3,7 @@ package controllers
 import java.time.LocalDateTime
 import java.util.UUID
 
+import com.norbitltd.spoiwo.model.Height._
 import com.norbitltd.spoiwo.model._
 import com.norbitltd.spoiwo.model.enums.CellFill
 import com.norbitltd.spoiwo.natures.xlsx.Model2XlsxConversions._
@@ -62,7 +63,7 @@ trait Report extends Controller with Pjax with AuthElement with AuthConfigImpl {
           "reward",
           "type")) ++
         result.map(r =>
-          Row()
+          Row(height = 45 points)
             .withCellValues(r.accs.map(a => a.th_name).mkString("\n"),
               r.achievement_name,
               r.t_accs.map(t => t.th_prename + t.th_name).mkString("\n"),
@@ -78,6 +79,7 @@ trait Report extends Controller with Pjax with AuthElement with AuthConfigImpl {
       Column(index = 2, autoSized = true),
       Column(index = 3, autoSized = true),
       Column(index = 4, autoSized = true),
+      Column(index = 5, autoSized = true),
       Column(index = 6, autoSized = true),
       Column(index = 7, autoSized = true)
     )
@@ -91,17 +93,10 @@ trait Report extends Controller with Pjax with AuthElement with AuthConfigImpl {
   }
 
   def xls()  = StackAction(AuthorityKey -> Seq(Auth.Staff)) { implicit request =>
-    val headerStyle =
-      CellStyle(fillPattern = CellFill.Solid, fillForegroundColor = Color.AquaMarine, font = Font(bold = true))
-    val helloWorldSheet = Sheet(name = "Some serious stuff")
-      .withRows(
-        Row(style = headerStyle).withCellValues("th_name", "ach_name", "t_name", "org", "date", "type"),
-        Row().withCellValues("Marie Curie", 123, 66, true)
-      )
-      .withColumns(
-        Column(index = 0, style = CellStyle(font = Font(bold = true)), autoSized = true)
-      )
-    helloWorldSheet.saveAsXlsx(play.Play.application().path().toString + "/public/xlsxs/hello_world.xlsx")
+    val cell = Cell("Use \n with word wrap on to create a new line", index = 2)
+    val row = Row(index = 2, height = 45 points,cells = List(cell))
+    val sheet = Sheet(row).withColumns(Column(2, autoSized = true))
+    sheet.saveAsXlsx(play.Play.application().path().toString + "/public/xlsxs/ooxml-newlines.xlsx")
     Ok("test")
   }
 
