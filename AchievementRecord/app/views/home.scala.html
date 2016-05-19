@@ -37,15 +37,21 @@
       @if(account.role_id == 2) {
         <div class="row">
           <div class="medium-6 columns">
-            <div class="callout primary">
-              <h3>ผลงานทั้งหมด</h3>
-              <h4>@achs.length</h4>
+            <div class="dash-box dash-primary">
+              <span class="box-icon"><i class="fi-archive"></i></span>
+              <div class="box-content">
+                <h3>ผลงานทั้งหมด</h3>
+                <span class="box-number">@achs.length</span>
+              </div>
             </div>
           </div>
           <div class="medium-6 columns">
-            <div class="callout success">
-              <h3>new!</h3>
-              <h4>@achs.filter(a => a.get.date.isBefore(LocalDate.now().withDayOfMonth(LocalDate.now().lengthOfMonth())) && a.get.date.isAfter(LocalDate.now().withDayOfMonth(1))).length</h4>
+            <div class="dash-box dash-success">
+              <span class="box-icon"><i class="fi-burst-new"></i></span>
+              <div class="box-content">
+                <h3>ผลงานใหม่</h3>
+                <span class="box-number">@achs.filter(a => a.get.date.isBefore(LocalDate.now().withDayOfMonth(LocalDate.now().lengthOfMonth())) && a.get.date.isAfter(LocalDate.now().withDayOfMonth(1))).length</span>
+              </div>
             </div>
           </div>
         </div>
