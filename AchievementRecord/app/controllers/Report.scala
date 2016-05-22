@@ -49,7 +49,6 @@ trait Report extends Controller with Pjax with AuthElement with AuthConfigImpl {
         font = Font(bold = true)
       )
 
-    //TODO autoSized and date field
     val helloWorldSheet = Sheet(
       name = "Some serious stuff",
       rows = List(
@@ -83,9 +82,9 @@ trait Report extends Controller with Pjax with AuthElement with AuthConfigImpl {
       Column(index = 6, autoSized = true),
       Column(index = 7, autoSized = true)
     )
-    helloWorldSheet.saveAsXlsx(play.Play.application().path().toString + s"/public/xlsxs/$saveFileName.xlsx")
+    helloWorldSheet.saveAsXlsx(play.Play.application().path().getCanonicalPath() + "/../webapps/" + s"/public/xlsxs/$saveFileName.xlsx")
 
-    Ok(JsString(s"/assets/xlsxs/$saveFileName.xlsx"))
+    Ok(JsString(s"/public/xlsxs/$saveFileName.xlsx"))
   }
 
   def pdf() = StackAction(AuthorityKey -> Seq(Auth.Staff)) { implicit request =>
@@ -96,7 +95,7 @@ trait Report extends Controller with Pjax with AuthElement with AuthConfigImpl {
     val cell = Cell("Use \n with word wrap on to create a new line", index = 2)
     val row = Row(index = 2, height = 45 points,cells = List(cell))
     val sheet = Sheet(row).withColumns(Column(2, autoSized = true))
-    sheet.saveAsXlsx(play.Play.application().path().toString + "/public/xlsxs/ooxml-newlines.xlsx")
+    sheet.saveAsXlsx(play.Play.application().path().getCanonicalPath() + "/../webapps/" + "/public/xlsxs/ooxml-newlines.xlsx")
     Ok("test")
   }
 
