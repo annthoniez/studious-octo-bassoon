@@ -79,12 +79,12 @@
                 <td>@ach.get.date</td>
                 <td>
                   @for(acc <- accs(index)) {
-                    @acc.th_name <br>
+                    <a href="/profile/@acc.username">@acc.th_name</a><br>
                   }
                 </td>
                 <td>
                   @for(t <- t_accs(index)) {
-                    @t.th_name <br>
+                    <a href="/profile/@t.username">@t.th_name</a><br>
                   }
                 </td>
                 <td>
