@@ -254,7 +254,7 @@ li a:hover {
     color: #fff;
 }
 .field {
-  width: 100%;
+  display: inline-table;
   background: #ededed;
   padding-top: 6px;
   padding-bottom: 6px;
@@ -267,8 +267,12 @@ li a:hover {
   font-weight: bold;
 }
 
-.field > .value {
+.value {
   padding-left: 5px;
+}
+
+.aaa {
+  width: 70%;
 }
 
 button > i {
@@ -302,4 +306,7 @@ button > i {
 .box-number {
   font-weight: bold;
   font-size: 18px;
+}
+.info {
+  padding: 10px;
 }
