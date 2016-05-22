@@ -54,14 +54,14 @@ trait Report extends Controller with Pjax with AuthElement with AuthConfigImpl {
       name = "Some serious stuff",
       rows = List(
         Row(style = headerStyle)
-        .withCellValues("student_name",
-          "ach_name",
-          "t_accs",
-          "orgs",
-          "date",
-          "category",
-          "reward",
-          "type")) ++
+        .withCellValues("สมาชิก",
+          "ชื่อผลงาน",
+          "อาจารย์ที่ปรึกษา",
+          "หน่วยงานที่จัด",
+          "วันที่ได้รับ",
+          "ประเภท",
+          "รางวัล",
+          "ชนิด")) ++
         result.map(r =>
           Row(height = 45 points)
             .withCellValues(r.accs.map(a => a.th_name).mkString("\n"),
