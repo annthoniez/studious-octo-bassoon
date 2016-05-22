@@ -38,7 +38,9 @@
               <li><a href="@controllers.routes.Report.index">รายงาน</a></li>
             }
             <li><a href="@controllers.routes.Search.search">สืบค้น</a></li>
-            <li><a href="@controllers.routes.Show.profile(account.username.value)">โปรไฟล์</a></li>
+            @if(account.role_id != 2) {
+              <li><a href="@controllers.routes.Show.profile(account.username.value)">โปรไฟล์</a></li>
+            }
             <li><a href="@controllers.routes.Setting.index">ตั้งค่า</a></li>
             <li><a href="@controllers.routes.Application.logout">ออกจากระบบ</a></li>
           } else {
