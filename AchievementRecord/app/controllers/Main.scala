@@ -1,7 +1,8 @@
 package controllers
 
-import jp.t2v.lab.play2.auth.AuthElement
+import jp.t2v.lab.play2.auth._
 import models._
+import play.api.libs.json.Json
 import play.api.mvc._
 import views.html
 
@@ -14,7 +15,7 @@ trait Main extends Controller with Pjax with AuthElement with AuthConfigImpl {
     val th_name = Auth.valueOf(loggedIn.role_id) match {
       case Auth.Student => models.Student.getProfile(username).th_name
       case Auth.Staff => models.Staff.getProfile(username).th_name
-      case Auth.Teacher => models.Teacher.getProfile(username).th_name
+      case Auth.Teacher => models.Teacher.getProfile(username).th_prename + models.Teacher.getProfile(username).th_name
     }
     val id = Auth.valueOf(loggedIn.role_id) match {
       case Auth.Student => models.Student.getProfile(username).student_id
@@ -26,11 +27,20 @@ trait Main extends Controller with Pjax with AuthElement with AuthConfigImpl {
       case Auth.Teacher => models.Teacher.getAchs(loggedIn.username.value)
       case Auth.Staff => Achievement.findAll()
     }
-    val achs2 = achs.map(a => Achievement.getAchWithChild(a.id))
-    val s_accs = Achievement.getStudentInAch(achs)
-    val t_accs = Achievement.getTeacherInAch(achs)
-    val orgs = Achievement.getOrgInAch(achs)
-    Ok(html.home("ระบบกรอกข้อมูลผลงานต่างๆ ของนักศึกษา", achs2, s_accs, t_accs, orgs, th_name, id.value, loggedIn))
+    val profile = Auth.valueOf(loggedIn.role_id) match {
+      case Auth.Student => models.Student.getProfile(username)
+      case Auth.Staff => models.Staff.getProfile(username)
+      case Auth.Teacher => models.Teacher.getProfile(username)
+    }
+
+    val achs2 = achs.map(a => Achievement.getAchWithChild(a.id)).reverse
+    val s_accs = Achievement.getStudentInAch(achs).reverse
+    val t_accs = Achievement.getTeacherInAch(achs).reverse
+    val orgs = Achievement.getOrgInAch(achs).reverse
+
+    val photos = achs2.map(a => Json.parse(a.get.photo).as[List[String]])
+    println(photos)
+    Ok(html.home("ระบบกรอกข้อมูลผลงานต่างๆ ของนักศึกษา", profile, achs2, s_accs, t_accs, orgs, th_name, id.value, loggedIn, photos))
   }
 
   def tarwised = StackAction(AuthorityKey -> Seq(Auth.Student, Auth.Staff, Auth.Teacher)) { implicit request =>

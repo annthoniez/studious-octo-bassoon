@@ -17,7 +17,6 @@ libraryDependencies += "com.typesafe.play" %% "play-slick" % "1.1.1"
 libraryDependencies += "com.typesafe.play" %% "play-slick-evolutions" % "1.1.1"
 
 libraryDependencies ++= Seq("jp.t2v" %% "play2-auth"        % "0.14.2",
-  "jp.t2v" %% "play2-auth-social" % "0.14.2", // for social login
   "jp.t2v" %% "play2-auth-test"   % "0.14.2" % "test")
 
 libraryDependencies ++= Seq(
@@ -33,6 +32,12 @@ libraryDependencies ++= Seq(
   "ch.qos.logback"  % "logback-core" % "1.1+",
   "it.innove" % "play2-pdf" % "1.4.0"
 )
+
+libraryDependencies += "com.sun.jersey" % "jersey-core" % "1.19.1"
+
+libraryDependencies += "com.sun.jersey" % "jersey-client" % "1.19.1"
+
+libraryDependencies += "com.norbitltd" % "spoiwo" % "1.0.6"
 
 unmanagedResourceDirectories in Test <+=  baseDirectory ( _ /"target/web/public/test" )
 

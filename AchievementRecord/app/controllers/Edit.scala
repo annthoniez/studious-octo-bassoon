@@ -12,7 +12,7 @@ import views.html
   * Created by Pichai Sivawat on 4/17/2016.
   */
 trait Edit extends Controller with Pjax with AuthElement with AuthConfigImpl {
-  def edit(id: Long) = StackAction(AuthorityKey -> Seq(Auth.Student)) { implicit request =>
+  def edit(id: Long) = StackAction(AuthorityKey -> Seq(Auth.Student, Auth.Staff)) { implicit request =>
     val ach = Achievement
       .joins(Achievement.accRef)
       .joins(Achievement.orgRef)
@@ -22,7 +22,12 @@ trait Edit extends Controller with Pjax with AuthElement with AuthConfigImpl {
       .joins(Achievement.ambRef)
       .findById(id)
 
-    val canEdit = ach.get.accs.map(_.username).contains(loggedIn.username.value) && ach.get.created_at.isAfter(LocalDate.now().minusDays(3))
+    var canEdit: Boolean = false
+    if (loggedIn.role_id == 2) {
+      canEdit = true
+    } else {
+      canEdit = ach.get.accs.map(_.username).contains(loggedIn.username.value) && ach.get.created_at.isAfter(LocalDate.now().minusDays(3))
+    }
 
     if (!canEdit) {
       Ok(html.tarwised.Forb("Forbidden"))
@@ -72,7 +77,7 @@ trait Edit extends Controller with Pjax with AuthElement with AuthConfigImpl {
 
   def editOrgs(id: Long, textBody: Map[String, Seq[String]], ach: Option[Achievement], loggedIn: Account) = {
     val curOrg: Set[String] = ach.get.orgs.map(_.id.toString).toSet[String]
-    val updateOrg: Set[String] = textBody.get("orgs").head.toSet[String]
+    val updateOrg: Set[String] = textBody.get("orgs").head.toSet[String].map(o => if(!o.forall(_.isDigit)) Organization.create(o).toString else o)
 
     val delOrg: Set[String] = curOrg -- updateOrg
     val addOrg: Set[String] = updateOrg -- curOrg
@@ -120,6 +125,7 @@ trait Edit extends Controller with Pjax with AuthElement with AuthConfigImpl {
         'topic -> textBody.get("topic").head.head,
         'level -> textBody.get("level").head.head,
         'rank -> rank)
+    Add.sendMail("Edit ach noti", routes.Show.achievement(id).absoluteURL())
     Redirect(routes.Show.achievement(id))
   }
 
@@ -165,6 +171,7 @@ trait Edit extends Controller with Pjax with AuthElement with AuthConfigImpl {
       .withAttributes(
         'year -> textBody.get("year").head.head)
 
+    Add.sendMail("Edit ach noti", routes.Show.achievement(id).absoluteURL())
     Redirect(routes.Show.achievement(id))
   }
 

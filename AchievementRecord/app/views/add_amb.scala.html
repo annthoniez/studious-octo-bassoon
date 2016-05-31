@@ -17,18 +17,33 @@
       <div class="alert callout" data-abide-error style="display: none;">
         <p><i class="fi_alert"></i> There are some errors in your form.</p>
       </div>
-      <div class="row">
-        <div class="small-3 columns">
-          <label>รหัสนักศึกษา
-            <input type="text" id="CurrentStudentId" placeholder="CurrentStudentId" class="student_ids" name="student_ids" disabled="disabled" />
-          </label>
+      @if(ach.isDefined) {
+        <div class="row">
+          <div class="small-3 columns">
+            <label>รหัสนักศึกษา
+              <input type="text" id="CurrentStudentId" placeholder="CurrentStudentId" class="student_ids" name="student_ids" disabled="disabled" value="@ach.get.accs.head.username"/>
+            </label>
+          </div>
+          <div class="small-9 columns">
+            <label>ชื่อ-สกุลนักศึกษา
+              <input type="text" id="CurrentStudentName" placeholder="CurrentStudentName" class="student_names" name="student_names" disabled="disabled" value="@ach.get.accs.head.th_name">
+            </label>
+          </div>
         </div>
-        <div class="small-9 columns">
-          <label>ชื่อ-สกุลนักศึกษา
-            <input type="text" id="CurrentStudentName" placeholder="CurrentStudentName" class="student_names" name="student_names" disabled="disabled">
-          </label>
+      } else {
+        <div class="row">
+          <div class="small-3 columns">
+            <label>รหัสนักศึกษา
+              <input type="text" id="CurrentStudentId" placeholder="CurrentStudentId" class="student_ids" name="student_ids" disabled="disabled" />
+            </label>
+          </div>
+          <div class="small-9 columns">
+            <label>ชื่อ-สกุลนักศึกษา
+              <input type="text" id="CurrentStudentName" placeholder="CurrentStudentName" class="student_names" name="student_names" disabled="disabled">
+            </label>
+          </div>
         </div>
-      </div>
+      }
       <hr>
       <div class="row">
         <div class="small-12 columns">
@@ -40,18 +55,16 @@
           </label>
         </div>
       </div>
-      <div class="row">
-        <div class="small-12 columns">
-          <label>หน่วยงานที่จัด <i class="alert fi-asterisk"></i>
-            <select name="orgs" class="orgs" required>
-              <option value=""></option>
-            </select>
-            <span class="form-error">
-              กรอกด้วย
-            </span>
-          </label>
-        </div>
+    <div class="row">
+      <div class="div small-12 columns">
+        <label>หน่วยงานที่จัด <i class="alert fi-asterisk"></i>
+          <select name="orgs" id="orgs" class="s2" required></select>
+        </label>
+        <span class="form-error">
+          กรอกด้วย
+        </span>
       </div>
+    </div>
       <div class="row">
         <div class="small-12 columns">
           <label>ประจำปี <i class="alert fi-asterisk"></i>
@@ -76,7 +89,7 @@
         <div class="row">
           <div class="small-12 columns">
             <label for="exampleFileUpload" class="button">Upload File</label>
-            <input type="file" id="exampleFileUpload" class="show-for-sr" name="file" accept="image/jpeg, image/png">
+            <input type="file" id="exampleFileUpload" class="show-for-sr" name="file[]" accept="image/jpeg, image/png" multiple>
           </div>
         </div>
       }
@@ -96,21 +109,52 @@
       $("#CurrentStudentName").attr("placeholder", data["th_name"]);
     });
 
-    $.ajax({
-      url: '/jsonAll/3',
-      dataType: 'json',
-      async: false,
-      success: function (data) {
-        $(".orgs").empty();
-        $(".orgs").append($("<option>").text("เลือกหน่วยงาน").attr("value", ""));
-        $.each(data, function(i, val) {
-          $(".orgs").append($("<option>").text(val.text).attr("value", val.value));
-        });
-      }
-    });
+    function isInArray(value, array) {
+      return array.indexOf(value) > -1;
+    }
 
     @if(ach.isDefined) {
-      $("select[name^='orgs']").val("@ach.get.orgs.head.id");
+      var orgs = [];
+      @for(o <- ach.get.orgs) {
+      orgs.push("@o.id");
+      }
+
+      $.ajax({
+        url: '/jsonAll/3',
+        dataType: 'json',
+        async: false,
+        success: function (data) {
+          $("#orgs").empty();
+          $.each(data, function(i, val) {
+            if (isInArray(val.value.toString(), orgs)) {
+              $("#orgs").append($("<option selected='selected'>").text(val.text).attr("value", val.value));
+            } else {
+              $("#orgs").append($("<option>").text(val.text).attr("value", val.value));
+            }
+          });
+        }
+      });
+    } else {
+      $.ajax({
+        url: '/jsonAll/3',
+        dataType: 'json',
+        async: false,
+        success: function (data) {
+          $("#orgs").empty();
+          $.each(data, function(i, val) {
+            $("#orgs").append($("<option>").text(val.text).attr("value", val.value));
+          });
+        }
+      });
     }
+
+    var select2_option = {
+      allowClear: true,
+      theme: "foundation",
+      width: '100%',
+      tags: true
+    };
+
+    $('.s2').select2(select2_option);
   </script>
 }

@@ -1,4 +1,5 @@
-@(title: String, achs: Seq[Option[Achievement]], accs: Seq[Seq[Student]], t_accs: Seq[Seq[Teacher]], orgs: Seq[Seq[Organization]], th_name: String, id: String, account: Account)(implicit template: String => Html => Html)
+@(title: String, profile: Any, achs: Seq[Option[Achievement]], accs: Seq[Seq[Student]], t_accs: Seq[Seq[Teacher]], orgs: Seq[Seq[Organization]], th_name: String, id: String, account: Account, photos: Seq[Seq[String]])(implicit template: String => Html => Html)
+@import java.time.LocalDate
 @template(title) {
   <div class="jumbotron">
     <div class="row">
@@ -14,49 +15,99 @@
       <div class="meta">
         <p><strong>ชื่อ - นามสกุล</strong> @th_name</p>
         <p><strong>รหัสประจำตัว</strong> @id</p>
+        @if(account.role_id == 3) {
+          <p><strong>แขนงวิชา</strong> @{profile.asInstanceOf[Student].track.get.th_name}</p>
+          <p><strong>หลักสูตร</strong> @{profile.asInstanceOf[Student].curri.get.th_name}</p>
+        }
       </div>
     </div>
     <div class="large-9 columns">
-      @if(account.role_id == 3) {
-        <h3 class="kanit"><i class="fa fa-plus-circle" aria-hidden="true"></i>เพิ่มผลงานใหม่</h3>
-        <div class="expanded button-group">
-          <a class="success button" href="@controllers.routes.Add.competition"><i class="fa fa-trophy" aria-hidden="true" style="width: 23px;"></i>การแข่งขัน </a>
-          <a class="success button" href="@controllers.routes.Add.amb"><i class="fa fa-star" aria-hidden="true" style="width: 23px;"></i>ทูตหรือตัวแทนองค์กร </a>
-          <a class="success button" href="@controllers.routes.Add.cert"><i class="fa fa-check-square-o" aria-hidden="true" style="width: 23px;"></i>ใบรับรองความเชี่ยวชาญพิเศษ </a>
-        </div>
-        <hr>
-      }
+      <div class="row column">
+        @if(account.role_id == 3) {
+          <h3 class="kanit"><i class="fa fa-plus-circle" aria-hidden="true"></i>เพิ่มผลงานใหม่</h3>
+          <div class="expanded button-group">
+            <a class="success button" href="@controllers.routes.Add.competition"><i class="fa fa-trophy" aria-hidden="true" style="width: 23px;"></i>การแข่งขัน </a>
+            <a class="success button" href="@controllers.routes.Add.amb"><i class="fa fa-star" aria-hidden="true" style="width: 23px;"></i>ทูตหรือตัวแทนองค์กร </a>
+            <a class="success button" href="@controllers.routes.Add.cert"><i class="fa fa-check-square-o" aria-hidden="true" style="width: 23px;"></i>ใบรับรองความเชี่ยวชาญพิเศษ </a>
+          </div>
+          <hr>
+        }
+      </div>
       <h3 class="kanit"><i class="fa fa-list-alt" aria-hidden="true"></i>ผลงานทั้งหมด</h3>
-      @for((ach, index) <- achs.zipWithIndex) {
-        <div class="box">
-          <a href="@controllers.routes.Show.achievement(ach.get.id)">
-            <h4 class="box-title"><i class="fa fa-cube"></i>@ach.get.id: @ach.get.achievement_name</h4>
-          </a>
-          @if(ach.get.photo == "") {
-            <img src="http://placehold.it/1000x450" alt="">
-          } else {
-            <img src="assets/uploads/@ach.get.photo" alt="">
-          }
-          <div class="meta">
-            <strong>Date: </strong> @ach.get.date<br>
-            <strong>Students: </strong>
-            @for(acc <- accs(index)) {
-               @acc.th_name
-            }
-            <br>
-            <strong>Instructors: </strong>
-            @for(t <- t_accs(index)) {
-               @t.th_name
-            }
-            <br>
-            <strong>Organizations: </strong>
-            @for(o <- orgs(index)) {
-              @o.organization_name
-            }
-            <br>
+      @if(account.role_id == 2) {
+        <div class="row">
+          <div class="medium-6 columns">
+            <div class="dash-box dash-primary">
+              <span class="box-icon"><i class="fi-archive"></i></span>
+              <div class="box-content">
+                <h3>ผลงานทั้งหมด</h3>
+                <span class="box-number">@achs.length</span>
+              </div>
+            </div>
+          </div>
+          <div class="medium-6 columns">
+            <div class="dash-box dash-success">
+              <span class="box-icon"><i class="fi-burst-new"></i></span>
+              <div class="box-content">
+                <h3>ผลงานใหม่</h3>
+                <span class="box-number">@achs.filter(a => a.get.date.isBefore(LocalDate.now().withDayOfMonth(LocalDate.now().lengthOfMonth())) && a.get.date.isAfter(LocalDate.now().withDayOfMonth(1))).length</span>
+              </div>
+            </div>
           </div>
         </div>
       }
+      <div class="row small-up-2">
+        <table class="hover">
+          <thead>
+            <th>ลำดับ</th>
+            <th>ชื่อผลงาน</th>
+            <th>วันที่ได้รับ</th>
+            <th>สมาชิก</th>
+            <th>อาจารย์ที่ปรึกษา</th>
+            <th>หน่วยงานที่จัด</th>
+            <th>ประเภท</th>
+          </thead>
+          <tbody>
+            @for((ach, index) <- achs.zipWithIndex) {
+              <tr>
+                <td>@(index+1)</td>
+                <td>
+                  <a href="@controllers.routes.Show.achievement(ach.get.id)">
+                  @ach.get.achievement_name
+                  </a>
+                </td>
+                <td>@ach.get.date</td>
+                <td>
+                  @for(acc <- accs(index)) {
+                    <a href="/profile/@acc.username">@acc.th_name</a><br>
+                  }
+                </td>
+                <td>
+                  @for(t <- t_accs(index)) {
+                    <a href="/profile/@t.username">@t.th_name</a><br>
+                  }
+                </td>
+                <td>
+                  @for(o <- orgs(index)) {
+                    @o.organization_name <br>
+                  }
+                </td>
+                <td>
+                  @if(ach.get.achievement_type == 1) {
+                    Competition
+                  } else {
+                    @if(ach.get.achievement_type == 2) {
+                      Cert
+                    } else {
+                      Ambassador
+                    }
+                  }
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 }
